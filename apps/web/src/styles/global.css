@@ -1,5 +1,8 @@
 @import './token.css';
 
+@tailwind components;
+@tailwind utilities;
+
 /* Reset & Box Sizing */
 *, *::before, *::after {
   box-sizing: border-box;
