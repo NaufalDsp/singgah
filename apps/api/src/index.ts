@@ -1,6 +1,8 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { healthRoute } from './routes/health.js';
+import { weatherRoute } from './routes/weather.js';
+import { plannerRoute } from './routes/planner.js';
 import { apiError, ERROR_D1_LIMIT } from './lib/errors.js';
 
 export interface Env {
@@ -30,15 +32,8 @@ app.use('*', async (c, next) => {
 // Mount routes under /api/v1
 const v1 = new Hono<{ Bindings: Env }>();
 v1.route('/health', healthRoute);
-
-// Placeholder routes for phase 2 & 3
-v1.get('/weather/:slug', (c) => {
-  return c.json({
-    status: 'stub',
-    message: 'Weather route ready for Phase 2 integration',
-    slug: c.req.param('slug'),
-  });
-});
+v1.route('/weather', weatherRoute);
+v1.route('/planner', plannerRoute);
 
 app.route('/api/v1', v1);
 
