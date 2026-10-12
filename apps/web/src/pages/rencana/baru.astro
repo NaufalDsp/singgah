@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TripPlanner from '../../islands/TripPlanner';
+import { getCollection } from 'astro:content';
+
+const destinations = await getCollection('destinations');
+const destinationOptions = destinations.map((d) => ({
+  slug: d.slug,
+  name: d.data.name,
+  typical_days: d.data.typical_days,
+  highlights: d.data.highlights,
+}));
+
+const searchParams = Astro.url.searchParams;
+const destParam = searchParams.get('destinasi') || 'labuan-bajo';
+const targetDest = destinations.find((d) => d.slug === destParam) || destinations[0];
+---
+
+<BaseLayout title="Penyusun Rencana Perjalanan — Singgah">
+  <div class="max-w-container mx-auto px-4 md:px-8 py-12 w-full">
+    <div class="mb-8">
+      <a
+        href="/destinasi"
+        class="text-xs font-sans font-medium text-text-3 hover:text-text mb-2 inline-block">
+        ← Kembali
+      </a>
+      <h1 class="font-serif text-[clamp(2rem,4vw,3.5rem)] text-text leading-tight">
+        Penyusun rencana perjalanan
+      </h1>
+      <p class="font-sans text-sm text-text-2 mt-1">
+        Atur urutan harian, seimbangkan beban aktivitas, dan bagikan rencana ke teman seperjalanan.
+      </p>
+    </div>
+
+    <!-- Island React Penyusun Rencana -->
+    <TripPlanner
+      client:load
+      initialTrip={{
+        title: `Rencana Singgah di ${targetDest?.data.name || 'Nusantara'}`,
+        destination: targetDest?.slug || 'labuan-bajo',
+        days: targetDest?.data.typical_days.min || 4,
+        start_month: new Date().getMonth() + 1,
+      }}
+      destinations={destinationOptions}
+    />
+  </div>
+</BaseLayout>

@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const prerender = false; // Render dinamis di SSR/Edge atau static fallback
+const { slug } = Astro.params;
+---
+
+<BaseLayout title="Rencana Perjalanan Bersama — Singgah">
+  <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full print:p-0">
+    <div id="shared-trip-container" data-slug={slug} class="max-w-3xl mx-auto space-y-8">
+      <!-- Loading State -->
+      <div class="p-8 bg-surface rounded-panel border border-line text-center animate-pulse">
+        <div class="h-8 w-64 bg-surface-2 rounded-ui mx-auto mb-4"></div>
+        <div class="h-4 w-48 bg-surface-2 rounded-ui mx-auto"></div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  async function loadSharedTrip() {
+    const container = document.getElementById('shared-trip-container');
+    if (!container) return;
+
+    const slug = container.dataset.slug;
+    if (!slug) return;
+
+    try {
+      const res = await fetch(`/api/v1/shared/${slug}`).catch(() => null);
+      let trip: any = null;
+      let items: any[] = [];
+
+      if (res && res.ok) {
+        const data = await res.json();
+        trip = data.trip;
+        items = data.items || [];
+      } else {
+        // Fallback jika dibuka dari localStorage simulasi
+        const local = localStorage.getItem('singgah_active_trip');
+        if (local) {
+          const lData = JSON.parse(local);
+          trip = lData;
+          items = lData.items || [];
+        }
+      }
+
+      if (!trip) {
+        container.innerHTML = `
+          <div class="p-12 bg-surface rounded-panel border border-line text-center">
+            <h1 class="font-serif text-3xl text-text mb-3">Tautan tidak ditemukan</h1>
+            <p class="font-sans text-sm text-text-2 mb-6">
+              Rencana perjalanan ini mungkin telah dicabut oleh pemiliknya atau tautan tidak valid.
+            </p>
+            <a href="/" class="btn-utama text-xs">Kembali ke beranda</a>
+          </div>
+        `;
+        return;
+      }
+
+      // Kelompokkan per hari
+      const daysCount = trip.days || 4;
+      let daysHtml = '';
+
+      for (let d = 1; d <= daysCount; d++) {
+        const dayItems = items
+          .filter((it: any) => it.day_index === d)
+          .sort((a: any, b: any) => a.position - b.position);
+
+        daysHtml += `
+          <div class="p-6 bg-surface rounded-panel border border-line shadow-sm mb-6 print:border-none print:shadow-none print:p-0 print:mb-8 print-page">
+            <h2 class="font-serif text-2xl text-text pb-2 mb-4 border-b border-line print:border-black">
+              Hari ${d}
+            </h2>
+            ${
+              dayItems.length === 0
+                ? '<p class="text-xs text-text-3 italic">Tidak ada aktivitas terjadwal.</p>'
+                : `<div class="space-y-3">
+                    ${dayItems
+                      .map(
+                        (it: any) => `
+                      <div class="p-3 bg-bg rounded-ui border border-line print:bg-white print:border-none print:p-1">
+                        <div class="flex items-center gap-2 mb-1">
+                          <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-surface-2 text-text-3 print:border print:border-black">
+                            ${it.time_of_day || 'waktu bebas'}
+                          </span>
+                          <span class="font-sans text-sm font-semibold text-text">${it.title}</span>
+                        </div>
+                        ${it.notes ? `<p class="font-sans text-xs text-text-2 pl-1">${it.notes}</p>` : ''}
+                      </div>
+                    `,
+                      )
+                      .join('')}
+                  </div>`
+            }
+          </div>
+        `;
+      }
+
+      container.innerHTML = `
+        <header class="border-b border-line pb-6 mb-8 print:border-none">
+          <span class="text-xs uppercase tracking-wider text-text-3 font-semibold block mb-1">
+            Rencana Perjalanan Publik
+          </span>
+          <h1 class="font-serif text-4xl text-text mb-2">${trip.title}</h1>
+          <p class="font-sans text-xs text-text-2 mb-6">
+            Destinasi: <strong class="capitalize">${trip.destination}</strong> • Durasi: <strong>${trip.days} hari</strong>
+          </p>
+
+          <div class="flex items-center gap-3 no-print">
+            <button id="btn-copy-trip" class="btn-utama text-xs h-10 px-5">
+              Salin ke rencanaku
+            </button>
+            <button onclick="window.print()" class="btn-sekunder text-xs h-10 px-5">
+              Cetak rencana (A4)
+            </button>
+          </div>
+        </header>
+
+        <div class="space-y-6">
+          ${daysHtml}
+        </div>
+
+        <footer class="pt-8 border-t border-line text-xs text-text-3 text-center print:border-t print:pt-4">
+          Dibuat dengan Singgah — Panduan Destinasi Nusantara berbasis data iklim 30 tahun.
+        </footer>
+      `;
+
+      document.getElementById('btn-copy-trip')?.addEventListener('click', () => {
+        localStorage.setItem('singgah_active_trip', JSON.stringify(trip));
+        alert('Rencana berhasil disalin ke perangkat ini. Kamu akan dialihkan ke editor.');
+        window.location.href = '/rencana/baru';
+      });
+    } catch {
+      container.innerHTML = `
+        <div class="p-8 bg-surface rounded-panel border border-line text-center">
+          <p class="text-sm text-text-2 mb-4">Gagal memuat rencana bersama.</p>
+          <a href="/" class="btn-utama text-xs">Ke beranda</a>
+        </div>
+      `;
+    }
+  }
+
+  loadSharedTrip();
+</script>
