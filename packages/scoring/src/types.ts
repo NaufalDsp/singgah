@@ -38,7 +38,21 @@ export interface ScoredMonth {
   override_reason?: string;
 }
 
+export interface DailyOutlineItem {
+  title: string;
+  kind: string;
+  time_of_day: string;
+  note: string;
+}
+
+export interface DailyOutline {
+  day_index: number;
+  title: string;
+  items: DailyOutlineItem[];
+}
+
 export interface PlannerSuggestion {
+  slug: string;
   destination: Destination;
   climate: DestinationClimate;
   selected_month: number;
@@ -46,4 +60,10 @@ export interface PlannerSuggestion {
   level: SeasonLevel;
   reason: string;
   recommended_days: number;
+  outline_days: DailyOutline[];
+  closest_best_month?: {
+    month: number;
+    score: number;
+    level: SeasonLevel;
+  };
 }
