@@ -1,0 +1,24 @@
+{
+  "name": "@singgah/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@singgah/schema": "workspace:*",
+    "@singgah/scoring": "workspace:*",
+    "drizzle-orm": "^0.35.3",
+    "hono": "^4.6.4",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241011.0",
+    "drizzle-kit": "^0.26.2",
+    "typescript": "^5.6.3",
+    "wrangler": "^3.80.4"
+  }
+}

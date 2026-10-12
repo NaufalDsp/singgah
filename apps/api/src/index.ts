@@ -1,0 +1,62 @@
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import { healthRoute } from './routes/health.js';
+import { apiError, ERROR_D1_LIMIT } from './lib/errors.js';
+
+export interface Env {
+  DB: D1Database;
+  TIPS_ENABLED?: string;
+  PUBLIC_SITE_URL?: string;
+  GOOGLE_CLIENT_ID?: string;
+  GOOGLE_CLIENT_SECRET?: string;
+  SESSION_SECRET?: string;
+  ADMIN_SUBS?: string;
+}
+
+const app = new Hono<{ Bindings: Env }>();
+
+// Global CORS & middleware
+app.use('*', async (c, next) => {
+  const origin = c.env?.PUBLIC_SITE_URL || '*';
+  const corsMiddleware = cors({
+    origin: origin === '*' ? '*' : [origin],
+    allowMethods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+    allowHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  });
+  return corsMiddleware(c, next);
+});
+
+// Mount routes under /api/v1
+const v1 = new Hono<{ Bindings: Env }>();
+v1.route('/health', healthRoute);
+
+// Placeholder routes for phase 2 & 3
+v1.get('/weather/:slug', (c) => {
+  return c.json({
+    status: 'stub',
+    message: 'Weather route ready for Phase 2 integration',
+    slug: c.req.param('slug'),
+  });
+});
+
+app.route('/api/v1', v1);
+
+// Global Error Handler
+app.onError((err, c) => {
+  console.error('Unhandled API error:', err);
+
+  // Check if D1 daily quota limit reached error
+  if (err.message && err.message.toLowerCase().includes('daily limit')) {
+    return apiError(c, 503, ERROR_D1_LIMIT.code, ERROR_D1_LIMIT.message, ERROR_D1_LIMIT.details);
+  }
+
+  return apiError(c, 500, 'INTERNAL_ERROR', 'Terjadi kesalahan sistem.');
+});
+
+// 404 handler for API routes
+app.notFound((c) => {
+  return apiError(c, 404, 'NOT_FOUND', 'Endpoint API tidak ditemukan.');
+});
+
+export default app;

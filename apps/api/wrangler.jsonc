@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "singgah",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-12",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "../web/dist",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "singgah",
+      "database_id": "singgah-db-binding"
+    }
+  ],
+  "vars": {
+    "TIPS_ENABLED": "true",
+    "PUBLIC_SITE_URL": "http://localhost:4321"
+  }
+}
