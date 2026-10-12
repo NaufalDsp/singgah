@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Akun Pengguna — Singgah">
+  <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
+    <div id="account-view" class="max-w-2xl mx-auto space-y-10">
+      <!-- Loading Skeleton -->
+      <div class="p-8 bg-surface rounded-panel border border-line animate-pulse">
+        <div class="h-16 w-16 bg-surface-2 rounded-full mb-4"></div>
+        <div class="h-6 w-48 bg-surface-2 rounded mb-2"></div>
+        <div class="h-4 w-32 bg-surface-2 rounded"></div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  async function loadAccount() {
+    const root = document.getElementById('account-view');
+    if (!root) return;
+
+    try {
+      const res = await fetch('/api/v1/auth/me');
+      if (!res.ok) {
+        // Belum login
+        root.innerHTML = `
+          <div class="p-10 bg-surface rounded-panel border border-line text-center">
+            <h1 class="font-serif text-3xl text-text mb-2">Kamu belum masuk</h1>
+            <p class="font-sans text-sm text-text-2 mb-6">
+              Masuk akun untuk menyinkronkan rencana perjalanan dan menyimpan destinasi favorit.
+            </p>
+            <a href="/masuk" class="btn-utama text-xs">Masuk sekarang</a>
+          </div>
+        `;
+        return;
+      }
+
+      const data = await res.json();
+      const user = data.user;
+
+      root.innerHTML = `
+        <div class="p-6 md:p-8 bg-surface rounded-panel border border-line shadow-sm">
+          <div class="flex items-center gap-5 pb-6 border-b border-line mb-6">
+            <img
+              src="${user.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'}"
+              alt="${user.name}"
+              class="w-16 h-16 rounded-full object-cover border border-line"
+            />
+            <div>
+              <span class="text-xs uppercase tracking-wider text-text-3 font-semibold block mb-0.5">
+                Akun Terverifikasi (${user.role})
+              </span>
+              <h1 class="font-serif text-3xl text-text">${user.name}</h1>
+              <span class="text-xs text-text-3 font-mono">ID: ${user.id}</span>
+            </div>
+          </div>
+
+          <div class="space-y-4 font-sans text-sm">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 bg-surface-2 rounded-ui">
+              <div>
+                <strong class="text-text block">Rencana Tersimpan</strong>
+                <span class="text-xs text-text-3">Kelola atau bagikan rencana liburanmu</span>
+              </div>
+              <a href="/rencana" class="btn-utama text-xs h-9 px-4">
+                Buka rencana saya
+              </a>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 bg-surface-2 rounded-ui">
+              <div>
+                <strong class="text-text block">Portabilitas Data (UU PDP)</strong>
+                <span class="text-xs text-text-3">Unduh salinan seluruh data profil, rencana, dan tips</span>
+              </div>
+              <a href="/api/v1/auth/me/export" target="_blank" class="btn-sekunder text-xs h-9 px-4">
+                Ekspor JSON
+              </a>
+            </div>
+
+            <div class="flex items-center justify-between pt-6 border-t border-line">
+              <button id="btn-logout" class="text-xs text-text-2 hover:text-text underline">
+                Keluar dari akun
+              </button>
+
+              <button id="btn-delete-acc" class="text-xs text-error hover:opacity-80 underline">
+                Hapus akun permanen
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Logout listener
+      document.getElementById('btn-logout')?.addEventListener('click', async () => {
+        await fetch('/api/v1/auth/logout', { method: 'POST' });
+        window.location.href = '/';
+      });
+
+      // Delete account listener
+      document.getElementById('btn-delete-acc')?.addEventListener('click', async () => {
+        if (
+          confirm(
+            'Apakah kamu yakin ingin menghapus akun dan seluruh data tersimpan secara permanen?',
+          )
+        ) {
+          await fetch('/api/v1/auth/me', { method: 'DELETE' });
+          alert('Akun telah dihapus.');
+          window.location.href = '/';
+        }
+      });
+    } catch {
+      root.innerHTML = `
+        <div class="p-8 bg-surface rounded-panel border border-line text-center">
+          <p class="text-sm text-text-2 mb-4">Gagal memuat profil akun.</p>
+          <a href="/" class="btn-utama text-xs">Kembali</a>
+        </div>
+      `;
+    }
+  }
+
+  loadAccount();
+</script>
