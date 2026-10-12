@@ -1,95 +1,137 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SeasonStrip from '../components/SeasonStrip.astro';
+import { getCollection } from 'astro:content';
+import { calculateYearSeasons } from '@singgah/scoring';
+import fs from 'node:fs';
+import path from 'node:path';
 
-const months = [
-  'Januari',
-  'Februari',
-  'Maret',
-  'April',
-  'Mei',
-  'Juni',
-  'Juli',
-  'Agustus',
-  'September',
-  'Oktober',
-  'November',
-  'Desember',
+// Load collections
+const destinations = await getCollection('destinations');
+const articles = (await getCollection('articles')).slice(0, 3);
+const moods = await getCollection('moods');
+
+// Load climate data for each destination
+const climateDataMap: Record<string, any> = {};
+for (const dest of destinations) {
+  const filePath = path.resolve(`../../data/climate/${dest.slug}.json`);
+  if (fs.existsSync(filePath)) {
+    climateDataMap[dest.slug] = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  }
+}
+
+// Current month (1-based)
+const currentMonth = new Date().getMonth() + 1;
+const monthNamesFull = [
+  'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+  'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember',
 ];
-const currentMonthIndex = new Date().getMonth();
-const currentMonthName = months[currentMonthIndex];
+const currentMonthName = monthNamesFull[currentMonth - 1];
+
+// Calculate scores for all destinations for the current month
+const scoredDestinations = destinations.map((dest) => {
+  const climate = climateDataMap[dest.slug];
+  const yearSeasons = climate
+    ? calculateYearSeasons(climate.months, dest.data.profile, dest.data.season_overrides)
+    : [];
+  const currentSeason = yearSeasons.find((s) => s.month === currentMonth);
+  return {
+    dest,
+    climate,
+    yearSeasons,
+    currentSeason,
+    score: currentSeason?.score ?? 0,
+    level: currentSeason?.level ?? 'cukup',
+  };
+}).sort((a, b) => b.score - a.score);
+
+const topDestination = scoredDestinations[0];
+const otherGoodDestinations = scoredDestinations.slice(1, 5);
+
+// Deterministic season reason generator
+function generateReason(season: any, typical: { min: number; max: number }) {
+  if (!season) return `Ideal untuk kunjungan ${typical.min}–${typical.max} hari.`;
+  if (season.is_override && season.override_reason) {
+    return `${season.override_reason}. Ideal ${typical.min}–${typical.max} hari.`;
+  }
+  let desc = 'Cukup cerah';
+  if (season.wet_days <= 5 && season.precip_mm <= 70) desc = 'Kering dan minim hujan';
+  else if (season.wet_days <= 9) desc = 'Cuaca bersahabat';
+  else if (season.wet_days >= 18) desc = 'Curah hujan relatif tinggi';
+  return `${desc}, ${Math.round(season.wet_days)} hari hujan (${Math.round(season.precip_mm)} mm). Cocok untuk ${typical.min} sampai ${typical.max} hari.`;
+}
 ---
 
 <BaseLayout title="Singgah — Panduan Destinasi Nusantara" transparentHeader={true}>
-  <!-- Hero Section (Berdasarkan spesifikasi DESIGN.md Bagian 7) -->
-  <section class="hero tema-malam" aria-labelledby="hero-judul">
+  <!-- HERO SECTION (design.md Bagian 7) -->
+  <section class="relative min-h-[min(100svh,980px)] flex flex-col justify-between pt-24 pb-12 bg-bg overflow-hidden tema-malam" aria-labelledby="hero-judul">
     <!-- Foto Asli Penuh Layar dengan Scrim Terhitung -->
-    <div class="hero__media">
+    <div class="absolute inset-0 z-0">
       <img
-        src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=1920&q=80"
-        alt="Tebing karst dan pantai berpasir putih di Nusa Penida saat laut surut"
-        class="hero__img"
-        width="1920"
-        height="1080"
+        src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=2400&q=80"
+        alt="Gugusan pulau karang dan perairan biru jernih di kawasan perairan Labuan Bajo saat cuaca cerah"
+        class="w-full h-full object-cover object-center"
         fetchpriority="high"
       />
-      <div class="hero__scrim"></div>
+      <!-- Scrim Terhitung: Gradien atas dan bawah -->
+      <div class="absolute inset-0 bg-gradient-to-t from-[rgb(9,18,24)] via-[rgb(9,18,24)]/50 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-[rgb(9,18,24)]/60 via-transparent to-transparent"></div>
     </div>
 
-    <div class="hero__content">
-      <div class="hero__headline-wrap">
-        <h1 id="hero-judul" class="hero__judul">
-          <span class="baris baris--1">Tempat yang pantas</span>
-          <span class="baris baris--2">disinggahi</span>
+    <!-- Konten Teks Hero -->
+    <div class="relative z-10 max-w-container mx-auto px-4 md:px-8 w-full flex-1 flex flex-col justify-between">
+      <div class="max-w-4xl mt-12 md:mt-20">
+        <h1 id="hero-judul" class="font-serif text-[clamp(3.25rem,9.5vw,9.5rem)] leading-[0.92] tracking-tight text-white mb-6">
+          <span class="block">Tempat yang pantas</span>
+          <span class="block ml-[8vw] md:ml-[14%]">disinggahi</span>
         </h1>
-        <p class="hero__lead">
-          Panduan destinasi Nusantara dengan kalender musim dari data cuaca 30 tahun.
+        <p class="font-sans text-[clamp(1.125rem,1.5vw,1.375rem)] text-[#E8EEEF] max-w-[44ch] leading-relaxed mb-6">
+          Panduan {destinations.length} destinasi Nusantara dengan kalender musim dari data cuaca 30 tahun.
         </p>
-        <a class="hero__secondary-link" href="/destinasi">Jelajahi semua destinasi</a>
+        <a class="inline-block text-white text-sm font-medium underline underline-offset-4 hover:opacity-80 transition-opacity" href="/destinasi">
+          Jelajahi semua destinasi
+        </a>
       </div>
 
-      <figure class="hero__keterangan" aria-label="Kredit Foto">
+      <!-- Keterangan Foto Hero -->
+      <figure class="self-end text-right text-[#CBD5D5] text-xs leading-tight mb-8">
         <figcaption>
-          <em>Nusa Penida, Bali</em><br />
-          Foto: <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">I Putu</a> di
-          Unsplash
+          <em class="font-serif text-sm italic text-white block">Labuan Bajo, Flores</em>
+          Foto: <a href="https://unsplash.com/@rizknash" target="_blank" rel="noopener noreferrer" class="underline">Rizknash</a> di Unsplash
         </figcaption>
       </figure>
     </div>
 
-    <!-- Panel Rencana Cepat Solid di Dasar Hero -->
-    <div class="quickplan-container">
-      <form class="quickplan-panel" method="get" action="/rencana/saran">
-        <div class="quickplan-field">
-          <label for="qp-tujuan">Tujuan</label>
-          <select id="qp-tujuan" name="tujuan">
+    <!-- Panel Rencana Cepat Solid Kertas di Dasar Hero -->
+    <div class="relative z-20 max-w-[1160px] w-[calc(100%-2rem)] md:w-full mx-auto -mb-16">
+      <form class="bg-surface text-text rounded-panel shadow-panel flex flex-col lg:flex-row border border-line" method="get" action="/destinasi">
+        <div class="flex-1 flex flex-col justify-center px-6 py-4">
+          <label for="qp-tujuan" class="text-xs text-text-3 font-medium mb-1">Tujuan</label>
+          <select id="qp-tujuan" name="tujuan" class="bg-transparent font-sans text-sm font-medium text-text outline-none cursor-pointer">
             <option value="">Belum tahu, sarankan</option>
-            <option value="labuan-bajo">Labuan Bajo</option>
-            <option value="bromo">Bromo</option>
-            <option value="banda-neira">Banda Neira</option>
-            <option value="yogyakarta">Yogyakarta</option>
+            {destinations.map(d => (
+              <option value={d.slug}>{d.data.name}</option>
+            ))}
           </select>
         </div>
 
-        <div class="quickplan-divider" aria-hidden="true"></div>
+        <div class="hidden lg:block w-px bg-line my-3"></div>
 
-        <div class="quickplan-field">
-          <label for="qp-bulan">Bulan</label>
-          <select id="qp-bulan" name="bulan">
-            {
-              months.map((m, idx) => (
-                <option value={idx + 1} selected={idx === currentMonthIndex}>
-                  {m}
-                </option>
-              ))
-            }
+        <div class="flex-1 flex flex-col justify-center px-6 py-4 border-t lg:border-t-0 border-line">
+          <label for="qp-bulan" class="text-xs text-text-3 font-medium mb-1">Bulan</label>
+          <select id="qp-bulan" name="bulan" class="bg-transparent font-sans text-sm font-medium text-text outline-none cursor-pointer">
+            {monthNamesFull.map((m, idx) => (
+              <option value={idx + 1} selected={idx + 1 === currentMonth}>{m}</option>
+            ))}
           </select>
         </div>
 
-        <div class="quickplan-divider" aria-hidden="true"></div>
+        <div class="hidden lg:block w-px bg-line my-3"></div>
 
-        <div class="quickplan-field">
-          <label for="qp-lama">Lama Perjalanan</label>
-          <select id="qp-lama" name="lama">
+        <div class="flex-1 flex flex-col justify-center px-6 py-4 border-t lg:border-t-0 border-line">
+          <label for="qp-lama" class="text-xs text-text-3 font-medium mb-1">Lama Perjalanan</label>
+          <select id="qp-lama" name="lama" class="bg-transparent font-sans text-sm font-medium text-text outline-none cursor-pointer">
+            <option value="2">2 hari</option>
             <option value="3">3 hari</option>
             <option value="4" selected>4 hari</option>
             <option value="5">5 hari</option>
@@ -97,316 +139,273 @@ const currentMonthName = months[currentMonthIndex];
           </select>
         </div>
 
-        <div class="quickplan-divider" aria-hidden="true"></div>
+        <div class="hidden lg:block w-px bg-line my-3"></div>
 
-        <div class="quickplan-field">
-          <label for="qp-suasana">Suasana</label>
-          <select id="qp-suasana" name="suasana">
+        <div class="flex-1 flex flex-col justify-center px-6 py-4 border-t lg:border-t-0 border-line">
+          <label for="qp-suasana" class="text-xs text-text-3 font-medium mb-1">Suasana</label>
+          <select id="qp-suasana" name="suasana" class="bg-transparent font-sans text-sm font-medium text-text outline-none cursor-pointer">
             <option value="apa-saja" selected>Apa saja</option>
-            <option value="pantai">Pantai dan laut</option>
-            <option value="gunung">Gunung dan kabut</option>
-            <option value="budaya">Budaya dan desa</option>
+            {moods.map(m => (
+              <option value={m.data.id}>{m.data.name}</option>
+            ))}
           </select>
         </div>
 
-        <button type="submit" class="quickplan-submit"> Lihat saran </button>
+        <button type="submit" class="bg-cta text-cta-text font-sans text-sm font-medium px-8 py-4 lg:py-0 hover:bg-cta-hover transition-colors flex items-center justify-center">
+          Lihat saran
+        </button>
       </form>
     </div>
   </section>
 
-  <!-- Bagian Pengantar Fondasi (Fase 0) -->
-  <section class="section-intro">
-    <div class="intro-container">
-      <div class="intro-badge">Fase 0 Selesai — Fondasi Sistem</div>
-      <h2 class="intro-heading">Dibuat dari angka nyata, tanpa klise.</h2>
-      <p class="intro-text">
-        Singgah sedang menyiapkan pipeline data iklim 30 tahun (Open-Meteo 1994–2023) untuk 12
-        destinasi pilihan. Tanpa iklan, tanpa tautan afiliasi, dan tanpa klaim kosong.
-      </p>
+  <!-- BAGIAN 1: SEDANG BAGUS BULAN INI (design.md Bagian 8.1) -->
+  <section class="max-w-container mx-auto px-4 md:px-8 pt-32 pb-24 w-full">
+    <div class="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+      <!-- Kolom Kiri: Destinasi Teratas Bulan Ini (5/12) -->
+      {topDestination && (
+        <div class="w-full lg:w-5/12">
+          <div class="mb-4">
+            <span class="text-xs font-semibold uppercase tracking-wider text-text-3 block mb-1">Pilihan Utama</span>
+            <span class="font-serif text-3xl md:text-4xl text-text">Sedang bagus bulan {currentMonthName}</span>
+          </div>
 
-      <div class="intro-status-box">
-        <div class="status-item">
-          <span class="status-label">API Health Check</span>
-          <a href="/api/v1/health" class="status-link">Periksa /api/v1/health</a>
+          <a href={`/destinasi/${topDestination.dest.slug}`} class="group block mt-6">
+            <div class="aspect-[4/5] rounded-media overflow-hidden bg-surface-2 border border-line mb-4 relative">
+              <img
+                src={topDestination.dest.data.hero.photo}
+                alt={topDestination.dest.data.name}
+                class="w-full h-full object-cover transition-transform duration-base group-hover:scale-[1.02]"
+                loading="lazy"
+              />
+            </div>
+            <h3 class="font-serif text-3xl text-text group-hover:text-link transition-colors">
+              {topDestination.dest.data.name}
+            </h3>
+            <p class="font-sans text-xs text-text-3 mt-1 font-medium">
+              {topDestination.dest.data.region.island}, {topDestination.dest.data.region.province}
+            </p>
+            <p class="font-sans text-sm text-text-2 mt-2 leading-relaxed">
+              {generateReason(topDestination.currentSeason, topDestination.dest.data.typical_days)}
+            </p>
+          </a>
         </div>
-        <div class="status-item">
-          <span class="status-label">Arsitektur</span>
-          <span>Astro (Static) + Cloudflare Workers (Hono)</span>
-        </div>
-        <div class="status-item">
-          <span class="status-label">Bulan Berjalan</span>
-          <span>{currentMonthName} (Deteksi Dinamis)</span>
-        </div>
+      )}
+
+      <!-- Kolom Kanan: Baris Rekomendasi Destinasi Lainnya (7/12) -->
+      <div class="w-full lg:w-6/12 flex flex-col divide-y divide-line lg:mt-16">
+        {otherGoodDestinations.map(({ dest, yearSeasons, currentSeason }) => (
+          <div class="py-6 first:pt-0 last:pb-0 flex flex-col sm:flex-row gap-5 sm:items-center justify-between">
+            <div class="flex gap-4 items-center">
+              <img
+                src={dest.data.hero.photo}
+                alt={dest.data.name}
+                class="w-20 h-24 sm:w-24 sm:h-28 object-cover rounded-media border border-line flex-shrink-0"
+                loading="lazy"
+              />
+              <div>
+                <a href={`/destinasi/${dest.slug}`} class="font-serif text-2xl text-text hover:text-link transition-colors block">
+                  {dest.data.name}
+                </a>
+                <p class="font-sans text-xs text-text-3 mt-0.5 font-medium">
+                  {dest.data.region.province}
+                </p>
+                <p class="font-sans text-xs text-text-2 mt-2 max-w-md line-clamp-2">
+                  {generateReason(currentSeason, dest.data.typical_days)}
+                </p>
+              </div>
+            </div>
+
+            <!-- SeasonStrip Mini -->
+            <div class="w-full sm:w-32 flex-shrink-0">
+              <SeasonStrip
+                months={yearSeasons}
+                mode="ringkas"
+                destinationName={dest.data.name}
+              />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   </section>
+
+  <!-- BAGIAN 2: MENURUT SUASANA (design.md Bagian 8.2) -->
+  <section class="max-w-container mx-auto px-4 md:px-8 py-20 w-full border-t border-line">
+    <div class="mb-10">
+      <h2 class="font-serif text-[clamp(2rem,3.6vw,3.25rem)] text-text">
+        Jelajah menurut suasana perjalanan
+      </h2>
+    </div>
+
+    <div class="flex flex-col divide-y divide-line">
+      {moods.map((mood) => {
+        const count = destinations.filter(d => d.data.moods.includes(mood.data.id)).length;
+        return (
+          <a
+            href={`/suasana/${mood.data.id}`}
+            class="group py-6 flex items-center justify-between hover:pl-2 transition-all duration-fast"
+          >
+            <span class="font-serif text-[clamp(1.75rem,4vw,3.5rem)] text-text group-hover:text-link transition-colors">
+              {mood.data.name}
+            </span>
+            <div class="flex items-center gap-6">
+              <span class="font-sans text-xs sm:text-sm text-text-3">
+                {count} destinasi
+              </span>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+
+  <!-- BAGIAN 3: KAPAN WAKTU TERBAIK, MENURUT DATA (design.md Bagian 8.3 — Momen Khas) -->
+  <section class="bg-bg text-text py-24 tema-malam border-y border-line" aria-labelledby="section-data-title">
+    <div class="max-w-container mx-auto px-4 md:px-8">
+      <div class="max-w-2xl mb-12">
+        <h2 id="section-data-title" class="font-serif text-[clamp(2rem,3.6vw,3.25rem)] text-white mb-2">
+          Kapan waktu terbaik, menurut data
+        </h2>
+        <p class="font-sans text-sm text-text-2">
+          Dihitung dari data historis 30 tahun (1994–2023) Open-Meteo per bulan. Tanpa opini, tanpa bias sponsor.
+        </p>
+      </div>
+
+      <!-- Komponen Kalender Musim Ukuran Penuh -->
+      {topDestination && topDestination.yearSeasons.length > 0 && (
+        <div class="bg-surface p-6 md:p-10 rounded-panel border border-line">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-line">
+            <div>
+              <span class="text-xs uppercase tracking-wider text-text-3 block mb-1">Menampilkan Data</span>
+              <h3 class="font-serif text-2xl text-text">{topDestination.dest.data.name}</h3>
+            </div>
+            <div class="text-xs text-text-3">
+              Koordinat: {topDestination.dest.data.coords.lat}, {topDestination.dest.data.coords.lon}
+            </div>
+          </div>
+
+          <SeasonStrip
+            months={topDestination.yearSeasons}
+            mode="penuh"
+            destinationName={topDestination.dest.data.name}
+          />
+
+          <div class="mt-8 pt-6 border-t border-line flex flex-wrap items-center justify-between gap-4 text-xs text-text-3">
+            <span>Bulan dengan garis bawah adalah bulan berjalan ({currentMonthName}).</span>
+            <a href="/catatan-data" class="text-link underline hover:text-link-hover">
+              Pelajari metodologi dan rumus perhitungan kami
+            </a>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- BAGIAN 4: CATATAN LAPANGAN (design.md Bagian 8.4) -->
+  <section class="max-w-container mx-auto px-4 md:px-8 py-24 w-full">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
+      <div>
+        <h2 class="font-serif text-[clamp(2rem,3.6vw,3.25rem)] text-text">
+          Catatan lapangan
+        </h2>
+        <p class="font-sans text-sm text-text-2 mt-1">
+          Tulisan narasi mengenai musim, ritme perjalanan, dan pengamatan faktual.
+        </p>
+      </div>
+      <a href="/catatan" class="text-sm font-medium text-link underline mt-4 sm:mt-0">
+        Semua catatan
+      </a>
+    </div>
+
+    <div class="flex flex-col divide-y divide-line">
+      {articles.map((art) => (
+        <article class="py-8 flex flex-col md:flex-row justify-between gap-6 items-start">
+          <div class="max-w-2xl">
+            <h3 class="font-serif text-2xl sm:text-3xl text-text mb-2">
+              <a href={`/catatan/${art.slug}`} class="hover:text-link transition-colors">
+                {art.data.title}
+              </a>
+            </h3>
+            <p class="font-sans text-sm text-text-2 leading-relaxed mb-4">
+              {art.data.summary}
+            </p>
+            <div class="font-sans text-xs text-text-3 font-medium">
+              <span>{art.data.published_at}</span> • <span>{art.data.reading_time_min} menit baca</span>
+            </div>
+          </div>
+
+          <a href={`/catatan/${art.slug}`} class="w-full md:w-48 aspect-[3/2] flex-shrink-0 rounded-media overflow-hidden border border-line bg-surface-2">
+            <img
+              src={art.data.photo}
+              alt={art.data.title}
+              class="w-full h-full object-cover hover:scale-105 transition-transform duration-base"
+              loading="lazy"
+            />
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- BAGIAN 5: RENCANA CONTOH NYATA (design.md Bagian 8.5) -->
+  <section class="max-w-container mx-auto px-4 md:px-8 py-20 w-full border-t border-line">
+    <div class="max-w-2xl mb-12">
+      <h2 class="font-serif text-[clamp(2rem,3.6vw,3.25rem)] text-text mb-2">
+        Contoh susunan rencana
+      </h2>
+      <p class="font-sans text-sm text-text-2">
+        Dihasilkan dari daftar highlight nyata yang mempertimbangkan jarak dan waktu terbaik kunjungan.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="p-6 bg-surface rounded-panel border border-line">
+        <span class="font-serif text-xl text-text block mb-4 border-b border-line pb-2">Hari 1 • Tiba & Kuliner</span>
+        <ul class="space-y-4 text-sm font-sans text-text-2">
+          <li>
+            <strong class="text-text block">Pagi</strong>
+            Mendarat di Labuan Bajo & check-in pelabuhan
+          </li>
+          <li>
+            <strong class="text-text block">Malam</strong>
+            Kuliner Ikan Bakar di Kampung Ujung
+          </li>
+        </ul>
+      </div>
+
+      <div class="p-6 bg-surface rounded-panel border border-line">
+        <span class="font-serif text-xl text-text block mb-4 border-b border-line pb-2">Hari 2 • Puncak Savana</span>
+        <ul class="space-y-4 text-sm font-sans text-text-2">
+          <li>
+            <strong class="text-text block">Pagi</strong>
+            Trekking Puncak Pulau Padar sebelum terik matahari
+          </li>
+          <li>
+            <strong class="text-text block">Siang</strong>
+            Pesisir Pink Beach dan perairan dangkal
+          </li>
+        </ul>
+      </div>
+
+      <div class="p-6 bg-surface rounded-panel border border-line">
+        <span class="font-serif text-xl text-text block mb-4 border-b border-line pb-2">Hari 3 • Bahari Selat</span>
+        <ul class="space-y-4 text-sm font-sans text-text-2">
+          <li>
+            <strong class="text-text block">Siang</strong>
+            Snorkeling di Karang Makassar (Manta Point)
+          </li>
+          <li>
+            <strong class="text-text block">Sore</strong>
+            Pelayaran kembali menuju marina Labuan Bajo
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 text-center">
+      <a href="/destinasi" class="btn-utama">
+        Susun rencana perjalananmu
+      </a>
+    </div>
+  </section>
 </BaseLayout>
-
-<style>
-  /* Hero Styles */
-  .hero {
-    position: relative;
-    min-height: min(100svh, 980px);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding-top: 100px;
-    background-color: #091218;
-    overflow: hidden;
-  }
-
-  .hero__media {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-  }
-
-  .hero__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
-
-  .hero__scrim {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(
-        to bottom,
-        rgba(9, 18, 24, 0.55) 0%,
-        rgba(9, 18, 24, 0.2) 25%,
-        transparent 50%
-      ),
-      linear-gradient(to top, rgba(9, 18, 24, 0.82) 0%, rgba(9, 18, 24, 0.45) 45%, transparent 75%);
-  }
-
-  .hero__content {
-    position: relative;
-    z-index: 2;
-    max-width: 1360px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 40px var(--margin-x) 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex: 1;
-  }
-
-  .hero__headline-wrap {
-    max-width: 900px;
-  }
-
-  .hero__judul {
-    font-size: var(--t-hero);
-    line-height: 0.92;
-    letter-spacing: -0.02em;
-    color: #ffffff;
-    margin-bottom: 24px;
-  }
-
-  .hero__judul .baris {
-    display: block;
-  }
-
-  .hero__judul .baris--2 {
-    margin-left: 14%;
-  }
-
-  @media (max-width: 767px) {
-    .hero__judul .baris--2 {
-      margin-left: 8vw;
-    }
-  }
-
-  .hero__lead {
-    font-size: var(--t-lead);
-    color: #e8eeef;
-    max-width: 44ch;
-    line-height: 1.5;
-    margin-bottom: 20px;
-  }
-
-  .hero__secondary-link {
-    display: inline-block;
-    color: #ffffff;
-    font-size: var(--t-ui);
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    font-weight: 500;
-  }
-
-  .hero__keterangan {
-    align-self: flex-end;
-    margin: 0;
-    text-align: right;
-    color: #cbd5d5;
-    font-size: var(--t-small);
-    line-height: 1.4;
-  }
-
-  .hero__keterangan em {
-    font-family: var(--font-serif);
-    font-size: 1rem;
-    font-style: italic;
-    color: #ffffff;
-  }
-
-  .hero__keterangan a {
-    color: #cbd5d5;
-  }
-
-  /* Quick Plan Panel Solid */
-  .quickplan-container {
-    position: relative;
-    z-index: 10;
-    max-width: 1160px;
-    width: calc(100% - 2 * var(--margin-x));
-    margin: 0 auto -40px;
-  }
-
-  .quickplan-panel {
-    background: var(--surface);
-    color: var(--text);
-    border-radius: var(--r-panel);
-    box-shadow: var(--shadow-panel);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  @media (min-width: 1024px) {
-    .quickplan-panel {
-      flex-direction: row;
-      align-items: stretch;
-      height: 80px;
-    }
-  }
-
-  .quickplan-field {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 16px 20px;
-  }
-
-  .quickplan-field label {
-    font-size: var(--t-small);
-    color: var(--text-3);
-    margin-bottom: 4px;
-    font-weight: 500;
-  }
-
-  .quickplan-field select {
-    border: none;
-    background: transparent;
-    font-family: var(--font-sans);
-    font-size: var(--t-ui);
-    font-weight: 500;
-    color: var(--text);
-    cursor: pointer;
-    outline: none;
-  }
-
-  .quickplan-divider {
-    width: 1px;
-    background-color: var(--line);
-    margin: 12px 0;
-  }
-
-  @media (max-width: 1023px) {
-    .quickplan-divider {
-      width: 100%;
-      height: 1px;
-      margin: 0;
-    }
-  }
-
-  .quickplan-submit {
-    background: var(--cta-bg);
-    color: var(--cta-text);
-    font-family: var(--font-sans);
-    font-size: var(--t-ui);
-    font-weight: 500;
-    border: none;
-    padding: 0 32px;
-    min-height: 56px;
-    cursor: pointer;
-    transition: background-color var(--dur-fast) var(--ease);
-  }
-
-  .quickplan-submit:hover {
-    background: var(--cta-hover);
-  }
-
-  /* Section Intro */
-  .section-intro {
-    padding: calc(var(--section-y) + 40px) var(--margin-x) var(--section-y);
-    max-width: 1360px;
-    margin: 0 auto;
-    width: 100%;
-  }
-
-  .intro-container {
-    max-width: 760px;
-  }
-
-  .intro-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    background: var(--surface-2);
-    border: 1px solid var(--line);
-    border-radius: var(--r-ui);
-    font-size: var(--t-small);
-    color: var(--text-2);
-    margin-bottom: 20px;
-  }
-
-  .intro-heading {
-    font-size: var(--t-h2);
-    line-height: 1.1;
-    margin-bottom: 16px;
-  }
-
-  .intro-text {
-    font-size: var(--t-lead);
-    color: var(--text-2);
-    line-height: 1.6;
-    margin-bottom: 32px;
-  }
-
-  .intro-status-box {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 24px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--r-panel);
-  }
-
-  @media (min-width: 640px) {
-    .intro-status-box {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  .status-item {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    font-size: var(--t-small);
-  }
-
-  .status-label {
-    color: var(--text-3);
-    font-weight: 500;
-  }
-
-  .status-link {
-    color: var(--link);
-    font-weight: 500;
-  }
-</style>
