@@ -1,0 +1,102 @@
+---
+interface Props {
+  transparent?: boolean;
+}
+
+const { transparent = false } = Astro.props;
+---
+
+<header class={`site-header ${transparent ? 'site-header--trans' : ''}`}>
+  <div class="header-container">
+    <a href="/" class="header-brand">Singgah</a>
+
+    <nav class="header-nav" aria-label="Navigasi Utama">
+      <a href="/destinasi">Destinasi</a>
+      <a href="/suasana">Suasana</a>
+      <a href="/catatan">Catatan</a>
+      <a href="/rencana">Rencana saya</a>
+    </nav>
+
+    <div class="header-actions">
+      <a href="/masuk" class="login-link">Masuk</a>
+      <a href="/rencana/baru" class="btn-utama">Susun rencana</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--bg);
+    border-bottom: 1px solid var(--line);
+    transition: background-color var(--dur-base) var(--ease);
+  }
+
+  .site-header--trans {
+    position: absolute;
+    width: 100%;
+    background-color: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+  }
+
+  .header-container {
+    max-width: 1360px;
+    margin: 0 auto;
+    padding: 0 var(--margin-x);
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-brand {
+    font-family: var(--font-serif);
+    font-size: 1.875rem;
+    color: inherit;
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+
+  .header-nav {
+    display: none;
+    gap: 32px;
+  }
+
+  @media (min-width: 768px) {
+    .header-nav {
+      display: flex;
+    }
+  }
+
+  .header-nav a {
+    color: inherit;
+    text-decoration: none;
+    font-size: var(--t-ui);
+    font-weight: 500;
+    transition: opacity var(--dur-fast) var(--ease);
+  }
+
+  .header-nav a:hover {
+    opacity: 0.8;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .login-link {
+    color: inherit;
+    text-decoration: none;
+    font-size: var(--t-ui);
+    font-weight: 500;
+  }
+
+  .site-header--trans .login-link {
+    color: #ffffff;
+  }
+</style>

@@ -1,0 +1,22 @@
+{
+  "name": "@singgah/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@singgah/schema": "workspace:*",
+    "@singgah/scoring": "workspace:*",
+    "astro": "^4.16.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

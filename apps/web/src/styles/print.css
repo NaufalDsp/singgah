@@ -1,0 +1,29 @@
+@media print {
+  /* Tampilan Ramah Printer A4 */
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+  }
+
+  header, footer, nav, .btn-utama, .btn-sekunder, .no-print {
+    display: none !important;
+  }
+
+  .print-page {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 24pt;
+  }
+
+  a {
+    color: #000000 !important;
+    text-decoration: underline !important;
+  }
+
+  a[href^="http"]:after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+  }
+}

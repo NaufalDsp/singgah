@@ -1,0 +1,129 @@
+@import './token.css';
+
+/* Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+  color: var(--text);
+  font-size: var(--t-body);
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  margin: 0;
+  color: inherit;
+}
+
+p {
+  margin: 0 0 1rem 0;
+}
+
+a {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+a:hover {
+  color: var(--link-hover);
+}
+
+/* Aksesibilitas: Cincin Fokus Tegas */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: var(--r-ui);
+}
+
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 8px 16px;
+  z-index: 1000;
+  border-radius: var(--r-ui);
+  box-shadow: var(--shadow-float);
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: 16px;
+}
+
+/* Tombol Utama (Hanya 1 per layar) */
+.btn-utama {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cta-bg);
+  color: var(--cta-text);
+  min-height: 48px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: var(--r-ui);
+  font-family: var(--font-sans);
+  font-size: var(--t-ui);
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--dur-fast) var(--ease);
+}
+
+.btn-utama:hover {
+  background: var(--cta-hover);
+  color: var(--cta-text);
+}
+
+/* Tombol Sekunder */
+.btn-sekunder {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  color: var(--text);
+  min-height: 48px;
+  padding: 0 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-ui);
+  font-family: var(--font-sans);
+  font-size: var(--t-ui);
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.btn-sekunder:hover {
+  border-color: var(--text-2);
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
