@@ -1,0 +1,58 @@
+---
+import type { Highlight } from '@singgah/schema';
+
+interface Props {
+  highlight: Highlight;
+  destinationSlug: string;
+}
+
+const { highlight, destinationSlug } = Astro.props;
+
+const kindLabels: Record<string, string> = {
+  alam: 'Alam',
+  budaya: 'Budaya',
+  kuliner: 'Kuliner',
+  aktivitas: 'Aktivitas',
+  transit: 'Transit',
+};
+
+const durationLabels: Record<string, string> = {
+  singkat: 'Singkat (1–2 jam)',
+  'setengah-hari': 'Setengah hari',
+  sehari: 'Sehari penuh',
+};
+
+const bestTimeLabels: Record<string, string> = {
+  pagi: 'Paling pas waktu pagi',
+  siang: 'Paling pas waktu siang',
+  sore: 'Paling pas waktu sore',
+  bebas: 'Waktu fleksibel',
+};
+
+const metaText = `${kindLabels[highlight.kind] || highlight.kind} • ${durationLabels[highlight.duration] || highlight.duration} • ${bestTimeLabels[highlight.best_time] || ''} • Wilayah ${highlight.area}`;
+---
+
+<div
+  class="py-5 border-b border-line flex flex-col md:flex-row md:items-center justify-between gap-4">
+  <div class="max-w-2xl">
+    <h3 class="font-serif text-2xl text-text mb-1">
+      {highlight.name}
+    </h3>
+    <p class="font-sans text-xs text-text-3 font-medium mb-2 tracking-wide">
+      {metaText}
+    </p>
+    <p class="font-sans text-sm text-text-2 leading-relaxed">
+      {highlight.note}
+    </p>
+  </div>
+
+  <div class="flex-shrink-0">
+    <button
+      type="button"
+      class="btn-sekunder text-xs h-10 px-4 whitespace-nowrap"
+      data-highlight-id={highlight.id}
+      data-dest-slug={destinationSlug}>
+      Tambahkan ke rencana
+    </button>
+  </div>
+</div>

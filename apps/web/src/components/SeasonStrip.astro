@@ -1,0 +1,321 @@
+---
+import type { ScoredMonth } from '@singgah/scoring';
+
+interface Props {
+  months: ScoredMonth[];
+  mode?: 'ringkas' | 'penuh';
+  destinationName?: string;
+  selectedMonth?: number;
+  class?: string;
+}
+
+const {
+  months,
+  mode = 'penuh',
+  destinationName = 'Destinasi',
+  selectedMonth,
+  class: className = '',
+} = Astro.props;
+
+const monthNamesShort = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'Mei',
+  'Jun',
+  'Jul',
+  'Agu',
+  'Sep',
+  'Okt',
+  'Nov',
+  'Des',
+];
+const monthNamesFull = [
+  'Januari',
+  'Februari',
+  'Maret',
+  'April',
+  'Mei',
+  'Juni',
+  'Juli',
+  'Agustus',
+  'September',
+  'Oktober',
+  'November',
+  'Desember',
+];
+const currentMonthNumber = new Date().getMonth() + 1;
+
+// Level mapping to height percent and numeric level
+const levelMap: Record<string, { lvl: number; pct: string; label: string }> = {
+  kurang: { lvl: 1, pct: '25%', label: 'Kurang' },
+  cukup: { lvl: 2, pct: '50%', label: 'Cukup' },
+  baik: { lvl: 3, pct: '75%', label: 'Baik' },
+  'sangat-baik': { lvl: 4, pct: '100%', label: 'Sangat baik' },
+};
+
+// Summary accessible text
+const bestMonths = months
+  .filter((m) => m.level === 'sangat-baik' || m.level === 'baik')
+  .map((m) => monthNamesShort[m.month - 1])
+  .join(', ');
+const poorMonths = months
+  .filter((m) => m.level === 'kurang')
+  .map((m) => monthNamesShort[m.month - 1])
+  .join(', ');
+const accessibleSummary = `Kalender musim ${destinationName}. Periode terbaik: ${bestMonths || '-'}. Periode kurang: ${poorMonths || '-'}.`;
+---
+
+<div
+  class={`season-strip-wrapper ${mode === 'ringkas' ? 'season-strip--compact' : 'season-strip--full'} ${className}`}>
+  <!-- Aksesibilitas: Teks untuk pembaca layar -->
+  <span class="sr-only">{accessibleSummary}</span>
+
+  <div
+    class="season-strip-grid"
+    role="region"
+    aria-label={`Grafik musim 12 bulan ${destinationName}`}>
+    {
+      months.map((m) => {
+        const meta = levelMap[m.level] ?? levelMap['kurang'];
+        const isCurrent = m.month === currentMonthNumber;
+        const isSelected = selectedMonth === m.month;
+        const shortName = monthNamesShort[m.month - 1];
+        const fullName = monthNamesFull[m.month - 1];
+        const tooltipText = `${fullName}: ${meta.label}. Curah hujan ${Math.round(m.precip_mm)} mm, ${Math.round(m.wet_days)} hari hujan, ${m.tmax_c.toFixed(1)} °C.${m.is_override ? ` Catatan: ${m.override_reason}` : ''}`;
+
+        return (
+          <div class="season-bar-col">
+            {/* Titik indikator penimpaan (override) */}
+            {mode === 'penuh' && m.is_override && (
+              <span
+                class="season-override-dot"
+                title={`Koreksi manual: ${m.override_reason}`}
+                aria-hidden="true"
+              />
+            )}
+
+            <div
+              class={`season-bar ${isCurrent ? 'season-bar--current' : ''} ${isSelected ? 'season-bar--selected' : ''}`}
+              data-lvl={meta.lvl}
+              style={`--lvl-h: ${meta.pct};`}
+              title={tooltipText}
+              tabindex="0"
+              role="button"
+              aria-label={tooltipText}
+            />
+
+            {mode === 'penuh' && (
+              <span class={`season-month-label ${isCurrent ? 'season-month-label--current' : ''}`}>
+                {shortName}
+              </span>
+            )}
+          </div>
+        );
+      })
+    }
+  </div>
+
+  {
+    mode === 'penuh' && (
+      <details class="season-details-table">
+        <summary class="season-details-summary">Lihat rincian angka lengkap 12 bulan</summary>
+        <div class="season-table-wrap">
+          <table class="season-table">
+            <thead>
+              <tr>
+                <th>Bulan</th>
+                <th>Status</th>
+                <th>Curah Hujan</th>
+                <th>Hari Hujan</th>
+                <th>Suhu Maks</th>
+              </tr>
+            </thead>
+            <tbody>
+              {months.map((m) => {
+                const meta = levelMap[m.level] ?? levelMap['kurang'];
+                return (
+                  <tr>
+                    <td>{monthNamesFull[m.month - 1]}</td>
+                    <td>
+                      <span class={`level-badge level-badge--${m.level}`}>{meta.label}</span>
+                      {m.is_override && <span class="override-tag">* Koreksi lokal</span>}
+                    </td>
+                    <td>{Math.round(m.precip_mm)} mm</td>
+                    <td>{Math.round(m.wet_days)} hari</td>
+                    <td>{m.tmax_c.toFixed(1)} °C</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </details>
+    )
+  }
+</div>
+
+<style>
+  .season-strip-wrapper {
+    width: 100%;
+  }
+
+  .season-strip-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: end;
+  }
+
+  .season-strip--compact .season-strip-grid {
+    height: 28px;
+    gap: 2px;
+  }
+
+  .season-strip--full .season-strip-grid {
+    height: 160px;
+    gap: 6px;
+  }
+
+  .season-bar-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    position: relative;
+  }
+
+  .season-bar {
+    width: 100%;
+    height: var(--lvl-h);
+    min-height: 6px;
+    border-radius: 2px 2px 0 0;
+    box-shadow: inset 0 0 0 1px rgba(95, 111, 118, 0.4);
+    cursor: pointer;
+    transform-origin: bottom;
+    transition:
+      transform var(--dur-fast) var(--ease),
+      opacity var(--dur-fast) var(--ease);
+  }
+
+  .season-bar:hover,
+  .season-bar:focus-visible {
+    transform: scaleY(1.04);
+    opacity: 0.9;
+  }
+
+  .season-bar[data-lvl='1'] {
+    background-color: var(--musim-1);
+  }
+  .season-bar[data-lvl='2'] {
+    background-color: var(--musim-2);
+  }
+  .season-bar[data-lvl='3'] {
+    background-color: var(--musim-3);
+  }
+  .season-bar[data-lvl='4'] {
+    background-color: var(--musim-4);
+  }
+
+  .season-bar--current {
+    box-shadow:
+      inset 0 0 0 1px var(--cta-bg),
+      0 2px 0 var(--cta-bg);
+  }
+
+  .season-bar--selected {
+    outline: 2px solid var(--text);
+    outline-offset: 1px;
+  }
+
+  .season-override-dot {
+    position: absolute;
+    top: 4px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--warn);
+  }
+
+  .season-month-label {
+    font-size: 0.75rem;
+    color: var(--text-3);
+    margin-top: 8px;
+    font-family: var(--font-sans);
+  }
+
+  .season-month-label--current {
+    color: var(--text);
+    font-weight: 600;
+    border-bottom: 2px solid var(--cta-bg);
+  }
+
+  /* Details table */
+  .season-details-table {
+    margin-top: 16px;
+    font-size: var(--t-small);
+  }
+
+  .season-details-summary {
+    cursor: pointer;
+    color: var(--link);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 500;
+  }
+
+  .season-table-wrap {
+    overflow-x: auto;
+    margin-top: 12px;
+  }
+
+  .season-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--t-small);
+    text-align: left;
+  }
+
+  .season-table th,
+  .season-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .season-table th {
+    color: var(--text-3);
+    font-weight: 600;
+  }
+
+  .level-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: var(--r-ui);
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .level-badge--sangat-baik {
+    background: var(--ok-bg);
+    color: var(--ok);
+  }
+  .level-badge--baik {
+    background: rgba(79, 154, 171, 0.2);
+    color: var(--link);
+  }
+  .level-badge--cukup {
+    background: var(--surface-2);
+    color: var(--text-2);
+  }
+  .level-badge--kurang {
+    background: var(--warn-bg);
+    color: var(--warn);
+  }
+
+  .override-tag {
+    font-size: 0.7rem;
+    color: var(--warn);
+    margin-left: 6px;
+  }
+</style>
