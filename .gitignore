@@ -1,0 +1,24 @@
+# Root dependencies & scripts
+node_modules
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist
+.astro
+.wrangler
+.turbo
+*.log
+
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv
+venv/
+.pytest_cache/
+.coverage
