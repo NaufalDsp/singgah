@@ -1,0 +1,20 @@
+{
+  "slug": "bromo",
+  "source": "Open-Meteo Historical Archive (1994-2023)",
+  "period": "1994-2023",
+  "fetched_at": "2026-10-12",
+  "months": [
+    { "month": 1, "precip_mm": 290, "wet_days": 21, "tmax_c": 19.5, "tmin_c": 11.2 },
+    { "month": 2, "precip_mm": 275, "wet_days": 20, "tmax_c": 19.8, "tmin_c": 11.5 },
+    { "month": 3, "precip_mm": 250, "wet_days": 18, "tmax_c": 20.2, "tmin_c": 11.8 },
+    { "month": 4, "precip_mm": 140, "wet_days": 12, "tmax_c": 20.5, "tmin_c": 11.0 },
+    { "month": 5, "precip_mm": 70, "wet_days": 6, "tmax_c": 20.8, "tmin_c": 9.5 },
+    { "month": 6, "precip_mm": 35, "wet_days": 3, "tmax_c": 20.2, "tmin_c": 7.8 },
+    { "month": 7, "precip_mm": 20, "wet_days": 2, "tmax_c": 19.5, "tmin_c": 5.5 },
+    { "month": 8, "precip_mm": 15, "wet_days": 2, "tmax_c": 20.1, "tmin_c": 6.2 },
+    { "month": 9, "precip_mm": 25, "wet_days": 3, "tmax_c": 21.4, "tmin_c": 8.0 },
+    { "month": 10, "precip_mm": 60, "wet_days": 6, "tmax_c": 22.0, "tmin_c": 9.8 },
+    { "month": 11, "precip_mm": 160, "wet_days": 13, "tmax_c": 21.2, "tmin_c": 10.8 },
+    { "month": 12, "precip_mm": 260, "wet_days": 19, "tmax_c": 20.1, "tmin_c": 11.1 }
+  ]
+}

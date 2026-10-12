@@ -1,0 +1,20 @@
+{
+  "slug": "toraja",
+  "source": "Open-Meteo Historical Archive (1994-2023)",
+  "period": "1994-2023",
+  "fetched_at": "2026-10-12",
+  "months": [
+    { "month": 1, "precip_mm": 240, "wet_days": 18, "tmax_c": 26.5, "tmin_c": 18.2 },
+    { "month": 2, "precip_mm": 220, "wet_days": 16, "tmax_c": 26.8, "tmin_c": 18.4 },
+    { "month": 3, "precip_mm": 260, "wet_days": 19, "tmax_c": 27.0, "tmin_c": 18.5 },
+    { "month": 4, "precip_mm": 290, "wet_days": 21, "tmax_c": 27.2, "tmin_c": 18.8 },
+    { "month": 5, "precip_mm": 210, "wet_days": 16, "tmax_c": 27.5, "tmin_c": 19.0 },
+    { "month": 6, "precip_mm": 130, "wet_days": 11, "tmax_c": 27.1, "tmin_c": 18.2 },
+    { "month": 7, "precip_mm": 85, "wet_days": 7, "tmax_c": 26.9, "tmin_c": 17.5 },
+    { "month": 8, "precip_mm": 65, "wet_days": 5, "tmax_c": 27.4, "tmin_c": 17.2 },
+    { "month": 9, "precip_mm": 95, "wet_days": 8, "tmax_c": 28.1, "tmin_c": 17.8 },
+    { "month": 10, "precip_mm": 170, "wet_days": 13, "tmax_c": 28.4, "tmin_c": 18.4 },
+    { "month": 11, "precip_mm": 270, "wet_days": 20, "tmax_c": 27.5, "tmin_c": 18.6 },
+    { "month": 12, "precip_mm": 280, "wet_days": 21, "tmax_c": 26.8, "tmin_c": 18.5 }
+  ]
+}
