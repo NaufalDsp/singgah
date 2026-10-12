@@ -1,0 +1,181 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Moderasi Tips Komunitas — Pengelola Singgah">
+  <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
+    <div class="max-w-4xl mx-auto">
+      <div
+        class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-8 border-b border-line">
+        <div>
+          <span class="text-xs uppercase tracking-wider text-text-3 font-semibold block mb-1">
+            Panel Pengelola (Admin)
+          </span>
+          <h1 class="font-serif text-3xl md:text-4xl text-text">Moderasi tips komunitas</h1>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <select
+            id="filter-status"
+            class="bg-surface-2 border border-line rounded-ui px-3 py-1.5 text-xs font-sans text-text">
+            <option value="pending" selected>Menunggu Persetujuan (Pending)</option>
+            <option value="published">Telah Diterbitkan (Published)</option>
+            <option value="hidden">Disembunyikan (Hidden)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- DAFTAR ANTREAN MODERASI -->
+      <div id="admin-tips-container" class="space-y-6">
+        <div
+          class="p-8 bg-surface rounded-panel border border-line text-center text-xs font-sans text-text-3 italic">
+          Memeriksa hak akses dan antrean tips...
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  async function initAdminModeration() {
+    const container = document.getElementById('admin-tips-container');
+    const filterSelect = document.getElementById('filter-status') as HTMLSelectElement;
+    if (!container || !filterSelect) return;
+
+    const monthNames = [
+      'Januari',
+      'Februari',
+      'Maret',
+      'April',
+      'Mei',
+      'Juni',
+      'Juli',
+      'Agustus',
+      'September',
+      'Oktober',
+      'November',
+      'Desember',
+    ];
+
+    async function fetchModerationQueue() {
+      const status = filterSelect.value;
+      container.innerHTML = `
+        <div class="p-8 bg-surface rounded-panel border border-line text-center text-xs font-sans text-text-3 italic">
+          Memuat tips status '${status}'...
+        </div>
+      `;
+
+      try {
+        const res = await fetch(`/api/v1/admin/tips?status=${status}`);
+        if (!res.ok) {
+          if (res.status === 401 || res.status === 403) {
+            container.innerHTML = `
+              <div class="p-12 bg-surface rounded-panel border border-line text-center">
+                <h2 class="font-serif text-2xl text-text mb-2">Akses Terbatas</h2>
+                <p class="font-sans text-sm text-text-2 mb-6">
+                  Halaman ini hanya dapat diakses oleh akun pengelola (admin).
+                </p>
+                <a href="/masuk" class="btn-utama text-xs">Masuk dengan akun admin</a>
+              </div>
+            `;
+            return;
+          }
+          throw new Error('Gagal memuat');
+        }
+
+        const data = await res.json();
+        const queue = data.tips || [];
+
+        if (queue.length === 0) {
+          container.innerHTML = `
+            <div class="p-10 bg-surface rounded-panel border border-line text-center text-xs font-sans text-text-3">
+              Tidak ada tips dengan status '${status}' saat ini.
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = queue
+          .map((item: any) => {
+            const visited = item.visited_month
+              ? ` • Berkunjung bulan ${monthNames[item.visited_month - 1]}`
+              : '';
+            return `
+              <div class="p-6 bg-surface rounded-panel border border-line shadow-sm flex flex-col justify-between gap-4" id="tip-card-${item.id}">
+                <div>
+                  <div class="flex items-center justify-between text-xs font-sans text-text-3 mb-2">
+                    <span class="font-semibold text-text uppercase tracking-wider">
+                      Destinasi: ${item.destination}
+                    </span>
+                    <span>Penulis: <strong>${item.author?.name || 'Anonim'}</strong>${visited}</span>
+                  </div>
+
+                  <p class="font-sans text-sm text-text p-4 bg-bg rounded-ui border border-line leading-relaxed mb-2">
+                    "${item.body}"
+                  </p>
+                </div>
+
+                <div class="flex items-center justify-end gap-3 pt-3 border-t border-line">
+                  ${
+                    item.status !== 'published'
+                      ? `<button class="btn-publish btn-utama text-xs h-8 px-4" data-id="${item.id}">
+                          ✓ Setujui (Publikasikan)
+                        </button>`
+                      : ''
+                  }
+                  ${
+                    item.status !== 'hidden'
+                      ? `<button class="btn-hide btn-sekunder text-xs h-8 px-4 text-error" data-id="${item.id}">
+                          ✕ Sembunyikan
+                        </button>`
+                      : ''
+                  }
+                </div>
+              </div>
+            `;
+          })
+          .join('');
+
+        // Action Listeners
+        container.querySelectorAll<HTMLButtonElement>('.btn-publish').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            const id = btn.dataset.id;
+            const actionRes = await fetch(`/api/v1/admin/tips/${id}/publish`, { method: 'POST' });
+            if (actionRes.ok) {
+              fetchModerationQueue();
+            } else {
+              alert('Gagal menyetujui tip.');
+            }
+          });
+        });
+
+        container.querySelectorAll<HTMLButtonElement>('.btn-hide').forEach((btn) => {
+          btn.addEventListener('click', async () => {
+            const id = btn.dataset.id;
+            const actionRes = await fetch(`/api/v1/admin/tips/${id}/hide`, { method: 'POST' });
+            if (actionRes.ok) {
+              fetchModerationQueue();
+            } else {
+              alert('Gagal menyembunyikan tip.');
+            }
+          });
+        });
+      } catch {
+        container.innerHTML = `
+          <div class="p-8 bg-surface rounded-panel border border-line text-center text-xs font-sans text-text-3">
+            Terjadi gangguan koneksi saat memuat antrean moderasi.
+          </div>
+        `;
+      }
+    }
+
+    filterSelect.addEventListener('change', fetchModerationQueue);
+    fetchModerationQueue();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAdminModeration);
+  } else {
+    initAdminModeration();
+  }
+</script>

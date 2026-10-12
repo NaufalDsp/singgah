@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SeasonStrip from '../../components/SeasonStrip.astro';
 import HighlightRow from '../../components/HighlightRow.astro';
 import WeatherNow from '../../components/WeatherNow.astro';
+import TravelerTips from '../../components/TravelerTips.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { calculateYearSeasons } from '@singgah/scoring';
 import fs from 'node:fs';
@@ -199,15 +200,8 @@ const jsonLd = {
           </div>
         </section>
 
-        <!-- Bagian 5: Tips Pelancong (Fase 4 Readiness) -->
-        <section class="p-8 bg-surface rounded-panel border border-line text-center">
-          <h3 class="font-serif text-2xl text-text mb-2">Tips dari pelancong</h3>
-          <p class="font-sans text-sm text-text-2 max-w-md mx-auto mb-6">
-            Belum ada tip terpublikasi untuk destinasi ini. Pernah singgah ke sini? Kamu dapat
-            membagikan catatan faktual setelah masuk akun.
-          </p>
-          <a href="/masuk" class="btn-sekunder text-xs"> Masuk untuk menulis tip </a>
-        </section>
+        <!-- Bagian 5: Tips Komunitas Pelancong -->
+        <TravelerTips destinationSlug={destination.slug} destinationName={destination.data.name} />
       </main>
 
       <!-- Kolom Sidebar Sticky (4 Kolom) -->

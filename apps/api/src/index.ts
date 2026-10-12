@@ -7,6 +7,8 @@ import { authRoute } from './routes/auth.js';
 import { tripsRoute } from './routes/trips.js';
 import { sharedRoute } from './routes/shared.js';
 import { favoritesRoute } from './routes/favorites.js';
+import { tipsRoute } from './routes/tips.js';
+import { adminRoute } from './routes/admin.js';
 import { apiError, ERROR_D1_LIMIT } from './lib/errors.js';
 
 export interface Env {
@@ -42,6 +44,8 @@ v1.route('/auth', authRoute);
 v1.route('/trips', tripsRoute);
 v1.route('/shared', sharedRoute);
 v1.route('/favorites', favoritesRoute);
+v1.route('/', tipsRoute);
+v1.route('/admin', adminRoute);
 
 app.route('/api/v1', v1);
 
