@@ -3,6 +3,10 @@ import { cors } from 'hono/cors';
 import { healthRoute } from './routes/health.js';
 import { weatherRoute } from './routes/weather.js';
 import { plannerRoute } from './routes/planner.js';
+import { authRoute } from './routes/auth.js';
+import { tripsRoute } from './routes/trips.js';
+import { sharedRoute } from './routes/shared.js';
+import { favoritesRoute } from './routes/favorites.js';
 import { apiError, ERROR_D1_LIMIT } from './lib/errors.js';
 
 export interface Env {
@@ -34,6 +38,10 @@ const v1 = new Hono<{ Bindings: Env }>();
 v1.route('/health', healthRoute);
 v1.route('/weather', weatherRoute);
 v1.route('/planner', plannerRoute);
+v1.route('/auth', authRoute);
+v1.route('/trips', tripsRoute);
+v1.route('/shared', sharedRoute);
+v1.route('/favorites', favoritesRoute);
 
 app.route('/api/v1', v1);
 
