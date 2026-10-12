@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SeasonStrip from '../../components/SeasonStrip.astro';
 import HighlightRow from '../../components/HighlightRow.astro';
+import WeatherNow from '../../components/WeatherNow.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { calculateYearSeasons } from '@singgah/scoring';
 import fs from 'node:fs';
@@ -131,6 +132,19 @@ const jsonLd = {
               )
             }
           </div>
+        </section>
+
+        <!-- Bagian: Cuaca Sekarang & Prakiraan 7 Hari -->
+        <section aria-labelledby="heading-cuaca">
+          <div class="mb-4">
+            <h2 id="heading-cuaca" class="font-serif text-3xl md:text-4xl text-text mb-1">
+              Cuaca sekarang & prakiraan
+            </h2>
+            <p class="font-sans text-xs text-text-3">
+              Kondisi riil langsung di lapangan dan peluang presipitasi 7 hari ke depan.
+            </p>
+          </div>
+          <WeatherNow destinationSlug={destination.slug} destinationName={destination.data.name} />
         </section>
 
         <!-- Bagian 2: Teks Editorial & Uraian Destinasi -->
