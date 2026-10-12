@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('articles');
+---
+
+<BaseLayout title="Catatan Lapangan — Singgah">
+  <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
+    <div class="max-w-3xl mb-12">
+      <h1 class="font-serif text-[clamp(2.5rem,6vw,5.5rem)] text-text leading-tight mb-4">
+        Catatan lapangan
+      </h1>
+      <p class="font-sans text-lg text-text-2 leading-relaxed">
+        Uraian naratif tentang dinamika musim, navigasi selat, ritme perjalanan, dan pengalaman
+        nyata dari lapangan tanpa kata klise.
+      </p>
+    </div>
+
+    <div class="flex flex-col divide-y divide-line">
+      {
+        articles.map((art) => (
+          <article class="py-10 flex flex-col md:flex-row justify-between gap-8 items-start">
+            <div class="max-w-2xl">
+              <span class="text-xs font-sans text-text-3 font-semibold uppercase tracking-wider block mb-2">
+                {art.data.published_at} • {art.data.reading_time_min} menit baca
+              </span>
+              <h2 class="font-serif text-3xl sm:text-4xl text-text mb-3">
+                <a href={`/catatan/${art.slug}`} class="hover:text-link transition-colors">
+                  {art.data.title}
+                </a>
+              </h2>
+              <p class="font-sans text-sm text-text-2 leading-relaxed mb-4">{art.data.summary}</p>
+              {art.data.destination_slug && (
+                <a
+                  href={`/destinasi/${art.data.destination_slug}`}
+                  class="text-xs font-sans font-medium text-link underline">
+                  Lihat panduan destinasi terkait →
+                </a>
+              )}
+            </div>
+
+            <a
+              href={`/catatan/${art.slug}`}
+              class="w-full md:w-56 aspect-[3/2] flex-shrink-0 rounded-media overflow-hidden border border-line bg-surface-2">
+              <img
+                src={art.data.photo}
+                alt={art.data.title}
+                class="w-full h-full object-cover hover:scale-105 transition-transform duration-base"
+                loading="lazy"
+              />
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

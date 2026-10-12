@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SeasonStrip from '../../components/SeasonStrip.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { calculateYearSeasons } from '@singgah/scoring';
+import fs from 'node:fs';
+import path from 'node:path';
+
+export async function getStaticPaths() {
+  const moods = await getCollection('moods');
+  return moods.map((entry) => ({
+    params: { slug: entry.data.id },
+    props: { mood: entry },
+  }));
+}
+
+interface Props {
+  mood: CollectionEntry<'moods'>;
+}
+
+const { mood } = Astro.props;
+const allDestinations = await getCollection('destinations');
+const matchingDestinations = allDestinations.filter((d) => d.data.moods.includes(mood.data.id));
+
+// Load climate data
+const destinationCards = matchingDestinations.map((dest) => {
+  let yearSeasons: any[] = [];
+  const climatePath = path.resolve(`../../data/climate/${dest.slug}.json`);
+  if (fs.existsSync(climatePath)) {
+    const climate = JSON.parse(fs.readFileSync(climatePath, 'utf-8'));
+    yearSeasons = calculateYearSeasons(
+      climate.months,
+      dest.data.profile,
+      dest.data.season_overrides,
+    );
+  }
+  return { dest, yearSeasons };
+});
+---
+
+<BaseLayout title={`${mood.data.name} — Singgah`}>
+  <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
+    <div class="max-w-3xl mb-12">
+      <a
+        href="/suasana"
+        class="text-xs font-sans font-medium text-text-3 hover:text-text mb-3 inline-block">
+        ← Kembali ke daftar suasana
+      </a>
+      <h1 class="font-serif text-[clamp(2.5rem,6vw,5.5rem)] text-text leading-tight mb-4">
+        {mood.data.name}
+      </h1>
+      <p class="font-sans text-lg text-text-2 leading-relaxed">
+        {mood.data.description}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {
+        destinationCards.map(({ dest, yearSeasons }) => (
+          <article class="bg-surface rounded-panel border border-line overflow-hidden flex flex-col justify-between group">
+            <div>
+              <a
+                href={`/destinasi/${dest.slug}`}
+                class="block aspect-[16/10] overflow-hidden bg-surface-2 relative">
+                <img
+                  src={dest.data.hero.photo}
+                  alt={dest.data.name}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-base"
+                  loading="lazy"
+                />
+              </a>
+
+              <div class="p-6">
+                <div class="flex items-center justify-between text-xs text-text-3 font-medium mb-1">
+                  <span>
+                    {dest.data.region.island}, {dest.data.region.province}
+                  </span>
+                  <span>
+                    {dest.data.typical_days.min}–{dest.data.typical_days.max} hari
+                  </span>
+                </div>
+
+                <h2 class="font-serif text-2xl text-text mb-2">
+                  <a
+                    href={`/destinasi/${dest.slug}`}
+                    class="group-hover:text-link transition-colors">
+                    {dest.data.name}
+                  </a>
+                </h2>
+
+                <p class="font-sans text-xs text-text-2 line-clamp-3 leading-relaxed mb-6">
+                  {dest.data.summary}
+                </p>
+              </div>
+            </div>
+
+            <div class="px-6 pb-6 pt-2 border-t border-line/60">
+              <span class="text-[10px] text-text-3 font-semibold uppercase tracking-wider block mb-2">
+                Kalender Musim
+              </span>
+              <SeasonStrip months={yearSeasons} mode="ringkas" destinationName={dest.data.name} />
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

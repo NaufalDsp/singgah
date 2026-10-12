@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const moods = await getCollection('moods');
+const destinations = await getCollection('destinations');
+---
+
+<BaseLayout title="Jelajah Menurut Suasana — Singgah">
+  <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
+    <div class="max-w-3xl mb-12">
+      <h1 class="font-serif text-[clamp(2.5rem,6vw,5.5rem)] text-text leading-tight mb-4">
+        Suasana perjalanan
+      </h1>
+      <p class="font-sans text-lg text-text-2 leading-relaxed">
+        Pilih tipe lanskap dan ritme perjalanan yang paling sesuai dengan kebutuhanmu, mulai dari
+        ketenangan pesisir hingga kekayaan ritus desa adat.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {
+        moods.map((m) => {
+          const count = destinations.filter((d) => d.data.moods.includes(m.data.id)).length;
+          return (
+            <a
+              href={`/suasana/${m.data.id}`}
+              class="group bg-surface rounded-panel border border-line overflow-hidden block transition-shadow hover:shadow-float">
+              <div class="aspect-[16/10] overflow-hidden bg-surface-2 relative">
+                <img
+                  src={m.data.photo}
+                  alt={m.data.name}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-base"
+                  loading="lazy"
+                />
+              </div>
+              <div class="p-6">
+                <div class="flex items-center justify-between text-xs text-text-3 font-medium mb-1">
+                  <span>Kategori</span>
+                  <span>{count} destinasi</span>
+                </div>
+                <h2 class="font-serif text-2xl text-text group-hover:text-link transition-colors mb-2">
+                  {m.data.name}
+                </h2>
+                <p class="font-sans text-xs text-text-2 leading-relaxed">{m.data.description}</p>
+              </div>
+            </a>
+          );
+        })
+      }
+    </div>
+  </div>
+</BaseLayout>

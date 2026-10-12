@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SeasonStrip from '../../components/SeasonStrip.astro';
+import { getCollection } from 'astro:content';
+import { calculateYearSeasons } from '@singgah/scoring';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const destinations = await getCollection('destinations');
+const moods = await getCollection('moods');
+
+// Load climate data
+const climateDataMap: Record<string, any> = {};
+for (const dest of destinations) {
+  const filePath = path.resolve(`../../data/climate/${dest.slug}.json`);
+  if (fs.existsSync(filePath)) {
+    climateDataMap[dest.slug] = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  }
+}
+
+// Compute scored season strip for all destinations
+const destinationCards = destinations.map((dest) => {
+  const climate = climateDataMap[dest.slug];
+  const yearSeasons = climate
+    ? calculateYearSeasons(climate.months, dest.data.profile, dest.data.season_overrides)
+    : [];
+  return {
+    dest,
+    yearSeasons,
+  };
+});
+
+const islands = Array.from(new Set(destinations.map((d) => d.data.region.island)));
+---
+
+<BaseLayout title="Daftar Destinasi Nusantara — Singgah">
+  <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
+    <!-- Header Halaman -->
+    <div class="max-w-3xl mb-12">
+      <h1 class="font-serif text-[clamp(2.5rem,6vw,5.5rem)] text-text leading-tight mb-4">
+        Daftar destinasi
+      </h1>
+      <p class="font-sans text-lg text-text-2 leading-relaxed">
+        Seluruh destinasi diverifikasi secara berkala dengan sumber primer tertaut, waktu tempuh
+        realistis, dan kalender musim dari data cuaca 30 tahun.
+      </p>
+    </div>
+
+    <!-- Filter Bar Tipografis -->
+    <div class="py-4 border-y border-line flex flex-wrap items-center justify-between gap-4 mb-12">
+      <div class="flex flex-wrap items-center gap-3 text-xs font-sans font-medium text-text-2">
+        <span class="text-text-3 font-semibold uppercase tracking-wider">Wilayah:</span>
+        <a href="/destinasi" class="px-3 py-1 bg-surface-2 text-text rounded-ui">Semua</a>
+        {
+          islands.map((island) => (
+            <span class="px-3 py-1 text-text-2 hover:text-text cursor-pointer">{island}</span>
+          ))
+        }
+      </div>
+
+      <div class="text-xs text-text-3 font-sans">
+        Menampilkan {destinations.length} destinasi
+      </div>
+    </div>
+
+    <!-- Grid Destinasi Asimetris -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {
+        destinationCards.map(({ dest, yearSeasons }) => (
+          <article class="bg-surface rounded-panel border border-line overflow-hidden flex flex-col justify-between group">
+            <div>
+              <a
+                href={`/destinasi/${dest.slug}`}
+                class="block aspect-[16/10] overflow-hidden bg-surface-2 relative">
+                <img
+                  src={dest.data.hero.photo}
+                  alt={dest.data.name}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-base"
+                  loading="lazy"
+                />
+              </a>
+
+              <div class="p-6">
+                <div class="flex items-center justify-between text-xs text-text-3 font-medium mb-1">
+                  <span>
+                    {dest.data.region.island}, {dest.data.region.province}
+                  </span>
+                  <span>
+                    {dest.data.typical_days.min}–{dest.data.typical_days.max} hari
+                  </span>
+                </div>
+
+                <h2 class="font-serif text-2xl text-text mb-2">
+                  <a
+                    href={`/destinasi/${dest.slug}`}
+                    class="group-hover:text-link transition-colors">
+                    {dest.data.name}
+                  </a>
+                </h2>
+
+                <p class="font-sans text-xs text-text-2 line-clamp-3 leading-relaxed mb-6">
+                  {dest.data.summary}
+                </p>
+              </div>
+            </div>
+
+            <div class="px-6 pb-6 pt-2 border-t border-line/60">
+              <span class="text-[10px] text-text-3 font-semibold uppercase tracking-wider block mb-2">
+                Kalender Musim 12 Bulan
+              </span>
+              <SeasonStrip months={yearSeasons} mode="ringkas" destinationName={dest.data.name} />
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return articles.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { article: entry },
+  }));
+}
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+}
+
+const { article } = Astro.props;
+const { Content } = await article.render();
+---
+
+<BaseLayout
+  title={`${article.data.title} — Catatan Lapangan Singgah`}
+  description={article.data.summary}>
+  <article class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
+    <!-- Header Artikel -->
+    <header class="max-w-content mx-auto mb-12">
+      <a
+        href="/catatan"
+        class="text-xs font-sans font-medium text-text-3 hover:text-text mb-4 inline-block">
+        ← Kembali ke catatan lapangan
+      </a>
+      <h1 class="font-serif text-[clamp(2.5rem,5vw,4.5rem)] text-text leading-tight mb-4">
+        {article.data.title}
+      </h1>
+      <div
+        class="flex items-center gap-4 text-xs font-sans text-text-3 font-medium pb-6 border-b border-line">
+        <time datetime={article.data.published_at}>{article.data.published_at}</time>
+        <span>•</span>
+        <span>{article.data.reading_time_min} menit membaca</span>
+      </div>
+    </header>
+
+    <!-- Foto Utama Artikel (3:2) -->
+    <figure class="max-w-content mx-auto mb-12">
+      <div class="aspect-[3/2] rounded-media overflow-hidden border border-line bg-surface-2">
+        <img src={article.data.photo} alt={article.data.title} class="w-full h-full object-cover" />
+      </div>
+    </figure>
+
+    <!-- Body Artikel -->
+    <div
+      class="max-w-content mx-auto font-sans text-base md:text-lg text-text leading-relaxed prose space-y-6">
+      <Content />
+    </div>
+
+    <!-- Footer Artikel -->
+    <footer
+      class="max-w-content mx-auto mt-16 pt-8 border-t border-line flex items-center justify-between">
+      {
+        article.data.destination_slug ? (
+          <a href={`/destinasi/${article.data.destination_slug}`} class="btn-sekunder text-xs">
+            Buka panduan {article.data.destination_slug}
+          </a>
+        ) : (
+          <div />
+        )
+      }
+      <a href="/catatan" class="text-xs text-text-3 hover:text-text underline">
+        Semua catatan lapangan
+      </a>
+    </footer>
+  </article>
+</BaseLayout>

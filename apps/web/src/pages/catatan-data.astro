@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Catatan Data & Metodologi — Singgah"
+  description="Penjelasan terbuka mengenai formula kalender musim, sumber data iklim historis 30 tahun, dan batasannya.">
+  <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
+    <div class="max-w-content mx-auto">
+      <h1 class="font-serif text-[clamp(2.5rem,5vw,4.5rem)] text-text leading-tight mb-6">
+        Catatan data & metodologi
+      </h1>
+      <p class="font-sans text-lg text-text-2 leading-relaxed mb-10 pb-8 border-b border-line">
+        Singgah tidak menggunakan ramalan cuaca jangka pendek atau opini subjektif untuk menentukan
+        "waktu terbaik". Seluruh kalender musim dihitung dari akumulasi data iklim historis 30
+        tahun.
+      </p>
+
+      <div class="space-y-10 font-sans text-text text-sm md:text-base leading-relaxed">
+        <section>
+          <h2 class="font-serif text-2xl md:text-3xl text-text mb-3">1. Sumber & Periode Data</h2>
+          <p>
+            Data iklim harian diambil dari <strong>Open-Meteo Historical Weather API</strong> mencakup
+            rentang waktu <strong>1 Januari 1994 hingga 31 Desember 2023</strong> (periode 30 tahun standar
+            klimatologi WMO). Data ini berasal dari model reanalisis atmosfer global (ERA5 dan ERA5-Land
+            oleh ECMWF).
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-serif text-2xl md:text-3xl text-text mb-3">2. Variabel yang Dihitung</h2>
+          <ul class="list-disc list-inside space-y-2 text-text-2">
+            <li>
+              <strong>Curah hujan rata-rata bulanan (mm):</strong> Total akumulasi air hujan bulanan yang
+              dinormalisasi selama 30 tahun.
+            </li>
+            <li>
+              <strong>Hari hujan rata-rata (hari):</strong> Jumlah hari dalam sebulan dengan akumulasi
+              presipitasi &ge; 1,0 mm.
+            </li>
+            <li>
+              <strong>Suhu maksimum harian rata-rata (°C):</strong> Indikator panas siang hari di lokasi
+              bersangkutan.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="font-serif text-2xl md:text-3xl text-text mb-3">
+            3. Rumus Penilaian (Scoring Engine)
+          </h2>
+          <p class="mb-4">
+            Skor dihitung secara deterministik (nilai 0,00 hingga 1,00) menggunakan paket TypeScript
+            terbuka <code class="bg-surface-2 px-1.5 py-0.5 rounded text-xs">@singgah/scoring</code> berdasarkan
+            interpolasi linier (lerp) terhadap tiga ambang batas cuaca:
+          </p>
+          <div
+            class="p-6 bg-surface rounded-panel border border-line text-xs font-mono overflow-x-auto space-y-2">
+            <p>
+              Skor = (w_hujan &times; Skor_Hujan) + (w_hari &times; Skor_HariHujan) + (w_suhu
+              &times; Skor_Suhu)
+            </p>
+            <p>• Sangat Baik : Skor &ge; 0.75 (Tinggi batang 100%)</p>
+            <p>• Baik : 0.55 &le; Skor &lt; 0.75 (Tinggi batang 75%)</p>
+            <p>• Cukup : 0.35 &le; Skor &lt; 0.55 (Tinggi batang 50%)</p>
+            <p>• Kurang : Skor &lt; 0.35 (Tinggi batang 25%)</p>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="font-serif text-2xl md:text-3xl text-text mb-3">
+            4. Batasan Model Reanalisis
+          </h2>
+          <p class="text-text-2">
+            Model atmosfer global memiliki resolusi spasial berkisar antara 9 hingga 25 kilometer.
+            Artinya, mikroklimat sempit seperti lembah curam di kaki gunung atau teluk berbukit
+            tinggi dapat mengalami deviasi dari rata-rata data. Untuk mengatasi kelemahan ini,
+            Singgah menyediakan mekanisme koreksi lapangan manual (<em>season overrides</em>) yang
+            selalu disertai alasan eksplisit yang dapat dibaca pengunjung.
+          </p>
+        </section>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

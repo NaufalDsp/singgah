@@ -1,0 +1,251 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SeasonStrip from '../../components/SeasonStrip.astro';
+import HighlightRow from '../../components/HighlightRow.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { calculateYearSeasons } from '@singgah/scoring';
+import fs from 'node:fs';
+import path from 'node:path';
+
+export async function getStaticPaths() {
+  const destinations = await getCollection('destinations');
+  return destinations.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { destination: entry },
+  }));
+}
+
+interface Props {
+  destination: CollectionEntry<'destinations'>;
+}
+
+const { destination } = Astro.props;
+const { Content } = await destination.render();
+
+// Load destination climate
+let climateData = null;
+const climatePath = path.resolve(`../../data/climate/${destination.slug}.json`);
+if (fs.existsSync(climatePath)) {
+  climateData = JSON.parse(fs.readFileSync(climatePath, 'utf-8'));
+}
+
+const yearSeasons = climateData
+  ? calculateYearSeasons(
+      climateData.months,
+      destination.data.profile,
+      destination.data.season_overrides,
+    )
+  : [];
+
+// Schema.org Structured Data
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristDestination',
+  name: destination.data.name,
+  description: destination.data.summary,
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: destination.data.coords.lat,
+    longitude: destination.data.coords.lon,
+  },
+  touristType: destination.data.profile,
+};
+---
+
+<BaseLayout
+  title={`${destination.data.name} — Panduan & Kalender Musim Singgah`}
+  description={destination.data.summary}
+  transparentHeader={true}>
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <!-- HERO DESTINASI (21:9 di desktop) -->
+  <section
+    class="relative min-h-[460px] md:h-[60vh] md:max-h-[640px] flex items-end pb-12 pt-28 bg-bg overflow-hidden tema-malam">
+    <div class="absolute inset-0 z-0">
+      <img
+        src={destination.data.hero.photo}
+        alt={destination.data.name}
+        class="w-full h-full object-cover object-center"
+        fetchpriority="high"
+      />
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-[rgb(9,18,24)] via-[rgb(9,18,24)]/60 to-transparent">
+      </div>
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-[rgb(9,18,24)]/50 via-transparent to-transparent">
+      </div>
+    </div>
+
+    <div class="relative z-10 max-w-container mx-auto px-4 md:px-8 w-full">
+      <div class="max-w-3xl">
+        <span class="text-xs uppercase tracking-wider text-[#CBD5D5] font-semibold block mb-2">
+          {destination.data.region.island} • {destination.data.region.province}
+        </span>
+        <h1 class="font-serif text-[clamp(2.5rem,6vw,5.5rem)] text-white leading-tight mb-3">
+          {destination.data.name}
+        </h1>
+        <p class="font-sans text-base md:text-lg text-[#E8EEEF] leading-relaxed max-w-2xl">
+          {destination.data.summary}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTEN UTAMA & ASIDE STICKY -->
+  <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+      <!-- Kolom Konten Utama (8 Kolom) -->
+      <main class="lg:col-span-8 flex flex-col gap-16">
+        <!-- Bagian 1: Kalender Musim Ukuran Penuh -->
+        <section aria-labelledby="heading-musim">
+          <div class="mb-6">
+            <h2 id="heading-musim" class="font-serif text-3xl md:text-4xl text-text mb-2">
+              Kapan waktu terbaik ke sana
+            </h2>
+            <p class="font-sans text-sm text-text-2">
+              Rata-rata iklim 30 tahun (1994–2023) dari Open-Meteo. Batang menunjukkan tingkat
+              kelayakan cuaca untuk profil {destination.data.profile}.
+            </p>
+          </div>
+
+          <div class="p-6 md:p-8 bg-surface rounded-panel border border-line">
+            <SeasonStrip
+              months={yearSeasons}
+              mode="penuh"
+              destinationName={destination.data.name}
+            />
+
+            {
+              destination.data.season_overrides.length > 0 && (
+                <div class="mt-8 pt-6 border-t border-line text-xs font-sans text-text-2">
+                  <strong class="text-warn block mb-2">Catatan Penimpaan Anomali Lokal:</strong>
+                  <ul class="list-disc list-inside space-y-1">
+                    {destination.data.season_overrides.map((ov) => (
+                      <li>
+                        Bulan {ov.month}: {ov.reason} (Status dinilai: {ov.level})
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            }
+          </div>
+        </section>
+
+        <!-- Bagian 2: Teks Editorial & Uraian Destinasi -->
+        <section class="prose max-w-content font-sans text-text leading-relaxed">
+          <h2 class="font-serif text-3xl md:text-4xl text-text mb-4">Tentang tempat ini</h2>
+          <Content />
+        </section>
+
+        <!-- Bagian 3: Cara ke Sana -->
+        <section aria-labelledby="heading-rute">
+          <h2 id="heading-rute" class="font-serif text-3xl md:text-4xl text-text mb-4">
+            Cara menuju ke sana
+          </h2>
+          <div
+            class="p-6 bg-surface-2 rounded-panel border border-line font-sans text-sm text-text leading-relaxed">
+            <p class="mb-4">{destination.data.getting_there.notes}</p>
+            <div class="text-xs text-text-3 font-medium">
+              Sumber rute verifikasi:
+              {
+                destination.data.getting_there.sources.map((s, idx) => (
+                  <a
+                    href={s}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-link ml-2 underline">
+                    [Sumber {idx + 1}]
+                  </a>
+                ))
+              }
+            </div>
+          </div>
+        </section>
+
+        <!-- Bagian 4: Yang Layak Disinggahi (Highlights) -->
+        <section aria-labelledby="heading-highlights">
+          <div class="mb-6">
+            <h2 id="heading-highlights" class="font-serif text-3xl md:text-4xl text-text mb-2">
+              Yang layak disinggahi
+            </h2>
+            <p class="font-sans text-sm text-text-2">
+              Titik-titik terpilih dengan perkiraan durasi dan waktu paling ideal untuk mencegah
+              jadwal perjalanan yang terlalu padat.
+            </p>
+          </div>
+
+          <div class="divide-y divide-line">
+            {
+              destination.data.highlights.map((item) => (
+                <HighlightRow highlight={item} destinationSlug={destination.slug} />
+              ))
+            }
+          </div>
+        </section>
+
+        <!-- Bagian 5: Tips Pelancong (Fase 4 Readiness) -->
+        <section class="p-8 bg-surface rounded-panel border border-line text-center">
+          <h3 class="font-serif text-2xl text-text mb-2">Tips dari pelancong</h3>
+          <p class="font-sans text-sm text-text-2 max-w-md mx-auto mb-6">
+            Belum ada tip terpublikasi untuk destinasi ini. Pernah singgah ke sini? Kamu dapat
+            membagikan catatan faktual setelah masuk akun.
+          </p>
+          <a href="/masuk" class="btn-sekunder text-xs"> Masuk untuk menulis tip </a>
+        </section>
+      </main>
+
+      <!-- Kolom Sidebar Sticky (4 Kolom) -->
+      <aside class="lg:col-span-4 lg:sticky lg:top-28 flex flex-col gap-6">
+        <!-- Panel Tindakan Rencana -->
+        <div class="p-6 bg-surface rounded-panel border border-line shadow-sm">
+          <a
+            href={`/rencana/baru?destinasi=${destination.slug}`}
+            class="btn-utama w-full mb-3 text-center">
+            Susun rencana ke sini
+          </a>
+          <button type="button" class="btn-sekunder w-full text-xs"> ♡ Simpan ke favorit </button>
+        </div>
+
+        <!-- Panel Fakta Singkat -->
+        <div class="p-6 bg-surface rounded-panel border border-line text-sm font-sans">
+          <h3 class="font-serif text-xl text-text mb-4 pb-2 border-b border-line">Fakta singkat</h3>
+
+          <dl class="space-y-4">
+            <div class="flex justify-between items-center">
+              <dt class="text-text-3 text-xs">Wilayah</dt>
+              <dd class="text-text font-medium text-xs">
+                {destination.data.region.island}, {destination.data.region.province}
+              </dd>
+            </div>
+            <div class="flex justify-between items-center">
+              <dt class="text-text-3 text-xs">Zona waktu</dt>
+              <dd class="text-text font-medium text-xs">{destination.data.timezone}</dd>
+            </div>
+            <div class="flex justify-between items-center">
+              <dt class="text-text-3 text-xs">Lama ideal</dt>
+              <dd class="text-text font-medium text-xs">
+                {destination.data.typical_days.min} sampai {destination.data.typical_days.max} hari
+              </dd>
+            </div>
+            <div class="flex justify-between items-center">
+              <dt class="text-text-3 text-xs">Profil scoring</dt>
+              <dd class="text-text font-medium text-xs capitalize">{destination.data.profile}</dd>
+            </div>
+            <div class="flex justify-between items-center">
+              <dt class="text-text-3 text-xs">Koordinat</dt>
+              <dd class="text-text font-medium text-xs">
+                {destination.data.coords.lat.toFixed(2)}, {destination.data.coords.lon.toFixed(2)}
+              </dd>
+            </div>
+            <div class="flex justify-between items-center pt-2 border-t border-line">
+              <dt class="text-text-3 text-xs">Diverifikasi</dt>
+              <dd class="text-text font-medium text-xs">{destination.data.verified_at}</dd>
+            </div>
+          </dl>
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
