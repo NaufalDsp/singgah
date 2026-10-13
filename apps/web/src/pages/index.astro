@@ -162,70 +162,82 @@ const ratings: Record<string, string> = {
           </div>
         </div>
 
-        <!-- Kolom Kanan: Floating Glass Booking Planner Card (5 Kolom) - Sesuai Referensi -->
+        <!-- Kolom Kanan: Floating Booking Planner Card (5 Kolom) - Sesuai Referensi Gambar -->
         <div class="lg:col-span-5 flex justify-center lg:justify-end">
-          <div class="w-full max-w-[440px] bg-[#071922]/85 backdrop-blur-2xl border border-white/12 rounded-[28px] p-6 sm:p-7 shadow-[0_24px_64px_rgba(0,0,0,0.6)] relative overflow-hidden group">
-            <!-- Glow Ambience Halus di Sudut Kartu -->
-            <div class="absolute -top-24 -right-24 w-52 h-52 bg-mint/15 rounded-full blur-3xl pointer-events-none"></div>
-
+          <div
+            class="w-full max-w-[420px] rounded-[28px] p-6 sm:p-7 shadow-2xl relative overflow-hidden"
+            style="background-color: #121B1E; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.65);"
+          >
             <!-- Card Header: Where to next? -->
             <div class="mb-5">
-              <h2 class="font-sans font-bold text-2xl text-white tracking-tight flex items-center justify-between">
-                <span>Where to next?</span>
-                <span class="w-2 h-2 rounded-full bg-mint shadow-[0_0_8px_rgba(45,212,191,0.9)] animate-pulse-subtle"></span>
+              <h2 class="font-sans font-bold text-2xl text-white tracking-tight leading-tight">
+                Where to next?
               </h2>
-              <p class="font-sans text-xs text-white/60 mt-1 font-medium">Temukan pelarian terbaik di waktu yang tepat</p>
+              <p class="font-sans text-xs text-white/50 mt-1 font-normal">
+                Find your perfect escape
+              </p>
             </div>
 
-            <!-- Tab Pilihan Sesuai Referensi (Flights, Hotels, Experiences) -->
-            <div class="grid grid-cols-3 gap-1.5 p-1.5 bg-[#030f14]/80 border border-white/8 rounded-2xl mb-5 text-xs font-sans font-semibold">
+            <!-- Tab Pilihan Persis Sesuai Referensi (Flights, Hotels, Experiences) - Tanpa Blok Abu-abu -->
+            <div class="grid grid-cols-3 gap-2 mb-5 text-center">
               <button
                 type="button"
-                class="py-2.5 px-2 rounded-xl bg-white/12 text-white border border-white/15 shadow-sm flex items-center justify-center gap-1.5 transition-all"
+                class="hero-tab-btn flex flex-col items-center group cursor-pointer transition-colors"
+                style="background: transparent !important; border: none !important; box-shadow: none !important;"
               >
-                <svg class="w-3.5 h-3.5 text-mint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.6.5-1.1z"/>
                 </svg>
-                <span>Flights</span>
+                <span class="text-xs font-semibold text-white mt-1.5">Flights</span>
+                <span class="w-6 h-[2.5px] bg-[#2DD4BF] rounded-full mt-1.5 shadow-[0_0_8px_rgba(45,212,191,0.6)]"></span>
               </button>
+
               <button
                 type="button"
-                class="py-2.5 px-2 rounded-xl text-white/60 hover:text-white hover:bg-white/5 flex items-center justify-center gap-1.5 transition-all"
+                class="hero-tab-btn flex flex-col items-center group cursor-pointer text-white/45 hover:text-white transition-colors"
+                style="background: transparent !important; border: none !important; box-shadow: none !important;"
               >
-                <svg class="w-3.5 h-3.5 text-white/45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
                 </svg>
-                <span>Hotels</span>
+                <span class="text-xs font-medium mt-1.5">Hotels</span>
               </button>
+
               <button
                 type="button"
-                class="py-2.5 px-2 rounded-xl text-white/60 hover:text-white hover:bg-white/5 flex items-center justify-center gap-1.5 transition-all"
+                class="hero-tab-btn flex flex-col items-center group cursor-pointer text-white/45 hover:text-white transition-colors"
+                style="background: transparent !important; border: none !important; box-shadow: none !important;"
               >
-                <svg class="w-3.5 h-3.5 text-white/45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                 </svg>
-                <span>Experiences</span>
+                <span class="text-xs font-medium mt-1.5">Experiences</span>
               </button>
             </div>
 
-            <!-- Form Rencana Interaktif Berbasis Algoritma Singgah -->
-            <form action="/rencana/saran" method="get" class="space-y-3.5">
+            <!-- Form Rencana Interaktif -->
+            <form action="/rencana/saran" method="get" class="space-y-3">
               <!-- Route Container (From / To dengan Swap Button Sesuai Referensi) -->
-              <div class="relative bg-[#030f14]/85 rounded-2xl p-4 border border-white/10 shadow-inner">
+              <div
+                class="rounded-2xl p-4 transition-all duration-300"
+                style="background-color: #162227; border: 1px solid rgba(255, 255, 255, 0.08);"
+              >
                 <!-- Baris Asal (From) -->
-                <div class="flex items-center justify-between pb-3 border-b border-white/8">
-                  <div class="flex items-center gap-3">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 ring-4 ring-emerald-400/20"></span>
-                    <div>
-                      <span class="text-[10px] text-white/50 uppercase tracking-widest block font-bold">From</span>
+                <div class="flex items-center justify-between pb-3 border-b border-white/[0.06]">
+                  <div>
+                    <span class="text-[10px] text-white/45 uppercase tracking-wider block font-bold">FROM</span>
+                    <div class="flex items-center gap-2 mt-0.5">
+                      <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)] flex-shrink-0"></span>
                       <span class="text-xs sm:text-sm font-semibold text-white tracking-tight">Jakarta (CGK)</span>
                     </div>
                   </div>
-                  <!-- Circular Swap Icon Button -->
+                  <!-- Circular Swap Icon Button Sesuai Referensi -->
                   <button
                     type="button"
                     title="Tukar rute"
-                    class="w-8 h-8 rounded-full bg-white/[0.08] hover:bg-mint hover:text-[#03151D] border border-white/12 flex items-center justify-center text-white/80 transition-all duration-200 cursor-pointer shadow-sm active:scale-95"
+                    class="w-8 h-8 rounded-xl bg-[#202C31] hover:bg-mint hover:text-[#0C1E24] flex items-center justify-center text-white/70 transition-all duration-200 cursor-pointer shadow-sm active:scale-95"
+                    style="border: 1px solid rgba(255, 255, 255, 0.1);"
                   >
                     <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M7 16V4m0 0L3 8m4-4l4 4m6 4v12m0 0l4-4m-4 4l-4-4"/>
@@ -233,21 +245,22 @@ const ratings: Record<string, string> = {
                   </button>
                 </div>
 
-                <!-- Baris Tujuan (To) -->
-                <div class="flex items-center gap-3 pt-3">
-                  <span class="w-2.5 h-2.5 rounded-full bg-mint shadow-[0_0_10px_rgba(45,212,191,0.9)] ring-4 ring-mint/20"></span>
-                  <div class="flex-1 min-w-0">
-                    <label for="qp-hero-tujuan" class="text-[10px] text-mint uppercase tracking-widest block font-bold">To (Tujuan Singgah)</label>
-                    <div class="relative mt-0.5">
+                <!-- Baris Tujuan (To) - Tanpa Garis Border Tipis Bawaan Browser -->
+                <div class="pt-3">
+                  <label for="qp-hero-tujuan" class="text-[10px] text-white/45 uppercase tracking-wider block font-bold mb-0.5">TO</label>
+                  <div class="flex items-center gap-2 mt-0.5 relative">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)] flex-shrink-0"></span>
+                    <div class="relative flex-1 min-w-0">
                       <select
                         id="qp-hero-tujuan"
                         name="tujuan"
-                        class="w-full bg-transparent text-xs sm:text-sm font-semibold text-white outline-none cursor-pointer pr-6 appearance-none truncate"
+                        class="hero-select-clean w-full text-xs sm:text-sm font-semibold text-white cursor-pointer pr-6 truncate"
+                        style="background: transparent !important; border: none !important; outline: none !important; box-shadow: none !important; -webkit-appearance: none !important; -moz-appearance: none !important; appearance: none !important; padding: 0 !important; color-scheme: dark !important;"
                       >
-                        <option value="" class="bg-[#071822] text-white">Semua Destinasi (Saran AI Iklim)</option>
+                        <option value="" style="background-color: #121B1E; color: #FFFFFF;">Pilih Destinasi (Rekomendasi AI)</option>
                         {destinations.map((d) => (
-                          <option value={d.slug} class="bg-[#071822] text-white">
-                            {d.data.name} — {d.data.region.island}
+                          <option value={d.slug} style="background-color: #121B1E; color: #FFFFFF;">
+                            {d.data.name}, {d.data.region.island}
                           </option>
                         ))}
                       </select>
@@ -262,26 +275,30 @@ const ratings: Record<string, string> = {
               </div>
 
               <!-- Baris Dates & Travelers Bersebelahan Sesuai Referensi -->
-              <div class="grid grid-cols-2 gap-3">
-                <!-- Box Dates -->
-                <div class="bg-[#030f14]/85 rounded-2xl p-3.5 border border-white/10 hover:border-white/20 transition-colors">
+              <div class="grid grid-cols-2 gap-2.5">
+                <!-- Box Dates - Tanpa Garis Border Tipis Bawaan Browser -->
+                <div
+                  class="rounded-2xl p-3.5 hover:border-white/20 transition-all duration-300"
+                  style="background-color: #162227; border: 1px solid rgba(255, 255, 255, 0.08);"
+                >
                   <div class="flex items-center gap-1.5 mb-1">
-                    <svg class="w-3.5 h-3.5 text-mint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="w-3.5 h-3.5 text-white/45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                       <line x1="16" y1="2" x2="16" y2="6"></line>
                       <line x1="8" y1="2" x2="8" y2="6"></line>
                       <line x1="3" y1="10" x2="21" y2="10"></line>
                     </svg>
-                    <label for="qp-hero-bulan" class="text-[10px] text-white/55 uppercase tracking-widest font-bold">Dates</label>
+                    <label for="qp-hero-bulan" class="text-[10px] text-white/45 uppercase tracking-wider font-bold">DATES</label>
                   </div>
-                  <div class="relative">
+                  <div class="relative mt-1">
                     <select
                       id="qp-hero-bulan"
                       name="bulan"
-                      class="w-full bg-transparent text-xs sm:text-sm font-semibold text-white outline-none cursor-pointer pr-5 appearance-none"
+                      class="hero-select-clean w-full text-xs sm:text-sm font-semibold text-white cursor-pointer pr-5"
+                      style="background: transparent !important; border: none !important; outline: none !important; box-shadow: none !important; -webkit-appearance: none !important; -moz-appearance: none !important; appearance: none !important; padding: 0 !important; color-scheme: dark !important;"
                     >
                       {monthNamesFull.map((m, idx) => (
-                        <option value={idx + 1} selected={idx + 1 === currentMonth} class="bg-[#071822] text-white">
+                        <option value={idx + 1} selected={idx + 1 === currentMonth} style="background-color: #121B1E; color: #FFFFFF;">
                           {m}
                         </option>
                       ))}
@@ -294,28 +311,32 @@ const ratings: Record<string, string> = {
                   </div>
                 </div>
 
-                <!-- Box Travelers / Durasi -->
-                <div class="bg-[#030f14]/85 rounded-2xl p-3.5 border border-white/10 hover:border-white/20 transition-colors">
+                <!-- Box Travelers / Durasi - Tanpa Garis Border Tipis Bawaan Browser -->
+                <div
+                  class="rounded-2xl p-3.5 hover:border-white/20 transition-all duration-300"
+                  style="background-color: #162227; border: 1px solid rgba(255, 255, 255, 0.08);"
+                >
                   <div class="flex items-center gap-1.5 mb-1">
-                    <svg class="w-3.5 h-3.5 text-mint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="w-3.5 h-3.5 text-white/45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                       <circle cx="9" cy="7" r="4"></circle>
                       <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                       <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                     </svg>
-                    <label for="qp-hero-lama" class="text-[10px] text-white/55 uppercase tracking-widest font-bold">Travelers</label>
+                    <label for="qp-hero-lama" class="text-[10px] text-white/45 uppercase tracking-wider font-bold">TRAVELERS</label>
                   </div>
-                  <div class="relative">
+                  <div class="relative mt-1">
                     <select
                       id="qp-hero-lama"
                       name="lama"
-                      class="w-full bg-transparent text-xs sm:text-sm font-semibold text-white outline-none cursor-pointer pr-5 appearance-none"
+                      class="hero-select-clean w-full text-xs sm:text-sm font-semibold text-white cursor-pointer pr-5"
+                      style="background: transparent !important; border: none !important; outline: none !important; box-shadow: none !important; -webkit-appearance: none !important; -moz-appearance: none !important; appearance: none !important; padding: 0 !important; color-scheme: dark !important;"
                     >
-                      <option value="2" class="bg-[#071822] text-white">2 Hari • Weekend</option>
-                      <option value="3" class="bg-[#071822] text-white">3 Hari • Liburan</option>
-                      <option value="4" selected class="bg-[#071822] text-white">4 Hari • 2 Orang</option>
-                      <option value="5" class="bg-[#071822] text-white">5 Hari • Eksplorasi</option>
-                      <option value="7" class="bg-[#071822] text-white">7 Hari • Puas</option>
+                      <option value="2" style="background-color: #121B1E; color: #FFFFFF;">2 Adults • Weekend</option>
+                      <option value="3" style="background-color: #121B1E; color: #FFFFFF;">2 Adults • 3 Hari</option>
+                      <option value="4" selected style="background-color: #121B1E; color: #FFFFFF;">2 Adults • 4 Hari</option>
+                      <option value="5" style="background-color: #121B1E; color: #FFFFFF;">2 Adults • 5 Hari</option>
+                      <option value="7" style="background-color: #121B1E; color: #FFFFFF;">2 Adults • 7 Hari</option>
                     </select>
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center text-white/40">
                       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -329,9 +350,10 @@ const ratings: Record<string, string> = {
               <!-- Submit CTA Button Vibrant Mint Pill Sesuai Referensi -->
               <button
                 type="submit"
-                class="w-full mt-2 py-4 px-6 rounded-2xl bg-mint hover:bg-[#3bf5dd] text-[#03151D] font-bold text-sm sm:text-base tracking-tight shadow-[0_8px_24px_rgba(45,212,191,0.25)] hover:shadow-[0_12px_32px_rgba(45,212,191,0.4)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 flex items-center justify-center gap-2.5 group cursor-pointer"
+                class="w-full mt-4 py-3.5 px-6 rounded-2xl font-bold text-sm sm:text-base tracking-tight flex items-center justify-center gap-2 hover:brightness-105 active:scale-[0.99] transition-all duration-200 cursor-pointer shadow-[0_8px_24px_rgba(94,234,212,0.35)] hover:shadow-[0_12px_32px_rgba(94,234,212,0.5)] group"
+                style="background-color: #5EEAD4; color: #0C1E24; border: none !important;"
               >
-                <span>Cari Rekomendasi</span>
+                <span>Search Flights</span>
                 <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 20 20" fill="none">
                   <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -444,28 +466,38 @@ const ratings: Record<string, string> = {
         </div>
       </div>
 
-      <!-- Stats Bar Minimalis di Bawah Hero (Sesuai Referensi Wanderlust) -->
-      <div class="mt-8 pt-6 border-t border-white/8 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center sm:text-left">
-        <div>
-          <span class="font-sans font-extrabold text-2xl text-white block">6+</span>
-          <span class="font-sans text-xs text-text-3">Destinasi Terverifikasi</span>
+      <!-- Stats Bar di Bawah Hero Sesuai Referensi (Diberi Background & Teks Berwarna) -->
+      <div
+        class="mt-10 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-2xl relative overflow-hidden backdrop-blur-2xl border border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-white/10 text-left"
+        style="background-color: rgba(14, 25, 31, 0.85);"
+      >
+        <div class="sm:px-4 flex flex-col justify-center">
+          <span class="font-sans font-black text-2xl sm:text-3xl text-mint block tracking-tight">6+</span>
+          <span class="font-sans text-xs font-semibold text-mint/90 uppercase tracking-wider block mt-1">Destinasi Terverifikasi</span>
+          <span class="font-sans text-[11px] text-white/55 mt-0.5">Riset lapangan & satelit</span>
         </div>
-        <div>
-          <span class="font-sans font-extrabold text-2xl text-white block">30 Thn</span>
-          <span class="font-sans text-xs text-text-3">Rekam Jejak Iklim</span>
+
+        <div class="pt-4 sm:pt-0 sm:px-4 flex flex-col justify-center">
+          <span class="font-sans font-black text-2xl sm:text-3xl text-mint block tracking-tight">30 Thn</span>
+          <span class="font-sans text-xs font-semibold text-mint/90 uppercase tracking-wider block mt-1">Rekam Jejak Iklim</span>
+          <span class="font-sans text-[11px] text-white/55 mt-0.5">Data historis ECMWF presisi</span>
         </div>
-        <div>
-          <span class="font-sans font-extrabold text-2xl text-white block">100+</span>
-          <span class="font-sans text-xs text-text-3">Titik Highlight Alam & Ritus</span>
+
+        <div class="pt-4 sm:pt-0 sm:px-4 flex flex-col justify-center">
+          <span class="font-sans font-black text-2xl sm:text-3xl text-mint block tracking-tight">100+</span>
+          <span class="font-sans text-xs font-semibold text-mint/90 uppercase tracking-wider block mt-1">Titik Highlight Alam</span>
+          <span class="font-sans text-[11px] text-white/55 mt-0.5">Musim & momen terbaik</span>
         </div>
-        <div class="flex flex-col sm:items-start items-center">
+
+        <div class="pt-4 sm:pt-0 sm:px-4 flex flex-col justify-center">
           <div class="flex items-center gap-2">
-            <span class="font-sans font-extrabold text-2xl text-white">4.9</span>
-            <div class="flex text-star text-xs">
+            <span class="font-sans font-black text-2xl sm:text-3xl text-amber-400 tracking-tight">4.9</span>
+            <div class="flex text-amber-400 text-xs">
               <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
             </div>
           </div>
-          <span class="font-sans text-xs text-text-3">Rata-rata Rating Wisatawan</span>
+          <span class="font-sans text-xs font-semibold text-amber-300/90 uppercase tracking-wider block mt-1">Rating Wisatawan</span>
+          <span class="font-sans text-[11px] text-white/55 mt-0.5">100% netral & tanpa sponsor</span>
         </div>
       </div>
     </div>
@@ -894,4 +926,55 @@ const ratings: Record<string, string> = {
       </div>
     </div>
   </section>
+
+  <style is:global>
+    /* Reset tuntas untuk komponen hero widget agar tidak terkena user-agent stylesheet browser */
+    .hero-tab-btn {
+      background: transparent !important;
+      background-color: transparent !important;
+      border: 0 !important;
+      border-style: none !important;
+      box-shadow: none !important;
+      outline: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      appearance: none !important;
+    }
+    .hero-tab-btn:focus,
+    .hero-tab-btn:active,
+    .hero-tab-btn:hover {
+      background: transparent !important;
+      background-color: transparent !important;
+      border: 0 !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+    .hero-select-clean {
+      border: 0 !important;
+      border-style: none !important;
+      border-width: 0 !important;
+      outline: none !important;
+      box-shadow: none !important;
+      background: transparent !important;
+      background-color: transparent !important;
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      appearance: none !important;
+      color-scheme: dark !important;
+      padding-left: 0 !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+    .hero-select-clean::-ms-expand {
+      display: none !important;
+    }
+    .hero-select-clean:focus,
+    .hero-select-clean:active {
+      outline: none !important;
+      border: 0 !important;
+      box-shadow: none !important;
+    }
+  </style>
 </BaseLayout>
