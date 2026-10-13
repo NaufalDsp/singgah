@@ -18,31 +18,29 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
 
     // Hero Section
     'hero.eyebrow': 'NUSANTARA MENANTI',
-    'hero.title_part1': 'Adventures',
-    'hero.title_part2': 'That Stay',
-    'hero.title_part3': 'With You',
+    'hero.title': 'Petualangan <br /> Yang Selalu <br /> Bersamamu',
     'hero.desc': 'Temukan keelokan tersembunyi pulau-pulau Nusantara, momen musim terbaik yang presisi, dan kenangan abadi — dikurasi dari data iklim 30 tahun.',
     'hero.cta_explore': 'Jelajahi Destinasi',
     'hero.cta_notes': 'Catatan Lapangan',
 
-    // Booking Card
-    'planner.title': 'Where to next?',
-    'planner.subtitle': 'Find your perfect escape',
-    'planner.flights': 'Flights',
-    'planner.hotels': 'Hotels',
-    'planner.experiences': 'Experiences',
-    'planner.from_label': 'FROM',
-    'planner.to_label': 'TO',
-    'planner.dates_label': 'DATES',
-    'planner.travelers_label': 'TRAVELERS',
+    // Booking Card (Semua dalam Bahasa Indonesia)
+    'planner.title': 'Mau ke mana berikutnya?',
+    'planner.subtitle': 'Temukan liburan sempurna Anda',
+    'planner.flights': 'Penerbangan',
+    'planner.hotels': 'Hotel',
+    'planner.experiences': 'Aktivitas',
+    'planner.from_label': 'DARI',
+    'planner.to_label': 'KE',
+    'planner.dates_label': 'TANGGAL',
+    'planner.travelers_label': 'WISATAWAN',
     'planner.choose_dest': 'Pilih Destinasi (Rekomendasi AI)',
-    'planner.submit': 'Search Flights',
+    'planner.submit': 'Cari Penerbangan',
 
     // Trust Badges
-    'badge.verified_dest': 'Destinasi Terverifikasi',
-    'badge.verified_sub': 'Riset lapangan',
-    'badge.weather_data': 'Data Cuaca 30 Tahun',
-    'badge.weather_sub': 'ECMWF akurat',
+    'badge.verified_dest': 'Presisi Musim',
+    'badge.verified_sub': 'Skor objektif',
+    'badge.weather_data': 'Data 30 Tahun',
+    'badge.weather_sub': 'Open-Meteo',
     'badge.flex_plan': 'Rencana Fleksibel',
     'badge.flex_sub': 'Highlight nyata',
     'badge.ad_free': 'Bebas Sponsor',
@@ -70,6 +68,8 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
     'best.cta_detail': 'Lihat Detail Musim & Kalender →',
     'best.other_title': 'Pilihan Menarik Lainnya',
     'best.plan_route': 'Susun rute ke sini →',
+    'best.guide_btn': 'Lihat Panduan Lengkap',
+    'best.trend_title': 'Tren Musim 12 Bulan',
 
     // Ritme & Lanskap
     'mood.eyebrow': 'RITME & LANSKAP NUSANTARA',
@@ -109,6 +109,9 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
     'itinerary.heading': 'Contoh susunan rencana nyata',
     'itinerary.desc': 'Dirancang dari titik highlight autentik dengan memperhitungkan jarak tempuh, waktu terbaik hari, dan ritme tubuh.',
     'itinerary.cta': 'Rancang Rencana Perjalananmu Sendiri',
+    'itinerary.day1': 'Hari 01',
+    'itinerary.day2': 'Hari 02',
+    'itinerary.day3': 'Hari 03',
 
     // CTA Banner
     'cta_banner.badge': 'PERJALANAN PRESISI TANPA TEBAK-TEBAKAN',
@@ -150,14 +153,12 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
 
     // Hero Section
     'hero.eyebrow': 'THE ARCHIPELAGO AWAITS',
-    'hero.title_part1': 'Adventures',
-    'hero.title_part2': 'That Stay',
-    'hero.title_part3': 'With You',
+    'hero.title': 'Adventures <br /> That Stay <br /> With You',
     'hero.desc': 'Discover the hidden wonders of the Indonesian archipelago, precisely timed with optimal seasons and lasting memories — curated from 30 years of climate data.',
     'hero.cta_explore': 'Explore Destinations',
     'hero.cta_notes': 'Field Notes',
 
-    // Booking Card
+    // Booking Card (All in English)
     'planner.title': 'Where to next?',
     'planner.subtitle': 'Find your perfect escape',
     'planner.flights': 'Flights',
@@ -171,10 +172,10 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
     'planner.submit': 'Search Flights',
 
     // Trust Badges
-    'badge.verified_dest': 'Verified Destinations',
-    'badge.verified_sub': 'Field research',
+    'badge.verified_dest': 'Optimal Seasons',
+    'badge.verified_sub': 'Objective score',
     'badge.weather_data': '30-Year Climate Data',
-    'badge.weather_sub': 'Accurate ECMWF',
+    'badge.weather_sub': 'Open-Meteo ECMWF',
     'badge.flex_plan': 'Flexible Itineraries',
     'badge.flex_sub': 'Authentic highlights',
     'badge.ad_free': 'Zero Sponsorships',
@@ -202,6 +203,8 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
     'best.cta_detail': 'View Season Details & Calendar →',
     'best.other_title': 'Other Great Recommendations',
     'best.plan_route': 'Plan route here →',
+    'best.guide_btn': 'View Complete Guide',
+    'best.trend_title': '12-Month Season Trend',
 
     // Ritme & Lanskap
     'mood.eyebrow': 'ARCHIPELAGO RHYTHM & LANDSCAPES',
@@ -241,6 +244,9 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
     'itinerary.heading': 'Real-world curated itineraries',
     'itinerary.desc': 'Engineered from authentic highlights with transit times, optimal times of day, and natural biorhythms.',
     'itinerary.cta': 'Design Your Custom Itinerary',
+    'itinerary.day1': 'Day 01',
+    'itinerary.day2': 'Day 02',
+    'itinerary.day3': 'Day 03',
 
     // CTA Banner
     'cta_banner.badge': 'PRECISION TRAVEL WITHOUT GUESSWORK',
@@ -254,24 +260,24 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
     'footer.hero_title': 'Exploring when nature is at its friendliest',
     'footer.hero_btn1': 'Explore 6 Destinations',
     'footer.hero_btn2': 'Start Planning',
-    'footer.tagline': 'Archipelago destination curation platform based on 30-year historical climate data analysis (1994–2023) from Open-Meteo. Honest recommendations, free of sponsored bias.',
+    'footer.tagline': 'Archipelago destination curation platform powered by 30-year historical climate analysis (1994–2023) from Open-Meteo. Honest recommendations, unbiased & sponsor-free.',
     'footer.col_explore': 'Explore',
-    'footer.col_plan': 'Plan',
+    'footer.col_plan': 'Planning',
     'footer.col_transparency': 'Transparency',
     'footer.link_destinations': 'All Destinations',
-    'footer.link_moods': 'Mood Categories',
+    'footer.link_moods': 'Vibe Categories',
     'footer.link_notes': 'Field Notes',
-    'footer.link_quick': 'Quick Recommendations',
-    'footer.link_builder': 'Trip Builder',
-    'footer.link_my_plans': 'My Plans',
-    'footer.link_data': 'Methodology & Formulas',
+    'footer.link_quick': 'Quick Suggestions',
+    'footer.link_builder': 'Trip Planner',
+    'footer.link_my_plans': 'My Saved Plans',
+    'footer.link_data': 'Methodology & Science',
     'footer.link_credits': 'Photographer Credits',
     'footer.link_privacy': 'Privacy Policy',
     'footer.copyright': 'Singgah. Crafted with love for the natural beauty of the Archipelago.'
   }
 };
 
-const monthTranslations: Record<string, string> = {
+const monthTranslationsEn: Record<string, string> = {
   Januari: 'January',
   Februari: 'February',
   Maret: 'March',
@@ -286,12 +292,45 @@ const monthTranslations: Record<string, string> = {
   Desember: 'December',
 };
 
-const durationTranslations: Record<string, string> = {
+const monthTranslationsId: Record<string, string> = {
+  January: 'Januari',
+  February: 'Februari',
+  March: 'Maret',
+  April: 'April',
+  May: 'Mei',
+  June: 'Juni',
+  July: 'Juli',
+  August: 'Agustus',
+  September: 'September',
+  October: 'Oktober',
+  November: 'November',
+  December: 'Desember',
+};
+
+const durationTranslationsEn: Record<string, string> = {
+  '2 Dewasa • Akhir Pekan': '2 Adults • Weekend',
+  '2 Dewasa • 3 Hari': '2 Adults • 3 Days',
+  '2 Dewasa • 4 Hari': '2 Adults • 4 Days',
+  '2 Dewasa • 5 Hari': '2 Adults • 5 Days',
+  '2 Dewasa • 7 Hari': '2 Adults • 7 Days',
   '2 Adults • Weekend': '2 Adults • Weekend',
   '2 Adults • 3 Hari': '2 Adults • 3 Days',
   '2 Adults • 4 Hari': '2 Adults • 4 Days',
   '2 Adults • 5 Hari': '2 Adults • 5 Days',
   '2 Adults • 7 Hari': '2 Adults • 7 Days',
+};
+
+const durationTranslationsId: Record<string, string> = {
+  '2 Adults • Weekend': '2 Dewasa • Akhir Pekan',
+  '2 Adults • 3 Days': '2 Dewasa • 3 Hari',
+  '2 Adults • 4 Days': '2 Dewasa • 4 Hari',
+  '2 Adults • 5 Days': '2 Dewasa • 5 Hari',
+  '2 Adults • 7 Days': '2 Dewasa • 7 Hari',
+  '2 Dewasa • Akhir Pekan': '2 Dewasa • Akhir Pekan',
+  '2 Dewasa • 3 Hari': '2 Dewasa • 3 Hari',
+  '2 Dewasa • 4 Hari': '2 Dewasa • 4 Hari',
+  '2 Dewasa • 5 Hari': '2 Dewasa • 5 Hari',
+  '2 Dewasa • 7 Hari': '2 Dewasa • 7 Hari',
 };
 
 export function getSavedLang(): SupportedLang {
@@ -339,7 +378,11 @@ export function applyLanguage(lang: SupportedLang): void {
       if (!el.hasAttribute('data-i18n-original')) {
         el.setAttribute('data-i18n-original', el.textContent?.trim() || '');
       }
-      el.textContent = dict[key];
+      if (dict[key].includes('<br') || dict[key].includes('<span')) {
+        el.innerHTML = dict[key];
+      } else {
+        el.textContent = dict[key];
+      }
     }
   });
 
@@ -352,9 +395,9 @@ export function applyLanguage(lang: SupportedLang): void {
         opt.setAttribute('data-orig-text', original);
       }
       if (lang === 'en') {
-        opt.text = monthTranslations[original] || original;
+        opt.text = monthTranslationsEn[original] || original;
       } else {
-        opt.text = original;
+        opt.text = monthTranslationsId[original] || original;
       }
     });
   }
@@ -368,9 +411,9 @@ export function applyLanguage(lang: SupportedLang): void {
         opt.setAttribute('data-orig-text', original);
       }
       if (lang === 'en') {
-        opt.text = durationTranslations[original] || original;
+        opt.text = durationTranslationsEn[original] || original;
       } else {
-        opt.text = original;
+        opt.text = durationTranslationsId[original] || original;
       }
     });
   }
@@ -386,16 +429,18 @@ export function initLanguageSwitcher(): void {
   const dropdownMenu = document.getElementById('lang-dropdown-menu');
 
   if (toggleBtn && dropdownMenu) {
-    // Buka/tutup dropdown saat tombol diklik
+    // Buka/tutup dropdown saat tombol diklik (icon chevron berbalik arah secara mulus)
     toggleBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       const isHidden = dropdownMenu.classList.contains('hidden');
       if (isHidden) {
         dropdownMenu.classList.remove('hidden');
         toggleBtn.setAttribute('aria-expanded', 'true');
+        toggleBtn.classList.add('is-open');
       } else {
         dropdownMenu.classList.add('hidden');
         toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.classList.remove('is-open');
       }
     });
 
@@ -409,6 +454,7 @@ export function initLanguageSwitcher(): void {
         }
         dropdownMenu.classList.add('hidden');
         toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.classList.remove('is-open');
       });
     });
 
@@ -417,6 +463,7 @@ export function initLanguageSwitcher(): void {
       if (!dropdownMenu.contains(e.target as Node) && !toggleBtn.contains(e.target as Node)) {
         dropdownMenu.classList.add('hidden');
         toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.classList.remove('is-open');
       }
     });
 
@@ -425,6 +472,7 @@ export function initLanguageSwitcher(): void {
       if (e.key === 'Escape' && !dropdownMenu.classList.contains('hidden')) {
         dropdownMenu.classList.add('hidden');
         toggleBtn.setAttribute('aria-expanded', 'false');
+        toggleBtn.classList.remove('is-open');
       }
     });
   }

@@ -142,10 +142,10 @@ const moodBadges: Record<string, string> = {
           </div>
 
           <!-- Headline Editorial Mewah (Playfair Display / Serif) -->
-          <h1 id="hero-title" class="font-serif text-[clamp(2.8rem,6.8vw,6.4rem)] leading-[0.96] text-white tracking-tight mb-7">
-            Adventures <br />
-            That Stay <br />
-            With You
+          <h1 id="hero-title" class="font-serif text-[clamp(2.8rem,6.8vw,6.4rem)] leading-[0.96] text-white tracking-tight mb-7" data-i18n="hero.title">
+            Petualangan <br />
+            Yang Selalu <br />
+            Bersamamu
           </h1>
 
           <!-- Deskripsi Elegan -->
@@ -182,10 +182,10 @@ const moodBadges: Record<string, string> = {
             <!-- Card Header: Where to next? -->
             <div class="mb-5">
               <h2 class="font-sans font-bold text-2xl text-white tracking-tight leading-tight" data-i18n="planner.title">
-                Where to next?
+                Mau ke mana berikutnya?
               </h2>
               <p class="font-sans text-xs text-white/50 mt-1 font-normal" data-i18n="planner.subtitle">
-                Find your perfect escape
+                Temukan liburan sempurna Anda
               </p>
             </div>
 
@@ -199,7 +199,7 @@ const moodBadges: Record<string, string> = {
                 <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.6.5-1.1z"/>
                 </svg>
-                <span class="text-xs font-semibold text-white mt-1.5" data-i18n="planner.flights">Flights</span>
+                <span class="text-xs font-semibold text-white mt-1.5" data-i18n="planner.flights">Penerbangan</span>
                 <span class="w-6 h-[2.5px] bg-[#2DD4BF] rounded-full mt-1.5 shadow-[0_0_8px_rgba(45,212,191,0.6)]"></span>
               </button>
 
@@ -212,7 +212,7 @@ const moodBadges: Record<string, string> = {
                   <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                   <polyline points="9 22 9 12 15 12 15 22"/>
                 </svg>
-                <span class="text-xs font-medium mt-1.5" data-i18n="planner.hotels">Hotels</span>
+                <span class="text-xs font-medium mt-1.5" data-i18n="planner.hotels">Hotel</span>
               </button>
 
               <button
@@ -223,7 +223,7 @@ const moodBadges: Record<string, string> = {
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                 </svg>
-                <span class="text-xs font-medium mt-1.5" data-i18n="planner.experiences">Experiences</span>
+                <span class="text-xs font-medium mt-1.5" data-i18n="planner.experiences">Aktivitas</span>
               </button>
             </div>
 
@@ -237,7 +237,7 @@ const moodBadges: Record<string, string> = {
                 <!-- Baris Asal (From) -->
                 <div class="flex items-center justify-between pb-3 border-b border-white/[0.06]">
                   <div>
-                    <span class="text-[10px] text-white/45 uppercase tracking-wider block font-bold" data-i18n="planner.from_label">FROM</span>
+                    <span class="text-[10px] text-white/45 uppercase tracking-wider block font-bold" data-i18n="planner.from_label">DARI</span>
                     <div class="flex items-center gap-2 mt-0.5">
                       <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)] flex-shrink-0"></span>
                       <span class="text-xs sm:text-sm font-semibold text-white tracking-tight">Jakarta (CGK)</span>
@@ -258,7 +258,7 @@ const moodBadges: Record<string, string> = {
 
                 <!-- Baris Tujuan (To) - Lebih Luas, Rapi, & Animasi Dropdown Icon -->
                 <div class="pt-3.5 pb-1 dropdown-field-group group">
-                  <label for="qp-hero-tujuan" class="text-[10px] text-white/50 uppercase tracking-wider block font-bold mb-1" data-i18n="planner.to_label">TO</label>
+                  <label for="qp-hero-tujuan" class="text-[10px] text-white/50 uppercase tracking-wider block font-bold mb-1" data-i18n="planner.to_label">KE</label>
                   <div class="flex items-center gap-2.5 mt-0.5 relative">
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)] flex-shrink-0 animate-pulse-subtle"></span>
                     <div class="relative flex-1 min-w-0">
@@ -299,7 +299,7 @@ const moodBadges: Record<string, string> = {
                       <line x1="8" y1="2" x2="8" y2="6"></line>
                       <line x1="3" y1="10" x2="21" y2="10"></line>
                     </svg>
-                    <label for="qp-hero-bulan" class="text-[10px] text-white/50 uppercase tracking-wider font-bold" data-i18n="planner.dates_label">DATES</label>
+                    <label for="qp-hero-bulan" class="text-[10px] text-white/50 uppercase tracking-wider font-bold" data-i18n="planner.dates_label">TANGGAL</label>
                   </div>
                   <div class="relative mt-1">
                     <select
@@ -334,7 +334,7 @@ const moodBadges: Record<string, string> = {
                       <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                       <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                     </svg>
-                    <label for="qp-hero-lama" class="text-[10px] text-white/50 uppercase tracking-wider font-bold" data-i18n="planner.travelers_label">TRAVELERS</label>
+                    <label for="qp-hero-lama" class="text-[10px] text-white/50 uppercase tracking-wider font-bold" data-i18n="planner.travelers_label">WISATAWAN</label>
                   </div>
                   <div class="relative mt-1">
                     <select
@@ -343,11 +343,11 @@ const moodBadges: Record<string, string> = {
                       class="hero-select-clean w-full text-xs sm:text-sm font-semibold text-white cursor-pointer pr-6"
                       style="background: transparent !important; border: none !important; outline: none !important; box-shadow: none !important; -webkit-appearance: none !important; -moz-appearance: none !important; appearance: none !important; color-scheme: dark !important;"
                     >
-                      <option value="2" style="background-color: #121B1E; color: #FFFFFF;">2 Adults • Weekend</option>
-                      <option value="3" style="background-color: #121B1E; color: #FFFFFF;">2 Adults • 3 Hari</option>
-                      <option value="4" selected style="background-color: #121B1E; color: #FFFFFF;">2 Adults • 4 Hari</option>
-                      <option value="5" style="background-color: #121B1E; color: #FFFFFF;">2 Adults • 5 Hari</option>
-                      <option value="7" style="background-color: #121B1E; color: #FFFFFF;">2 Adults • 7 Hari</option>
+                      <option value="2" style="background-color: #121B1E; color: #FFFFFF;">2 Dewasa • Akhir Pekan</option>
+                      <option value="3" style="background-color: #121B1E; color: #FFFFFF;">2 Dewasa • 3 Hari</option>
+                      <option value="4" selected style="background-color: #121B1E; color: #FFFFFF;">2 Dewasa • 4 Hari</option>
+                      <option value="5" style="background-color: #121B1E; color: #FFFFFF;">2 Dewasa • 5 Hari</option>
+                      <option value="7" style="background-color: #121B1E; color: #FFFFFF;">2 Dewasa • 7 Hari</option>
                     </select>
                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center text-white/50 group-hover:text-mint transition-colors">
                       <svg class="w-3.5 h-3.5 dropdown-anim-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -364,7 +364,7 @@ const moodBadges: Record<string, string> = {
                 class="w-full mt-4 py-3.5 px-6 rounded-2xl font-bold text-sm sm:text-base tracking-tight flex items-center justify-center gap-2 hover:brightness-105 active:scale-[0.99] transition-all duration-200 cursor-pointer shadow-[0_8px_24px_rgba(94,234,212,0.35)] hover:shadow-[0_12px_32px_rgba(94,234,212,0.5)] group"
                 style="background-color: #5EEAD4; color: #0C1E24; border: none !important;"
               >
-                <span data-i18n="planner.submit">Search Flights</span>
+                <span data-i18n="planner.submit">Cari Penerbangan</span>
                 <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 20 20" fill="none">
                   <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -1091,27 +1091,48 @@ const moodBadges: Record<string, string> = {
       box-shadow: none !important;
     }
 
-    /* Animasi Halus Icon Dropdown Keatas/Kebawah */
-    @keyframes dropdownChevronUpDown {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(3.5px);
-      }
-    }
-
+    /* Animasi Halus Icon Dropdown Berbalik Arah (180deg) Saat Diklik / Fokus */
     .dropdown-anim-chevron {
-      animation: dropdownChevronUpDown 2.2s ease-in-out infinite;
       transform-origin: center;
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
       display: inline-block;
+      will-change: transform;
     }
 
-    .dropdown-field-group:hover .dropdown-anim-chevron,
-    .dropdown-field-group:focus-within .dropdown-anim-chevron {
+    .dropdown-field-group:hover .dropdown-anim-chevron {
+      color: #2DD4BF;
+    }
+
+    /* Ketika select diklik / dibuka / fokus, icon chevron berbalik arah 180 derajat secara mulus */
+    .dropdown-field-group:focus-within .dropdown-anim-chevron,
+    .dropdown-field-group.is-open .dropdown-anim-chevron {
       color: #2DD4BF !important;
-      transform: translateY(3.5px);
+      transform: rotate(180deg);
     }
   </style>
+
+  <script>
+    function setupSelectDropdownAnimations() {
+      const fieldGroups = document.querySelectorAll('.dropdown-field-group');
+      fieldGroups.forEach((group) => {
+        const select = group.querySelector('select');
+        if (!select) return;
+
+        select.addEventListener('focus', () => {
+          group.classList.add('is-open');
+        });
+
+        select.addEventListener('blur', () => {
+          group.classList.remove('is-open');
+        });
+
+        select.addEventListener('change', () => {
+          group.classList.remove('is-open');
+        });
+      });
+    }
+
+    setupSelectDropdownAnimations();
+    document.addEventListener('astro:page-load', setupSelectDropdownAnimations);
+  </script>
 </BaseLayout>

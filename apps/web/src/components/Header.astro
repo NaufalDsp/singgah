@@ -270,11 +270,13 @@ const { transparent = true } = Astro.props;
   }
 
   .region-chevron {
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+    transform-origin: center;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+    display: inline-block;
+    will-change: transform;
   }
 
   .region-pill:hover .region-chevron {
-    transform: translateY(2px);
     color: var(--mint);
   }
 
@@ -485,8 +487,9 @@ const { transparent = true } = Astro.props;
     box-shadow: 0 0 0 1px #FFFFFF;
   }
 
-  /* Icon rotasi ketika menu aktif */
-  button[aria-expanded="true"] .region-chevron {
+  /* Icon rotasi ketika menu aktif - Berbalik arah secara mulus (180deg) */
+  button[aria-expanded="true"] .region-chevron,
+  .region-pill.is-open .region-chevron {
     transform: rotate(180deg);
     color: var(--mint);
   }
