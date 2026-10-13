@@ -51,7 +51,7 @@ const { transparent = true } = Astro.props;
           ></path>
         </svg>
         <span class="font-sans font-semibold text-sm text-white tracking-wide">ID</span>
-        <svg class="w-3.5 h-3.5 text-white/60 ml-0.5 flex-shrink-0" viewBox="0 0 16 16" fill="none">
+        <svg class="region-chevron w-3.5 h-3.5 text-white/60 ml-0.5 flex-shrink-0" viewBox="0 0 16 16" fill="none">
           <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
         </svg>
       </div>
@@ -222,6 +222,15 @@ const { transparent = true } = Astro.props;
     background: rgba(255, 255, 255, 0.16);
     border-color: rgba(255, 255, 255, 0.3);
     transform: translateY(-1px);
+  }
+
+  .region-chevron {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+  }
+
+  .region-pill:hover .region-chevron {
+    transform: translateY(2px);
+    color: var(--mint);
   }
 
   @media (min-width: 640px) {
