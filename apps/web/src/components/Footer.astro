@@ -9,12 +9,12 @@ const currentYear = 2026;
     <!-- Top Newsletter / Brand Banner -->
     <div class="footer-hero-strip">
       <div>
-        <span class="text-xs uppercase tracking-[0.2em] text-mint font-semibold block mb-2">SINGGAH NUSANTARA</span>
-        <h3 class="font-serif text-2xl md:text-3xl text-white">Menjelajah di saat alam sedang paling ramah</h3>
+        <span class="text-xs uppercase tracking-[0.2em] text-mint font-semibold block mb-2" data-i18n="footer.hero_badge">SINGGAH NUSANTARA</span>
+        <h3 class="font-serif text-2xl md:text-3xl text-white" data-i18n="footer.hero_title">Menjelajah di saat alam sedang paling ramah</h3>
       </div>
       <div class="flex items-center gap-3">
-        <a href="/destinasi" class="btn-glass text-xs py-2.5 px-5">Lihat 6 Destinasi</a>
-        <a href="/rencana/baru" class="btn-primary text-xs py-2.5 px-6">Mulai Rencana</a>
+        <a href="/destinasi" class="btn-glass text-xs py-2.5 px-5" data-i18n="footer.hero_btn1">Lihat 6 Destinasi</a>
+        <a href="/rencana/baru" class="btn-primary text-xs py-2.5 px-6" data-i18n="footer.hero_btn2">Mulai Rencana</a>
       </div>
     </div>
 
@@ -23,36 +23,36 @@ const currentYear = 2026;
         <a href="/" class="mb-4 inline-flex">
           <Logo size="md" showTagline={true} />
         </a>
-        <p class="footer-tagline">
+        <p class="footer-tagline" data-i18n="footer.tagline">
           Platform kurasi destinasi Nusantara berbasis analisis data iklim historis 30 tahun (1994–2023) dari Open-Meteo. Memberikan rekomendasi jujur, tanpa opini sponsor.
         </p>
       </div>
 
       <nav class="footer-links-grid" aria-label="Tautan Footer">
         <div class="footer-col">
-          <h4 class="footer-heading">Jelajah</h4>
+          <h4 class="footer-heading" data-i18n="footer.col_explore">Jelajah</h4>
           <ul>
-            <li><a href="/destinasi">Semua Destinasi</a></li>
-            <li><a href="/suasana">Kategori Suasana</a></li>
-            <li><a href="/catatan">Catatan Lapangan</a></li>
+            <li><a href="/destinasi" data-i18n="footer.link_destinations">Semua Destinasi</a></li>
+            <li><a href="/suasana" data-i18n="footer.link_moods">Kategori Suasana</a></li>
+            <li><a href="/catatan" data-i18n="footer.link_notes">Catatan Lapangan</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-heading">Rencana</h4>
+          <h4 class="footer-heading" data-i18n="footer.col_plan">Rencana</h4>
           <ul>
-            <li><a href="/rencana/saran">Rekomendasi Cepat</a></li>
-            <li><a href="/rencana/baru">Penyusun Rencana</a></li>
-            <li><a href="/rencana">Rencana Saya</a></li>
+            <li><a href="/rencana/saran" data-i18n="footer.link_quick">Rekomendasi Cepat</a></li>
+            <li><a href="/rencana/baru" data-i18n="footer.link_builder">Penyusun Rencana</a></li>
+            <li><a href="/rencana" data-i18n="footer.link_my_plans">Rencana Saya</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h4 class="footer-heading">Transparansi</h4>
+          <h4 class="footer-heading" data-i18n="footer.col_transparency">Transparansi</h4>
           <ul>
-            <li><a href="/catatan-data">Metodologi & Rumus</a></li>
-            <li><a href="/atribusi">Kredit Fotografer</a></li>
-            <li><a href="/privasi">Kebijakan Privasi</a></li>
+            <li><a href="/catatan-data" data-i18n="footer.link_data">Metodologi & Rumus</a></li>
+            <li><a href="/atribusi" data-i18n="footer.link_credits">Kredit Fotografer</a></li>
+            <li><a href="/privasi" data-i18n="footer.link_privacy">Kebijakan Privasi</a></li>
           </ul>
         </div>
       </nav>
@@ -60,7 +60,7 @@ const currentYear = 2026;
 
     <div class="footer-bottom text-center">
       <p class="footer-copy">
-        &copy; {currentYear} Singgah. Dibuat dengan cinta untuk keindahan alam Nusantara.
+        &copy; {currentYear} <span data-i18n="footer.copyright">Singgah. Dibuat dengan cinta untuk keindahan alam Nusantara.</span>
       </p>
     </div>
   </div>

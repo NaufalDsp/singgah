@@ -137,8 +137,8 @@ const moodBadges: Record<string, string> = {
         <div class="lg:col-span-7 flex flex-col items-start pt-6">
           <!-- Eyebrow Badge dengan Garis Tipis -->
           <div class="flex items-center gap-3 mb-6">
-            <span class="w-8 h-[2px] bg-mint rounded-full"></span>
-            <span class="text-xs uppercase tracking-[0.25em] text-mint font-semibold">NUSANTARA MENANTI</span>
+            <span class="w-8 h-[2px] bg-white rounded-full"></span>
+            <span class="text-xs uppercase tracking-[0.25em] text-mint font-bold" data-i18n="hero.eyebrow">NUSANTARA MENANTI</span>
           </div>
 
           <!-- Headline Editorial Mewah (Playfair Display / Serif) -->
@@ -149,14 +149,14 @@ const moodBadges: Record<string, string> = {
           </h1>
 
           <!-- Deskripsi Elegan -->
-          <p class="font-sans text-[clamp(1rem,1.35vw,1.2rem)] text-white/85 max-w-[48ch] leading-relaxed mb-9 font-normal">
+          <p class="font-sans text-[clamp(1rem,1.35vw,1.2rem)] text-white/85 max-w-[48ch] leading-relaxed mb-9 font-normal" data-i18n="hero.desc">
             Temukan keelokan tersembunyi pulau-pulau Nusantara, momen musim terbaik yang presisi, dan kenangan abadi — dikurasi dari data iklim 30 tahun.
           </p>
 
           <!-- Dual Call To Actions -->
           <div class="flex flex-wrap items-center gap-5">
             <a href="/destinasi" class="btn-primary group">
-              <span>Jelajahi Destinasi</span>
+              <span data-i18n="hero.cta_explore">Jelajahi Destinasi</span>
               <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 20 20" fill="none">
                 <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -168,7 +168,7 @@ const moodBadges: Record<string, string> = {
                   <path d="M4 3.5L13 8L4 12.5V3.5Z" />
                 </svg>
               </span>
-              <span>Catatan Lapangan</span>
+              <span data-i18n="hero.cta_notes">Catatan Lapangan</span>
             </a>
           </div>
         </div>
@@ -181,10 +181,10 @@ const moodBadges: Record<string, string> = {
           >
             <!-- Card Header: Where to next? -->
             <div class="mb-5">
-              <h2 class="font-sans font-bold text-2xl text-white tracking-tight leading-tight">
+              <h2 class="font-sans font-bold text-2xl text-white tracking-tight leading-tight" data-i18n="planner.title">
                 Where to next?
               </h2>
-              <p class="font-sans text-xs text-white/50 mt-1 font-normal">
+              <p class="font-sans text-xs text-white/50 mt-1 font-normal" data-i18n="planner.subtitle">
                 Find your perfect escape
               </p>
             </div>
@@ -199,7 +199,7 @@ const moodBadges: Record<string, string> = {
                 <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.6.5-1.1z"/>
                 </svg>
-                <span class="text-xs font-semibold text-white mt-1.5">Flights</span>
+                <span class="text-xs font-semibold text-white mt-1.5" data-i18n="planner.flights">Flights</span>
                 <span class="w-6 h-[2.5px] bg-[#2DD4BF] rounded-full mt-1.5 shadow-[0_0_8px_rgba(45,212,191,0.6)]"></span>
               </button>
 
@@ -212,7 +212,7 @@ const moodBadges: Record<string, string> = {
                   <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                   <polyline points="9 22 9 12 15 12 15 22"/>
                 </svg>
-                <span class="text-xs font-medium mt-1.5">Hotels</span>
+                <span class="text-xs font-medium mt-1.5" data-i18n="planner.hotels">Hotels</span>
               </button>
 
               <button
@@ -223,7 +223,7 @@ const moodBadges: Record<string, string> = {
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                 </svg>
-                <span class="text-xs font-medium mt-1.5">Experiences</span>
+                <span class="text-xs font-medium mt-1.5" data-i18n="planner.experiences">Experiences</span>
               </button>
             </div>
 
@@ -237,7 +237,7 @@ const moodBadges: Record<string, string> = {
                 <!-- Baris Asal (From) -->
                 <div class="flex items-center justify-between pb-3 border-b border-white/[0.06]">
                   <div>
-                    <span class="text-[10px] text-white/45 uppercase tracking-wider block font-bold">FROM</span>
+                    <span class="text-[10px] text-white/45 uppercase tracking-wider block font-bold" data-i18n="planner.from_label">FROM</span>
                     <div class="flex items-center gap-2 mt-0.5">
                       <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)] flex-shrink-0"></span>
                       <span class="text-xs sm:text-sm font-semibold text-white tracking-tight">Jakarta (CGK)</span>
@@ -258,7 +258,7 @@ const moodBadges: Record<string, string> = {
 
                 <!-- Baris Tujuan (To) - Lebih Luas, Rapi, & Animasi Dropdown Icon -->
                 <div class="pt-3.5 pb-1 dropdown-field-group group">
-                  <label for="qp-hero-tujuan" class="text-[10px] text-white/50 uppercase tracking-wider block font-bold mb-1">TO</label>
+                  <label for="qp-hero-tujuan" class="text-[10px] text-white/50 uppercase tracking-wider block font-bold mb-1" data-i18n="planner.to_label">TO</label>
                   <div class="flex items-center gap-2.5 mt-0.5 relative">
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)] flex-shrink-0 animate-pulse-subtle"></span>
                     <div class="relative flex-1 min-w-0">
@@ -268,7 +268,7 @@ const moodBadges: Record<string, string> = {
                         class="hero-select-clean w-full text-xs sm:text-sm font-semibold text-white cursor-pointer pr-7 truncate"
                         style="background: transparent !important; border: none !important; outline: none !important; box-shadow: none !important; -webkit-appearance: none !important; -moz-appearance: none !important; appearance: none !important; color-scheme: dark !important;"
                       >
-                        <option value="" style="background-color: #121B1E; color: #FFFFFF;">Pilih Destinasi (Rekomendasi AI)</option>
+                        <option value="" style="background-color: #121B1E; color: #FFFFFF;" data-i18n="planner.choose_dest">Pilih Destinasi (Rekomendasi AI)</option>
                         {destinations.map((d) => (
                           <option value={d.slug} style="background-color: #121B1E; color: #FFFFFF;">
                             {d.data.name}, {d.data.region.island}
@@ -299,7 +299,7 @@ const moodBadges: Record<string, string> = {
                       <line x1="8" y1="2" x2="8" y2="6"></line>
                       <line x1="3" y1="10" x2="21" y2="10"></line>
                     </svg>
-                    <label for="qp-hero-bulan" class="text-[10px] text-white/50 uppercase tracking-wider font-bold">DATES</label>
+                    <label for="qp-hero-bulan" class="text-[10px] text-white/50 uppercase tracking-wider font-bold" data-i18n="planner.dates_label">DATES</label>
                   </div>
                   <div class="relative mt-1">
                     <select
@@ -334,7 +334,7 @@ const moodBadges: Record<string, string> = {
                       <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                       <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                     </svg>
-                    <label for="qp-hero-lama" class="text-[10px] text-white/50 uppercase tracking-wider font-bold">TRAVELERS</label>
+                    <label for="qp-hero-lama" class="text-[10px] text-white/50 uppercase tracking-wider font-bold" data-i18n="planner.travelers_label">TRAVELERS</label>
                   </div>
                   <div class="relative mt-1">
                     <select
@@ -364,7 +364,7 @@ const moodBadges: Record<string, string> = {
                 class="w-full mt-4 py-3.5 px-6 rounded-2xl font-bold text-sm sm:text-base tracking-tight flex items-center justify-center gap-2 hover:brightness-105 active:scale-[0.99] transition-all duration-200 cursor-pointer shadow-[0_8px_24px_rgba(94,234,212,0.35)] hover:shadow-[0_12px_32px_rgba(94,234,212,0.5)] group"
                 style="background-color: #5EEAD4; color: #0C1E24; border: none !important;"
               >
-                <span>Search Flights</span>
+                <span data-i18n="planner.submit">Search Flights</span>
                 <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 20 20" fill="none">
                   <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
@@ -382,8 +382,8 @@ const moodBadges: Record<string, string> = {
         <div class="lg:col-span-7">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-3">
-              <h3 class="font-sans font-bold text-base text-white">Destinasi Populer</h3>
-              <a href="/destinasi" class="text-xs text-mint hover:underline font-medium">Lihat semua</a>
+              <h3 class="font-sans font-bold text-base text-white" data-i18n="pop.title">Destinasi Populer</h3>
+              <a href="/destinasi" class="text-xs text-mint hover:underline font-medium" data-i18n="pop.view_all">Lihat semua</a>
             </div>
           </div>
 
@@ -427,8 +427,8 @@ const moodBadges: Record<string, string> = {
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                 </svg>
               </div>
-              <span class="text-[11px] font-bold text-white block">Data 30 Tahun</span>
-              <span class="text-[9px] text-text-3">Open-Meteo</span>
+              <span class="text-[11px] font-bold text-white block" data-i18n="badge.weather_data">Data 30 Tahun</span>
+              <span class="text-[9px] text-text-3" data-i18n="badge.weather_sub">Open-Meteo</span>
             </div>
 
             <div class="flex flex-col items-center">
@@ -437,8 +437,8 @@ const moodBadges: Record<string, string> = {
                   <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
                 </svg>
               </div>
-              <span class="text-[11px] font-bold text-white block">Presisi Musim</span>
-              <span class="text-[9px] text-text-3">Skor objektif</span>
+              <span class="text-[11px] font-bold text-white block" data-i18n="badge.verified_dest">Presisi Musim</span>
+              <span class="text-[9px] text-text-3" data-i18n="badge.verified_sub">Skor objektif</span>
             </div>
 
             <div class="flex flex-col items-center">
@@ -447,8 +447,8 @@ const moodBadges: Record<string, string> = {
                   <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
                 </svg>
               </div>
-              <span class="text-[11px] font-bold text-white block">Rencana Fleksibel</span>
-              <span class="text-[9px] text-text-3">Highlight nyata</span>
+              <span class="text-[11px] font-bold text-white block" data-i18n="badge.flex_plan">Rencana Fleksibel</span>
+              <span class="text-[9px] text-text-3" data-i18n="badge.flex_sub">Highlight nyata</span>
             </div>
 
             <div class="flex flex-col items-center">
@@ -457,8 +457,8 @@ const moodBadges: Record<string, string> = {
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                 </svg>
               </div>
-              <span class="text-[11px] font-bold text-white block">Bebas Sponsor</span>
-              <span class="text-[9px] text-text-3">100% Netral</span>
+              <span class="text-[11px] font-bold text-white block" data-i18n="badge.ad_free">Bebas Sponsor</span>
+              <span class="text-[9px] text-text-3" data-i18n="badge.ad_free_sub">100% Netral</span>
             </div>
           </div>
         </div>
@@ -471,20 +471,20 @@ const moodBadges: Record<string, string> = {
       >
         <div class="sm:px-4 flex flex-col justify-center">
           <span class="font-sans font-black text-2xl sm:text-3xl text-mint block tracking-tight">6+</span>
-          <span class="font-sans text-xs font-semibold text-mint/90 uppercase tracking-wider block mt-1">Destinasi</span>
-          <span class="font-sans text-[11px] text-white/55 mt-0.5">Riset lapangan & satelit</span>
+          <span class="font-sans text-xs font-semibold text-mint/90 uppercase tracking-wider block mt-1" data-i18n="stats.dest">Destinasi</span>
+          <span class="font-sans text-[11px] text-white/55 mt-0.5" data-i18n="stats.dest_sub">Riset lapangan & satelit</span>
         </div>
 
         <div class="pt-4 sm:pt-0 sm:px-4 flex flex-col justify-center">
           <span class="font-sans font-black text-2xl sm:text-3xl text-mint block tracking-tight">30 Tahun</span>
-          <span class="font-sans text-xs font-semibold text-mint/90 uppercase tracking-wider block mt-1">Rekam Jejak Iklim</span>
-          <span class="font-sans text-[11px] text-white/55 mt-0.5">Data historis ECMWF presisi</span>
+          <span class="font-sans text-xs font-semibold text-mint/90 uppercase tracking-wider block mt-1" data-i18n="stats.climate">Rekam Jejak Iklim</span>
+          <span class="font-sans text-[11px] text-white/55 mt-0.5" data-i18n="stats.climate_sub">Data historis ECMWF presisi</span>
         </div>
 
         <div class="pt-4 sm:pt-0 sm:px-4 flex flex-col justify-center">
           <span class="font-sans font-black text-2xl sm:text-3xl text-mint block tracking-tight">100+</span>
-          <span class="font-sans text-xs font-semibold text-mint/90 uppercase tracking-wider block mt-1">Titik Highlight Alam</span>
-          <span class="font-sans text-[11px] text-white/55 mt-0.5">Musim & momen terbaik</span>
+          <span class="font-sans text-xs font-semibold text-mint/90 uppercase tracking-wider block mt-1" data-i18n="stats.highlights">Titik Highlight Alam</span>
+          <span class="font-sans text-[11px] text-white/55 mt-0.5" data-i18n="stats.highlights_sub">Musim & momen terbaik</span>
         </div>
 
         <div class="pt-4 sm:pt-0 sm:px-4 flex flex-col justify-center">
@@ -494,8 +494,8 @@ const moodBadges: Record<string, string> = {
               <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
             </div>
           </div>
-          <span class="font-sans text-xs font-semibold text-amber-300/90 uppercase tracking-wider block mt-1">Rating Wisatawan</span>
-          <span class="font-sans text-[11px] text-white/55 mt-0.5">100% netral & tanpa sponsor</span>
+          <span class="font-sans text-xs font-semibold text-amber-300/90 uppercase tracking-wider block mt-1" data-i18n="stats.rating">Rating Wisatawan</span>
+          <span class="font-sans text-[11px] text-white/55 mt-0.5" data-i18n="stats.rating_sub">100% netral & tanpa sponsor</span>
         </div>
       </div>
     </div>
@@ -511,11 +511,11 @@ const moodBadges: Record<string, string> = {
           <span class="w-2 h-2 rounded-full bg-mint animate-pulse-subtle"></span>
           <span>REKOMENDASI BULAN {currentMonthName.toUpperCase()}</span>
         </div>
-        <h2 class="font-serif text-[clamp(2.2rem,4.2vw,3.8rem)] text-white">
+        <h2 class="font-serif text-[clamp(2.2rem,4.2vw,3.8rem)] text-white" data-i18n="best.heading">
           Sedang bagus dikunjungi bulan ini
         </h2>
       </div>
-      <p class="font-sans text-sm text-text-2 max-w-md mt-4 md:mt-0">
+      <p class="font-sans text-sm text-text-2 max-w-md mt-4 md:mt-0" data-i18n="best.subheading">
         Destinasi dengan rasio hari cerah tertinggi dan curah hujan terendah berdasarkan algoritma cuaca 30 tahun.
       </p>
     </div>
@@ -583,7 +583,7 @@ const moodBadges: Record<string, string> = {
                     <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                   </svg>
                 </a>
-                <a href={`/rencana/saran?tujuan=${topDestination.dest.slug}&bulan=${currentMonth}`} class="text-xs font-semibold text-mint hover:underline">
+                <a href={`/rencana/saran?tujuan=${topDestination.dest.slug}&bulan=${currentMonth}`} class="text-xs font-semibold text-mint hover:underline" data-i18n="best.plan_route">
                   Susun rute ke sini →
                 </a>
               </div>
@@ -594,7 +594,7 @@ const moodBadges: Record<string, string> = {
 
       <!-- Kolom Kanan: Daftar Rekomendasi Pilihan Lainnya (5 Kolom) -->
       <div class="lg:col-span-5 flex flex-col gap-4">
-        <span class="text-xs font-semibold uppercase tracking-wider text-text-3 block mb-1">Pilihan Menarik Lainnya</span>
+        <span class="text-xs font-semibold uppercase tracking-wider text-text-3 block mb-1" data-i18n="best.other_title">Pilihan Menarik Lainnya</span>
         {otherGoodDestinations.map(({ dest, score }: any) => (
           <a
             href={`/destinasi/${dest.slug}`}
@@ -660,16 +660,16 @@ const moodBadges: Record<string, string> = {
         <div>
           <div class="flex items-center gap-3 mb-3">
             <span class="w-7 h-[2px] bg-mint rounded-full"></span>
-            <span class="text-xs uppercase tracking-[0.25em] text-mint font-semibold">RITME & LANSKAP NUSANTARA</span>
+            <span class="text-xs uppercase tracking-[0.25em] text-mint font-semibold" data-i18n="mood.eyebrow">RITME & LANSKAP NUSANTARA</span>
             <span class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-mint/10 border border-mint/25 text-[10px] text-mint font-semibold">
               <span class="w-1.5 h-1.5 rounded-full bg-mint animate-pulse-subtle"></span>
-              5 Karakter Alam
+              <span data-i18n="mood.count_badge">5 Karakter Alam</span>
             </span>
           </div>
-          <h2 class="font-serif text-[clamp(2.3rem,4.2vw,3.8rem)] text-white leading-[1.06] tracking-tight">
+          <h2 class="font-serif text-[clamp(2.3rem,4.2vw,3.8rem)] text-white leading-[1.06] tracking-tight" data-i18n="mood.heading">
             Jelajah menurut suasana perjalanan
           </h2>
-          <p class="font-sans text-sm sm:text-base text-white/70 max-w-2xl mt-3 font-normal leading-relaxed">
+          <p class="font-sans text-sm sm:text-base text-white/70 max-w-2xl mt-3 font-normal leading-relaxed" data-i18n="mood.subheading">
             Setiap penjuru kepulauan memiliki denyut alam, keheningan, dan siklus iklim tersendiri. Pilih suasana yang selaras dengan jiwa dan tujuan perjalanan Anda.
           </p>
         </div>
@@ -679,7 +679,7 @@ const moodBadges: Record<string, string> = {
             href="/suasana"
             class="group inline-flex items-center gap-2 px-5 py-3 rounded-full text-xs font-semibold text-white bg-white/[0.08] hover:bg-mint hover:text-[#04141A] border border-white/15 hover:border-mint backdrop-blur-md transition-all duration-300 shadow-lg"
           >
-            <span>Semua Kategori Suasana</span>
+            <span data-i18n="mood.all_btn">Semua Kategori Suasana</span>
             <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 20 20" fill="none">
               <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -689,26 +689,26 @@ const moodBadges: Record<string, string> = {
 
       <!-- Quick Mood Preview Chips -->
       <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-8 pb-4 border-b border-white/8 text-xs">
-        <span class="text-white/40 uppercase tracking-wider text-[11px] font-bold mr-1">Filter Cepat:</span>
+        <span class="text-white/40 uppercase tracking-wider text-[11px] font-bold mr-1" data-i18n="mood.filter_label">Filter Cepat:</span>
         <span class="px-3 py-1 rounded-full bg-white/[0.06] text-white/90 border border-white/12 flex items-center gap-1.5">
           <span class="w-1.5 h-1.5 rounded-full bg-mint"></span>
-          <span>Pesisir Tenang</span>
+          <span data-i18n="mood.coast">Pesisir Tenang</span>
         </span>
         <span class="px-3 py-1 rounded-full bg-white/[0.06] text-white/90 border border-white/12 flex items-center gap-1.5">
           <span class="w-1.5 h-1.5 rounded-full bg-mint"></span>
-          <span>Dataran Tinggi</span>
+          <span data-i18n="mood.highlands">Dataran Tinggi</span>
         </span>
         <span class="px-3 py-1 rounded-full bg-white/[0.06] text-white/90 border border-white/12 flex items-center gap-1.5">
           <span class="w-1.5 h-1.5 rounded-full bg-mint"></span>
-          <span>Warisan Budaya</span>
+          <span data-i18n="mood.culture">Warisan Budaya</span>
         </span>
         <span class="px-3 py-1 rounded-full bg-white/[0.06] text-white/90 border border-white/12 flex items-center gap-1.5">
           <span class="w-1.5 h-1.5 rounded-full bg-mint"></span>
-          <span>Komunitas Adat</span>
+          <span data-i18n="mood.indigenous">Komunitas Adat</span>
         </span>
         <span class="px-3 py-1 rounded-full bg-white/[0.06] text-white/90 border border-white/12 flex items-center gap-1.5">
           <span class="w-1.5 h-1.5 rounded-full bg-mint"></span>
-          <span>Konservasi Bahari</span>
+          <span data-i18n="mood.marine">Konservasi Bahari</span>
         </span>
       </div>
 
@@ -753,7 +753,7 @@ const moodBadges: Record<string, string> = {
                   {mood.data.description}
                 </p>
                 <div class="mt-4 flex items-center justify-between pt-3 border-t border-white/10">
-                  <span class="text-[11px] font-bold text-mint group-hover:underline">
+                  <span class="text-[11px] font-bold text-mint group-hover:underline" data-i18n="mood.explore_btn">
                     Jelajahi suasana ini
                   </span>
                   <span class="w-7 h-7 rounded-full bg-white/10 group-hover:bg-mint group-hover:text-[#04141A] flex items-center justify-center text-white transition-all duration-300 group-hover:translate-x-1">
@@ -779,17 +779,17 @@ const moodBadges: Record<string, string> = {
           <div class="relative z-10 flex items-center justify-between">
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-mint/15 border border-mint/30 text-[10px] uppercase tracking-wider font-bold text-mint">
               <span class="w-1.5 h-1.5 rounded-full bg-mint animate-pulse-subtle"></span>
-              REKOMENDASI ADAPTIF
+              <span data-i18n="mood.custom_badge">REKOMENDASI ADAPTIF</span>
             </span>
             <span class="text-xs text-white/40 font-mono">06/06</span>
           </div>
 
           <!-- Middle Content -->
           <div class="relative z-10 my-auto py-2">
-            <h3 class="font-serif text-2xl text-white group-hover:text-mint transition-colors mb-2 leading-tight">
+            <h3 class="font-serif text-2xl text-white group-hover:text-mint transition-colors mb-2 leading-tight" data-i18n="mood.custom_title">
               Punya Suasana Impian Sendiri?
             </h3>
-            <p class="font-sans text-xs sm:text-[13px] text-white/70 leading-relaxed font-normal">
+            <p class="font-sans text-xs sm:text-[13px] text-white/70 leading-relaxed font-normal" data-i18n="mood.custom_desc">
               Padukan preferensi keheningan, curah hujan nol, dan durasi cuti Anda. Algoritma Singgah akan mencocokkan pulau yang paling pas.
             </p>
           </div>
@@ -800,7 +800,7 @@ const moodBadges: Record<string, string> = {
               href="/rencana/baru"
               class="w-full py-3 px-5 rounded-2xl bg-mint text-[#04141A] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 hover:bg-[#5eead4] active:scale-[0.99] transition-all duration-200 shadow-[0_6px_20px_rgba(45,212,191,0.35)]"
             >
-              <span>Susun Rencana Sekarang</span>
+              <span data-i18n="mood.custom_cta">Susun Rencana Sekarang</span>
               <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none">
                 <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -823,18 +823,18 @@ const moodBadges: Record<string, string> = {
         <div class="max-w-2xl">
           <div class="flex items-center gap-2 text-mint text-xs uppercase tracking-widest font-semibold mb-2">
             <span class="w-2 h-2 rounded-full bg-mint"></span>
-            <span>OBSERVATORIUM IKLIM HISTORIS</span>
+            <span data-i18n="climate.badge">OBSERVATORIUM IKLIM HISTORIS</span>
           </div>
-          <h2 id="section-data-heading" class="font-serif text-3xl sm:text-4xl text-white mb-3">
+          <h2 id="section-data-heading" class="font-serif text-3xl sm:text-4xl text-white mb-3" data-i18n="climate.heading">
             Kapan waktu terbaik, dihitung menurut data
           </h2>
-          <p class="font-sans text-sm text-text-2 leading-relaxed">
+          <p class="font-sans text-sm text-text-2 leading-relaxed" data-i18n="climate.desc">
             Dihitung dari data historis 30 tahun (1994–2023) Open-Meteo per bulan. Menampilkan curah hujan, hari basah, dan suhu untuk menentukan momen ideal tanpa bias sponsor.
           </p>
         </div>
 
         <div class="flex items-center gap-3">
-          <a href="/catatan-data" class="btn-glass text-xs py-2.5 px-5">
+          <a href="/catatan-data" class="btn-glass text-xs py-2.5 px-5" data-i18n="climate.cta">
             Baca Metodologi Sains
           </a>
         </div>
@@ -845,7 +845,7 @@ const moodBadges: Record<string, string> = {
         <div>
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-3">
-              <span class="text-xs uppercase tracking-wider text-text-3 font-semibold">Menampilkan:</span>
+              <span class="text-xs uppercase tracking-wider text-text-3 font-semibold" data-i18n="climate.showing">Menampilkan:</span>
               <span class="font-serif text-xl text-white">{topDestination.dest.data.name}</span>
               <span class="text-xs text-text-3">({topDestination.dest.data.region.island})</span>
             </div>
@@ -882,15 +882,15 @@ const moodBadges: Record<string, string> = {
   <section class="max-w-container mx-auto px-4 md:px-8 py-20 w-full border-t border-white/8">
     <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
       <div>
-        <span class="text-xs uppercase tracking-[0.2em] text-mint font-semibold block mb-2">CATATAN & ESAI</span>
-        <h2 class="font-serif text-[clamp(2.2rem,4vw,3.6rem)] text-white">
+        <span class="text-xs uppercase tracking-[0.2em] text-mint font-semibold block mb-2" data-i18n="notes.badge">CATATAN & ESAI</span>
+        <h2 class="font-serif text-[clamp(2.2rem,4vw,3.6rem)] text-white" data-i18n="notes.heading">
           Catatan lapangan penjelajah
         </h2>
-        <p class="font-sans text-sm text-text-2 mt-2">
+        <p class="font-sans text-sm text-text-2 mt-2" data-i18n="notes.desc">
           Tulisan narasi mengenai ritme alam, musim, dan pengamatan faktual di tanah Nusantara.
         </p>
       </div>
-      <a href="/catatan" class="text-sm font-semibold text-mint hover:underline mt-4 sm:mt-0">
+      <a href="/catatan" class="text-sm font-semibold text-mint hover:underline mt-4 sm:mt-0" data-i18n="notes.view_all">
         Baca semua catatan →
       </a>
     </div>
@@ -932,7 +932,7 @@ const moodBadges: Record<string, string> = {
 
           <div class="px-6 pb-6 pt-2">
             <a href={`/catatan/${art.slug}`} class="text-xs font-bold text-mint hover:underline inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-              <span>Baca selengkapnya</span>
+              <span data-i18n="notes.read_more">Baca selengkapnya</span>
               <span>→</span>
             </a>
           </div>
@@ -947,11 +947,11 @@ const moodBadges: Record<string, string> = {
   <section class="bg-[#030C11] py-24 border-t border-white/8">
     <div class="max-w-container mx-auto px-4 md:px-8">
       <div class="max-w-2xl mb-14">
-        <span class="text-xs uppercase tracking-[0.2em] text-mint font-semibold block mb-2">ITINERARI CERDAS</span>
-        <h2 class="font-serif text-[clamp(2.2rem,4vw,3.6rem)] text-white mb-3">
+        <span class="text-xs uppercase tracking-[0.2em] text-mint font-semibold block mb-2" data-i18n="itinerary.badge">ITINERARI CERDAS</span>
+        <h2 class="font-serif text-[clamp(2.2rem,4vw,3.6rem)] text-white mb-3" data-i18n="itinerary.heading">
           Contoh susunan rencana nyata
         </h2>
-        <p class="font-sans text-sm text-text-2 leading-relaxed">
+        <p class="font-sans text-sm text-text-2 leading-relaxed" data-i18n="itinerary.desc">
           Dirancang dari titik highlight autentik dengan memperhitungkan jarak tempuh, waktu terbaik hari, dan ritme tubuh.
         </p>
       </div>
@@ -1031,7 +1031,7 @@ const moodBadges: Record<string, string> = {
       <!-- CTA Hubungkan ke Trip Planner -->
       <div class="mt-14 text-center">
         <a href="/rencana/baru" class="btn-primary">
-          <span>Rancang Rencana Perjalananmu Sendiri</span>
+          <span data-i18n="itinerary.cta">Rancang Rencana Perjalananmu Sendiri</span>
           <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none">
             <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
