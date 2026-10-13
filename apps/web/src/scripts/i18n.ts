@@ -66,6 +66,9 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
     'best.heading': 'Sedang bagus dikunjungi bulan ini',
     'best.subheading': 'Destinasi dengan rasio hari cerah tertinggi dan curah hujan terendah berdasarkan algoritma cuaca 30 tahun.',
     'best.score_label': 'Skor Kelayakan',
+    'best.score_prefix': 'Skor',
+    'best.prime_condition': 'Kondisi Prima',
+    'best.days_visit': 'Hari Kunjungan',
     'best.cta_detail': 'Lihat Detail Musim & Kalender →',
     'best.other_title': 'Pilihan Menarik Lainnya',
     'best.plan_route': 'Susun rute ke sini →',
@@ -97,6 +100,21 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
     'mood.badge_kota_tua': 'Cagar & Kuliner',
     'mood.badge_desa_upacara': 'Kultural Sakral',
     'mood.badge_laut_dalam': 'Dunia Bahari',
+    'mood.name_pantai_sepi': 'Pantai yang Sepi',
+    'mood.name_gunung_kabut': 'Gunung dan Kabut',
+    'mood.name_kota_tua': 'Kota Tua & Ragam Rasa',
+    'mood.name_desa_upacara': 'Desa Adat & Upacara',
+    'mood.name_laut_dalam': 'Palung Laut Dalam',
+    'mood.desc_pantai_sepi': 'Pesisir pulau dengan garis pantai terbuka, perairan tenang, dan suasana tanpa kebisingan bermotor.',
+    'mood.desc_gunung_kabut': 'Dataran tinggi berhawa sejuk, jalur trekking tanah berbatu, dan lanskap lembah di atas awan.',
+    'mood.desc_kota_tua': 'Bangunan bersejarah, lorong kampung urban, pasar tradisional, dan ragam kuliner lokal legendaris.',
+    'mood.desc_desa_upacara': 'Komunitas adat dengan arsitektur vernakular, ritus kultural musiman, dan tatanan sosial yang terjaga.',
+    'mood.desc_laut_dalam': 'Dinding karang curam, palung oseanik, terumbu karang terjaga, dan keanekaragaman biota laut tropis.',
+    'mood.count_pantai_sepi': '2 Destinasi',
+    'mood.count_gunung_kabut': '3 Destinasi',
+    'mood.count_kota_tua': '1 Destinasi',
+    'mood.count_desa_upacara': '2 Destinasi',
+    'mood.count_laut_dalam': '2 Destinasi',
     'mood.custom_badge': 'REKOMENDASI ADAPTIF',
     'mood.custom_title': 'Punya Suasana Impian Sendiri?',
     'mood.custom_desc': 'Padukan preferensi keheningan, curah hujan nol, dan durasi cuti Anda. Algoritma Singgah akan mencocokkan pulau yang paling pas.',
@@ -126,8 +144,29 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
     'itinerary.desc': 'Dirancang dari titik highlight autentik dengan memperhitungkan jarak tempuh, waktu terbaik hari, dan ritme tubuh.',
     'itinerary.cta': 'Rancang Rencana Perjalananmu Sendiri',
     'itinerary.day1': 'Hari 01',
+    'itinerary.day1_theme': 'Tiba & Kuliner',
+    'itinerary.day1_title': 'Pendaratan & Marina',
+    'itinerary.day1_p1_badge': 'PAGI • KEDATANGAN',
+    'itinerary.day1_p1_desc': 'Mendarat di Labuan Bajo & check-in pelabuhan marina.',
+    'itinerary.day1_p2_badge': 'MALAM • KULINER',
+    'itinerary.day1_p2_desc': 'Ikan Bakar segar bumbu rempah di pesisir Kampung Ujung.',
+    'itinerary.day1_footer': 'Durasi santai 4–5 jam aktif',
     'itinerary.day2': 'Hari 02',
+    'itinerary.day2_theme': 'Puncak Savana',
+    'itinerary.day2_title': 'Trekking & Pink Beach',
+    'itinerary.day2_p1_badge': 'PAGI • SUNRISE',
+    'itinerary.day2_p1_desc': 'Pendakian 800 anak tangga puncak Pulau Padar saat sejuk.',
+    'itinerary.day2_p2_badge': 'SIANG • BAHARI',
+    'itinerary.day2_p2_desc': 'Menikmati hamparan pasir merah muda Pink Beach & snorkeling.',
+    'itinerary.day2_footer': 'Aktivitas luar ruang berenergi penuh',
     'itinerary.day3': 'Hari 03',
+    'itinerary.day3_theme': 'Bahari Selat',
+    'itinerary.day3_title': 'Pari Manta & Sunset',
+    'itinerary.day3_p1_badge': 'SIANG • OSEANIK',
+    'itinerary.day3_p1_desc': 'Snorkeling bersama pari manta karang di Manta Point.',
+    'itinerary.day3_p2_badge': 'SORE • PELAYARAN',
+    'itinerary.day3_p2_desc': 'Pelayaran pulang membelah senja ke marina Labuan Bajo.',
+    'itinerary.day3_footer': 'Selesai dengan kesan memukau',
 
     // CTA Banner
     'cta_banner.badge': 'PERJALANAN PRESISI TANPA TEBAK-TEBAKAN',
@@ -217,6 +256,9 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
     'best.heading': 'Prime to visit this month',
     'best.subheading': 'Destinations with the highest sunny-day ratio and lowest rainfall, computed from 30 years of meteorological records.',
     'best.score_label': 'Feasibility Score',
+    'best.score_prefix': 'Score',
+    'best.prime_condition': 'Prime Condition',
+    'best.days_visit': 'Days Visit',
     'best.cta_detail': 'View Season Details & Calendar →',
     'best.other_title': 'Other Great Recommendations',
     'best.plan_route': 'Plan route here →',
@@ -248,6 +290,21 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
     'mood.badge_kota_tua': 'Heritage & Flavors',
     'mood.badge_desa_upacara': 'Sacred Traditions',
     'mood.badge_laut_dalam': 'Marine Sanctuary',
+    'mood.name_pantai_sepi': 'Serene Coastlines',
+    'mood.name_gunung_kabut': 'Mountains & Mist',
+    'mood.name_kota_tua': 'Historic Town & Flavors',
+    'mood.name_desa_upacara': 'Sacred Villages & Rites',
+    'mood.name_laut_dalam': 'Deep Ocean & Reefs',
+    'mood.desc_pantai_sepi': 'Open island shores with gentle waves, transparent waters, and quiet sanctuary away from motorized buzz.',
+    'mood.desc_gunung_kabut': 'Cool highland breezes, rocky dirt trails, and panoramic valley landscapes resting above the clouds.',
+    'mood.desc_kota_tua': 'Centuries-old heritage alleys, traditional morning markets, and legendary culinary recipes.',
+    'mood.desc_desa_upacara': 'Indigenous enclaves featuring vernacular architecture, seasonal spiritual rites, and living customs.',
+    'mood.desc_laut_dalam': 'Sheer coral drop-offs, nutrient-rich oceanic trenches, pristine reef gardens, and pelagic marine life.',
+    'mood.count_pantai_sepi': '2 Destinations',
+    'mood.count_gunung_kabut': '3 Destinations',
+    'mood.count_kota_tua': '1 Destination',
+    'mood.count_desa_upacara': '2 Destinations',
+    'mood.count_laut_dalam': '2 Destinations',
     'mood.custom_badge': 'ADAPTIVE DISCOVERY',
     'mood.custom_title': 'Have Your Own Dream Escape?',
     'mood.custom_desc': 'Match your preferences for stillness, zero rainfall, and leave duration. Singgah algorithms pinpoint the most ideal island.',
@@ -277,8 +334,29 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
     'itinerary.desc': 'Engineered from authentic highlights with transit times, optimal times of day, and natural biorhythms.',
     'itinerary.cta': 'Design Your Custom Itinerary',
     'itinerary.day1': 'Day 01',
+    'itinerary.day1_theme': 'Arrival & Flavors',
+    'itinerary.day1_title': 'Landing & Marina',
+    'itinerary.day1_p1_badge': 'MORNING • ARRIVAL',
+    'itinerary.day1_p1_desc': 'Touch down in Labuan Bajo & marina harbor check-in.',
+    'itinerary.day1_p2_badge': 'EVENING • CUISINE',
+    'itinerary.day1_p2_desc': 'Freshly grilled fish with local spices along Kampung Ujung waterfront.',
+    'itinerary.day1_footer': 'Relaxed 4–5 active hours',
     'itinerary.day2': 'Day 02',
+    'itinerary.day2_theme': 'Savanna Peaks',
+    'itinerary.day2_title': 'Trekking & Pink Beach',
+    'itinerary.day2_p1_badge': 'MORNING • SUNRISE',
+    'itinerary.day2_p1_desc': '800-step hike to Padar Island summit in the crisp morning breeze.',
+    'itinerary.day2_p2_badge': 'MIDDAY • MARINE',
+    'itinerary.day2_p2_desc': 'Lounge on Pink Beach\'s rosy sands & reef snorkeling.',
+    'itinerary.day2_footer': 'Full-energy outdoor adventures',
     'itinerary.day3': 'Day 03',
+    'itinerary.day3_theme': 'Strait Sanctuary',
+    'itinerary.day3_title': 'Manta Rays & Sunset',
+    'itinerary.day3_p1_badge': 'MIDDAY • OCEANIC',
+    'itinerary.day3_p1_desc': 'Snorkeling alongside reef manta rays at Manta Point.',
+    'itinerary.day3_p2_badge': 'LATE AFTERNOON • CRUISE',
+    'itinerary.day3_p2_desc': 'Sunset sail cruising back to Labuan Bajo marina.',
+    'itinerary.day3_footer': 'Concludes with lasting wonders',
 
     // CTA Banner
     'cta_banner.badge': 'PRECISION TRAVEL WITHOUT GUESSWORK',
@@ -449,6 +527,19 @@ export function applyLanguage(lang: SupportedLang): void {
       }
     });
   }
+
+  // 6.5. Terjemahkan display bulan berjalan
+  document.querySelectorAll<HTMLElement>('.current-month-display').forEach((el) => {
+    const orig = el.getAttribute('data-month-val') || el.textContent?.trim() || '';
+    if (!el.hasAttribute('data-month-val')) {
+      el.setAttribute('data-month-val', orig);
+    }
+    if (lang === 'en') {
+      el.textContent = monthTranslationsEn[orig] || orig;
+    } else {
+      el.textContent = monthTranslationsId[orig] || orig;
+    }
+  });
 
   // 7. Beritahu komponen lain lewat CustomEvent
   window.dispatchEvent(new CustomEvent('singgah:lang-changed', { detail: { lang } }));

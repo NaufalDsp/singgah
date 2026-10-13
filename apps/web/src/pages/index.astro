@@ -560,9 +560,9 @@ const moodList = moods.map((m) => {
               <!-- Floating Weather Telemetry Badge -->
               <div class="absolute top-5 left-5 flex items-center gap-2 bg-[#04121A]/80 backdrop-blur-md border border-white/15 px-3.5 py-1.5 rounded-full text-xs text-white">
                 <span class="w-2 h-2 rounded-full bg-mint"></span>
-                <span class="font-bold text-mint">Skor {topDestination.score}/100</span>
+                <span class="font-bold text-mint"><span data-i18n="best.score_prefix">Skor</span> {topDestination.score}/100</span>
                 <span class="text-white/40">•</span>
-                <span>{topDestination.level === 'sangat-baik' ? 'Sangat Baik' : 'Kondisi Prima'}</span>
+                <span data-i18n="best.prime_condition">{topDestination.level === 'sangat-baik' ? 'Kondisi Sangat Baik' : 'Kondisi Prima'}</span>
               </div>
 
               <div class="absolute top-5 right-5 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-xs font-semibold text-star">
@@ -576,7 +576,7 @@ const moodList = moods.map((m) => {
                 <span>•</span>
                 <span>{topDestination.dest.data.region.province}</span>
                 <span>•</span>
-                <span>{topDestination.dest.data.typical_days.min}–{topDestination.dest.data.typical_days.max} Hari Kunjungan</span>
+                <span>{topDestination.dest.data.typical_days.min}–{topDestination.dest.data.typical_days.max} <span data-i18n="best.days_visit">Hari Kunjungan</span></span>
               </div>
 
               <h3 class="font-serif text-3xl sm:text-4xl text-white mb-3 group-hover:text-mint transition-colors">
@@ -591,7 +591,7 @@ const moodList = moods.map((m) => {
 
               <!-- Season Strip Preview -->
               <div class="bg-black/40 rounded-2xl p-4 border border-white/8 mb-6">
-                <span class="text-[11px] font-semibold uppercase tracking-wider text-text-3 block mb-3">Tren Musim 12 Bulan</span>
+                <span class="text-[11px] font-semibold uppercase tracking-wider text-text-3 block mb-3" data-i18n="best.trend_title">Tren Musim 12 Bulan</span>
                 <SeasonStrip
                   months={topDestination.yearSeasons}
                   mode="ringkas"
@@ -601,7 +601,7 @@ const moodList = moods.map((m) => {
 
               <div class="flex items-center justify-between pt-2">
                 <a href={`/destinasi/${topDestination.dest.slug}`} class="btn-primary text-xs py-2.5 px-6">
-                  <span>Lihat Panduan Lengkap</span>
+                  <span data-i18n="best.guide_btn">Lihat Panduan Lengkap</span>
                   <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none">
                     <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                   </svg>
@@ -812,16 +812,16 @@ const moodList = moods.map((m) => {
                 <!-- Title & Destination Counter -->
                 <div class="flex items-baseline justify-between gap-2 mb-2">
                   <h3 class="font-serif text-2xl sm:text-[1.75rem] text-white group-hover:text-mint transition-colors duration-300 font-bold leading-tight">
-                    <a href={`/suasana/${m.id}`} class="hover:underline focus:outline-none">
+                    <a href={`/suasana/${m.id}`} class="hover:underline focus:outline-none" data-i18n={`mood.name_${m.id.replace(/-/g, '_')}`}>
                       {m.name}
                     </a>
                   </h3>
                   <span class="text-[11px] font-mono text-mint/90 shrink-0 font-semibold bg-[#04141A]/80 px-2.5 py-0.5 rounded-full border border-mint/25">
-                    {m.count} Destinasi
+                    <span data-i18n={`mood.count_${m.id.replace(/-/g, '_')}`}>{m.count} Destinasi</span>
                   </span>
                 </div>
 
-                <p class="font-sans text-xs sm:text-[13px] text-white/80 line-clamp-2 leading-relaxed font-normal mb-3.5">
+                <p class="font-sans text-xs sm:text-[13px] text-white/80 line-clamp-2 leading-relaxed font-normal mb-3.5" data-i18n={`mood.desc_${m.id.replace(/-/g, '_')}`}>
                   {m.description}
                 </p>
 
@@ -981,8 +981,9 @@ const moodList = moods.map((m) => {
               <span class="font-serif text-xl text-white">{topDestination.dest.data.name}</span>
               <span class="text-xs text-text-3">({topDestination.dest.data.region.island})</span>
             </div>
-            <span class="text-xs text-mint font-semibold bg-mint/10 border border-mint/20 px-3 py-1 rounded-full">
-              Bulan Berjalan: {currentMonthName}
+            <span class="text-xs text-mint font-semibold bg-mint/10 border border-mint/20 px-3 py-1 rounded-full flex items-center gap-1.5">
+              <span data-i18n="climate.current_month">Bulan Berjalan:</span>
+              <span class="current-month-display" data-month-val={currentMonthName}>{currentMonthName}</span>
             </span>
           </div>
 
@@ -1093,22 +1094,22 @@ const moodList = moods.map((m) => {
         <div class="p-6 bg-[#081822] rounded-3xl border border-white/10 shadow-xl flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-4 pb-3 border-b border-white/8">
-              <span class="text-xs font-bold uppercase tracking-wider text-mint">Hari 01</span>
-              <span class="text-[11px] text-text-3 font-semibold">Tiba & Kuliner</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-mint" data-i18n="itinerary.day1">Hari 01</span>
+              <span class="text-[11px] text-text-3 font-semibold" data-i18n="itinerary.day1_theme">Tiba & Kuliner</span>
             </div>
-            <h3 class="font-serif text-2xl text-white mb-4">Pendaratan & Marina</h3>
+            <h3 class="font-serif text-2xl text-white mb-4" data-i18n="itinerary.day1_title">Pendaratan & Marina</h3>
             <div class="space-y-4 text-xs font-sans text-text-2">
               <div class="p-3 rounded-xl bg-white/[0.04] border border-white/6">
-                <span class="text-mint font-bold block mb-1">PAGI • KEDATANGAN</span>
-                Mendarat di Labuan Bajo & check-in pelabuhan marina.
+                <span class="text-mint font-bold block mb-1" data-i18n="itinerary.day1_p1_badge">PAGI • KEDATANGAN</span>
+                <span data-i18n="itinerary.day1_p1_desc">Mendarat di Labuan Bajo & check-in pelabuhan marina.</span>
               </div>
               <div class="p-3 rounded-xl bg-white/[0.04] border border-white/6">
-                <span class="text-mint font-bold block mb-1">MALAM • KULINER</span>
-                Ikan Bakar segar bumbu rempah di pesisir Kampung Ujung.
+                <span class="text-mint font-bold block mb-1" data-i18n="itinerary.day1_p2_badge">MALAM • KULINER</span>
+                <span data-i18n="itinerary.day1_p2_desc">Ikan Bakar segar bumbu rempah di pesisir Kampung Ujung.</span>
               </div>
             </div>
           </div>
-          <div class="mt-6 pt-3 border-t border-white/8 text-[11px] text-text-3">
+          <div class="mt-6 pt-3 border-t border-white/8 text-[11px] text-text-3" data-i18n="itinerary.day1_footer">
             Durasi santai 4–5 jam aktif
           </div>
         </div>
@@ -1116,22 +1117,22 @@ const moodList = moods.map((m) => {
         <div class="p-6 bg-[#081822] rounded-3xl border border-white/10 shadow-xl flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-4 pb-3 border-b border-white/8">
-              <span class="text-xs font-bold uppercase tracking-wider text-mint">Hari 02</span>
-              <span class="text-[11px] text-text-3 font-semibold">Puncak Savana</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-mint" data-i18n="itinerary.day2">Hari 02</span>
+              <span class="text-[11px] text-text-3 font-semibold" data-i18n="itinerary.day2_theme">Puncak Savana</span>
             </div>
-            <h3 class="font-serif text-2xl text-white mb-4">Trekking & Pink Beach</h3>
+            <h3 class="font-serif text-2xl text-white mb-4" data-i18n="itinerary.day2_title">Trekking & Pink Beach</h3>
             <div class="space-y-4 text-xs font-sans text-text-2">
               <div class="p-3 rounded-xl bg-white/[0.04] border border-white/6">
-                <span class="text-mint font-bold block mb-1">PAGI • SUNRISE</span>
-                Pendakian 800 anak tangga puncak Pulau Padar saat sejuk.
+                <span class="text-mint font-bold block mb-1" data-i18n="itinerary.day2_p1_badge">PAGI • SUNRISE</span>
+                <span data-i18n="itinerary.day2_p1_desc">Pendakian 800 anak tangga puncak Pulau Padar saat sejuk.</span>
               </div>
               <div class="p-3 rounded-xl bg-white/[0.04] border border-white/6">
-                <span class="text-mint font-bold block mb-1">SIANG • BAHARI</span>
-                Menikmati hamparan pasir merah muda Pink Beach & snorkeling.
+                <span class="text-mint font-bold block mb-1" data-i18n="itinerary.day2_p2_badge">SIANG • BAHARI</span>
+                <span data-i18n="itinerary.day2_p2_desc">Menikmati hamparan pasir merah muda Pink Beach & snorkeling.</span>
               </div>
             </div>
           </div>
-          <div class="mt-6 pt-3 border-t border-white/8 text-[11px] text-text-3">
+          <div class="mt-6 pt-3 border-t border-white/8 text-[11px] text-text-3" data-i18n="itinerary.day2_footer">
             Aktivitas luar ruang berenergi penuh
           </div>
         </div>
@@ -1139,22 +1140,22 @@ const moodList = moods.map((m) => {
         <div class="p-6 bg-[#081822] rounded-3xl border border-white/10 shadow-xl flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-4 pb-3 border-b border-white/8">
-              <span class="text-xs font-bold uppercase tracking-wider text-mint">Hari 03</span>
-              <span class="text-[11px] text-text-3 font-semibold">Bahari Selat</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-mint" data-i18n="itinerary.day3">Hari 03</span>
+              <span class="text-[11px] text-text-3 font-semibold" data-i18n="itinerary.day3_theme">Bahari Selat</span>
             </div>
-            <h3 class="font-serif text-2xl text-white mb-4">Pari Manta & Sunset</h3>
+            <h3 class="font-serif text-2xl text-white mb-4" data-i18n="itinerary.day3_title">Pari Manta & Sunset</h3>
             <div class="space-y-4 text-xs font-sans text-text-2">
               <div class="p-3 rounded-xl bg-white/[0.04] border border-white/6">
-                <span class="text-mint font-bold block mb-1">SIANG • OSEANIK</span>
-                Snorkeling bersama pari manta karang di Manta Point.
+                <span class="text-mint font-bold block mb-1" data-i18n="itinerary.day3_p1_badge">SIANG • OSEANIK</span>
+                <span data-i18n="itinerary.day3_p1_desc">Snorkeling bersama pari manta karang di Manta Point.</span>
               </div>
               <div class="p-3 rounded-xl bg-white/[0.04] border border-white/6">
-                <span class="text-mint font-bold block mb-1">SORE • PELAYARAN</span>
-                Pelayaran pulang membelah senja ke marina Labuan Bajo.
+                <span class="text-mint font-bold block mb-1" data-i18n="itinerary.day3_p2_badge">SORE • PELAYARAN</span>
+                <span data-i18n="itinerary.day3_p2_desc">Pelayaran pulang membelah senja ke marina Labuan Bajo.</span>
               </div>
             </div>
           </div>
-          <div class="mt-6 pt-3 border-t border-white/8 text-[11px] text-text-3">
+          <div class="mt-6 pt-3 border-t border-white/8 text-[11px] text-text-3" data-i18n="itinerary.day3_footer">
             Selesai dengan kesan memukau
           </div>
         </div>
