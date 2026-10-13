@@ -49,6 +49,7 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
     // Stats Bar
     'stats.dest': 'Destinasi',
     'stats.dest_sub': 'Riset lapangan & satelit',
+    'stats.climate_val': '30 Tahun',
     'stats.climate': 'Rekam Jejak Iklim',
     'stats.climate_sub': 'Data historis ECMWF presisi',
     'stats.highlights': 'Titik Highlight Alam',
@@ -184,6 +185,7 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
     // Stats Bar
     'stats.dest': 'Destinations',
     'stats.dest_sub': 'Field & satellite research',
+    'stats.climate_val': '30 Years',
     'stats.climate': 'Climate History',
     'stats.climate_sub': 'Precise 30-year ECMWF data',
     'stats.highlights': 'Nature Highlights',
