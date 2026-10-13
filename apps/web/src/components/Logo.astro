@@ -1,0 +1,78 @@
+---
+interface Props {
+  size?: 'sm' | 'md' | 'lg';
+  showTagline?: boolean;
+  class?: string;
+}
+
+const { size = 'md', showTagline = true, class: className = '' } = Astro.props;
+
+const iconSizes = {
+  sm: 'w-7 h-7',
+  md: 'w-9 h-9',
+  lg: 'w-11 h-11',
+};
+
+const titleSizes = {
+  sm: 'text-base tracking-[0.12em]',
+  md: 'text-xl tracking-[0.14em]',
+  lg: 'text-2xl tracking-[0.16em]',
+};
+---
+
+<div class={`inline-flex items-center gap-3 group ${className}`}>
+  <!-- Emblem Vector Logo Singgah (Interlocking Peaks + Maritime Horizon) -->
+  <div class={`${iconSizes[size]} relative flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-105`}>
+    <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+      <!-- Ambient Glow Behind Peak -->
+      <circle cx="22" cy="20" r="14" fill="#2DD4BF" fill-opacity="0.15" filter="blur(6px)"/>
+      
+      <!-- Primary Geometric Peak Left (Mint) -->
+      <path
+        d="M7 32L18 10L26 23"
+        stroke="#2DD4BF"
+        stroke-width="2.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      
+      <!-- Secondary Overlapping Peak Right (Crisp White) -->
+      <path
+        d="M20 17L29 6L38 32H7"
+        stroke="#FFFFFF"
+        stroke-width="2.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      
+      <!-- Facet Ridge Accents -->
+      <path d="M18 10L22 18" stroke="#2DD4BF" stroke-width="1.8" stroke-linecap="round" />
+      <path d="M29 6L28 15" stroke="#5EEAD4" stroke-width="1.8" stroke-linecap="round" />
+      
+      <!-- Wayfinder Star / Compass Node at Apex -->
+      <circle cx="29" cy="6" r="2.2" fill="#5EEAD4" />
+      
+      <!-- Coastal Wave Horizon Base -->
+      <path
+        d="M11 28C15 26 19 30 24 28C27 26.8 30 27.5 33 28"
+        stroke="#2DD4BF"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-opacity="0.85"
+      />
+    </svg>
+  </div>
+
+  <!-- Typography Brand Text -->
+  <div class="flex flex-col">
+    <span class={`font-sans font-extrabold text-white leading-none ${titleSizes[size]}`}>
+      SINGGAH
+    </span>
+    {showTagline && (
+      <span class="font-sans text-[9px] font-semibold tracking-[0.2em] text-white/60 block mt-1 uppercase">
+        Jelajah • Musim • Rencana
+      </span>
+    )}
+  </div>
+</div>
+

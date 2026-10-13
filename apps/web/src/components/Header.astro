@@ -1,4 +1,6 @@
 ---
+import Logo from './Logo.astro';
+
 interface Props {
   transparent?: boolean;
 }
@@ -8,26 +10,9 @@ const { transparent = true } = Astro.props;
 
 <header class={`site-header ${transparent ? 'site-header--trans' : 'site-header--solid'}`}>
   <div class="header-container">
-    <!-- Brand Logo Modern seperti Wanderlust -->
-    <a href="/" class="header-brand group">
-      <div class="brand-icon">
-        <svg
-          viewBox="0 0 36 36"
-          fill="none"
-          class="w-7 h-7 text-mint transition-transform duration-300 group-hover:scale-110">
-          <path
-            d="M5 26L14 8L20 19L24 13L31 26H5Z"
-            stroke="currentColor"
-            stroke-width="2.2"
-            stroke-linecap="round"
-            stroke-linejoin="round"></path>
-          <path d="M14 8L18 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path>
-        </svg>
-      </div>
-      <div class="brand-text">
-        <span class="brand-title">SINGGAH</span>
-        <span class="brand-tagline">JELAJAH • MUSIM • RENCANA</span>
-      </div>
+    <!-- Brand Logo Modern Singgah -->
+    <a href="/" class="header-brand">
+      <Logo size="md" showTagline={true} />
     </a>
 
     <!-- Navigasi Tengah Modern dengan Dropdown Chevrons -->

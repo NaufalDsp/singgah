@@ -1,4 +1,6 @@
 ---
+import Logo from './Logo.astro';
+
 const currentYear = 2026;
 ---
 
@@ -18,17 +20,8 @@ const currentYear = 2026;
 
     <div class="footer-top">
       <div class="footer-brand-col">
-        <a href="/" class="flex items-center gap-3.5 mb-4 group inline-flex">
-          <div class="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center text-mint group-hover:border-mint/50 transition-colors">
-            <svg viewBox="0 0 36 36" fill="none" class="w-6 h-6">
-              <path d="M5 26L14 8L20 19L24 13L31 26H5Z" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M14 8L18 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div>
-            <span id="footer-brand" class="font-sans font-extrabold text-xl tracking-widest text-white block leading-none">SINGGAH</span>
-            <span class="font-sans text-[10px] font-semibold tracking-widest text-text-3 block mt-1">JELAJAH • MUSIM • RENCANA</span>
-          </div>
+        <a href="/" class="mb-4 inline-flex">
+          <Logo size="md" showTagline={true} />
         </a>
         <p class="footer-tagline">
           Platform kurasi destinasi Nusantara berbasis analisis data iklim historis 30 tahun (1994–2023) dari Open-Meteo. Memberikan rekomendasi jujur, tanpa opini sponsor.
