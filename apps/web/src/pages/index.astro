@@ -81,19 +81,21 @@ const ratings: Record<string, string> = {
   <!-- 1. HERO SECTION (SESUAI REFERENSI DESAIN WANDERLUST)                      -->
   <!-- ========================================================================= -->
   <section class="relative min-h-screen flex flex-col justify-between pt-28 pb-16 overflow-hidden bg-[#041017]" aria-labelledby="hero-title">
-    <!-- Cinematic High-Res Nature Background dengan Scrim Multi-Layer (Moody Dark Atmosphere) -->
+    <!-- Cinematic High-Res Nature Background dengan Scrim Terukur (Jelas & Terlihat Indah) -->
     <div class="absolute inset-0 z-0">
       <img
-        src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=2560&q=85"
-        alt="Gugusan kepulauan karst Nusantara di atas perairan pirus tenang dalam atmosfer senja teduh tanpa silau"
-        class="w-full h-full object-cover object-center scale-[1.02] filter brightness-[0.55] contrast-[1.12] transition-transform duration-1000 ease-out"
+        src="https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?auto=format&fit=crop&w=2560&q=85"
+        alt="Gugusan kepulauan karst Raja Ampat di atas perairan pirus jernih Nusantara"
+        class="w-full h-full object-cover object-center scale-[1.02] transition-transform duration-1000 ease-out"
         fetchpriority="high"
       />
-      <!-- Scrim Terukur: Dark Atmospheric Vignette Tanpa Glare Matahari -->
-      <div class="absolute inset-0 bg-gradient-to-t from-[#041017] via-[#041017]/70 to-[#041017]/35"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-[#041017]/95 via-[#041017]/65 to-transparent"></div>
-      <div class="absolute inset-0 bg-gradient-to-b from-[#041017]/85 via-transparent to-[#041017]/90"></div>
-      <div class="absolute inset-0 bg-black/35 pointer-events-none"></div>
+      <!-- Scrim Terukur: Jelas & Kontras Alami, Lanskap Pulau dan Air Terlihat Nyata -->
+      <!-- Gradien Kiri (untuk keterbacaan teks headline) -->
+      <div class="absolute inset-0 bg-gradient-to-r from-[#041017]/80 via-[#041017]/35 to-transparent"></div>
+      <!-- Gradien Bawah (transisi halus ke konten bawah) -->
+      <div class="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-[#041017] via-[#041017]/60 to-transparent"></div>
+      <!-- Gradien Atas (kontras navbar) -->
+      <div class="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-[#041017]/70 to-transparent"></div>
     </div>
 
     <!-- Dotted Flight Trail & Island Marker (Sesuai Referensi Wanderlust) -->
@@ -473,7 +475,7 @@ const ratings: Record<string, string> = {
       >
         <div class="sm:px-4 flex flex-col justify-center">
           <span class="font-sans font-black text-2xl sm:text-3xl text-mint block tracking-tight">6+</span>
-          <span class="font-sans text-xs font-semibold text-mint/90 uppercase tracking-wider block mt-1">Destinasi Terverifikasi</span>
+          <span class="font-sans text-xs font-semibold text-mint/90 uppercase tracking-wider block mt-1">Destinasi</span>
           <span class="font-sans text-[11px] text-white/55 mt-0.5">Riset lapangan & satelit</span>
         </div>
 
