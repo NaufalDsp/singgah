@@ -1,10 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TripPlanner from '../../islands/TripPlanner';
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 
 const destinations = await getCollection('destinations');
-const destinationOptions = destinations.map((d) => ({
+const destinationOptions = destinations.map((d: CollectionEntry<'destinations'>) => ({
   slug: d.slug,
   name: d.data.name,
   typical_days: d.data.typical_days,
@@ -13,22 +13,28 @@ const destinationOptions = destinations.map((d) => ({
 
 const searchParams = Astro.url.searchParams;
 const destParam = searchParams.get('destinasi') || 'labuan-bajo';
-const targetDest = destinations.find((d) => d.slug === destParam) || destinations[0];
+const targetDest =
+  destinations.find((d: CollectionEntry<'destinations'>) => d.slug === destParam) ||
+  destinations[0];
 ---
 
 <BaseLayout title="Penyusun Rencana Perjalanan — Singgah">
-  <div class="max-w-container mx-auto px-4 md:px-8 py-12 w-full">
-    <div class="mb-8">
+  <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
+    <div class="mb-10">
       <a
         href="/destinasi"
-        class="text-xs font-sans font-medium text-text-3 hover:text-text mb-2 inline-block">
-        ← Kembali
+        class="text-xs font-sans font-medium text-mint hover:underline mb-3 inline-flex items-center gap-1.5">
+        ← Kembali ke destinasi
       </a>
-      <h1 class="font-serif text-[clamp(2rem,4vw,3.5rem)] text-text leading-tight">
+      <div class="flex items-center gap-2 text-mint text-xs uppercase tracking-widest font-semibold mb-2">
+        <span class="w-2 h-2 rounded-full bg-mint"></span>
+        <span>INTERAKTIF ITINERARI</span>
+      </div>
+      <h1 class="font-serif text-[clamp(2.4rem,4.5vw,4rem)] text-white leading-tight">
         Penyusun rencana perjalanan
       </h1>
-      <p class="font-sans text-sm text-text-2 mt-1">
-        Atur urutan harian, seimbangkan beban aktivitas, dan bagikan rencana ke teman seperjalanan.
+      <p class="font-sans text-base text-text-2 mt-2">
+        Atur urutan harian, seimbangkan beban aktivitas secara realistis, dan bagikan rencana ke teman seperjalanan.
       </p>
     </div>
 

@@ -3,100 +3,311 @@ interface Props {
   transparent?: boolean;
 }
 
-const { transparent = false } = Astro.props;
+const { transparent = true } = Astro.props;
 ---
 
-<header class={`site-header ${transparent ? 'site-header--trans' : ''}`}>
+<header class={`site-header ${transparent ? 'site-header--trans' : 'site-header--solid'}`}>
   <div class="header-container">
-    <a href="/" class="header-brand">Singgah</a>
+    <!-- Brand Logo Modern seperti Wanderlust -->
+    <a href="/" class="header-brand group">
+      <div class="brand-icon">
+        <svg
+          viewBox="0 0 36 36"
+          fill="none"
+          class="w-7 h-7 text-mint transition-transform duration-300 group-hover:scale-110">
+          <path
+            d="M5 26L14 8L20 19L24 13L31 26H5Z"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+          <path d="M14 8L18 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">SINGGAH</span>
+        <span class="brand-tagline">JELAJAH • MUSIM • RENCANA</span>
+      </div>
+    </a>
 
+    <!-- Navigasi Tengah Modern dengan Dropdown Chevrons -->
     <nav class="header-nav" aria-label="Navigasi Utama">
-      <a href="/destinasi">Destinasi</a>
-      <a href="/suasana">Suasana</a>
-      <a href="/catatan">Catatan</a>
-      <a href="/rencana">Rencana saya</a>
+      <a href="/destinasi" class="nav-item">
+        <span>Destinasi</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none">
+          <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+        </svg>
+      </a>
+      <a href="/suasana" class="nav-item">
+        <span>Suasana</span>
+        <svg class="chevron" viewBox="0 0 16 16" fill="none">
+          <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+        </svg>
+      </a>
+      <a href="/rencana" class="nav-item">
+        <span>Rencana Saya</span>
+      </a>
+      <a href="/catatan" class="nav-item">
+        <span>Catatan</span>
+      </a>
+      <a href="/catatan-data" class="nav-item">
+        <span>Tentang Data</span>
+      </a>
     </nav>
 
+    <!-- Header Actions (Search, Zona Waktu & Pill CTA) -->
     <div class="header-actions">
+      <!-- Search Icon Button -->
+      <a
+        href="/destinasi"
+        class="action-circle-btn"
+        title="Cari destinasi"
+        aria-label="Cari destinasi">
+        <svg
+          class="w-4 h-4 text-white"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </a>
+
+      <!-- Region / Timezone Pill -->
+      <div class="region-pill">
+        <svg
+          class="w-3.5 h-3.5 text-mint"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path
+            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+          ></path>
+        </svg>
+        <span class="font-sans font-medium text-xs text-white">ID</span>
+        <svg class="w-3 h-3 text-white/60" viewBox="0 0 16 16" fill="none">
+          <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+        </svg>
+      </div>
+
+      <!-- Tombol Masuk & CTA Pill -->
       <a href="/masuk" class="login-link">Masuk</a>
-      <a href="/rencana/baru" class="btn-utama">Susun rencana</a>
+      <a href="/rencana/baru" class="cta-pill">
+        <span>Susun Rencana</span>
+        <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none">
+          <path
+            d="M4 10H16M16 10L11 5M16 10L11 15"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </a>
     </div>
   </div>
 </header>
 
 <style>
   .site-header {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    width: 100%;
     z-index: 100;
-    background-color: var(--bg);
-    border-bottom: 1px solid var(--line);
-    transition: background-color var(--dur-base) var(--ease);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .site-header--trans {
-    position: absolute;
-    width: 100%;
-    background-color: transparent;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(
+      to bottom,
+      rgba(4, 16, 23, 0.8) 0%,
+      rgba(4, 16, 23, 0.4) 60%,
+      transparent 100%
+    );
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+  }
+
+  .site-header--solid {
+    background: rgba(5, 19, 26, 0.94);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     color: #ffffff;
   }
 
   .header-container {
-    max-width: 1360px;
+    max-width: 1440px;
     margin: 0 auto;
     padding: 0 var(--margin-x);
-    height: 72px;
+    height: 76px;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
 
   .header-brand {
-    font-family: var(--font-serif);
-    font-size: 1.875rem;
-    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 12px;
     text-decoration: none;
-    letter-spacing: -0.01em;
+    color: #ffffff;
+  }
+
+  .brand-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .text-mint {
+    color: var(--mint);
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .brand-title {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 1.25rem;
+    letter-spacing: 0.14em;
+    line-height: 1.1;
+    color: #ffffff;
+  }
+
+  .brand-tagline {
+    font-family: var(--font-sans);
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.55);
+    margin-top: 1px;
   }
 
   .header-nav {
     display: none;
+    align-items: center;
     gap: 32px;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 960px) {
     .header-nav {
       display: flex;
     }
   }
 
-  .header-nav a {
-    color: inherit;
-    text-decoration: none;
-    font-size: var(--t-ui);
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
     font-weight: 500;
-    transition: opacity var(--dur-fast) var(--ease);
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color 0.2s ease;
   }
 
-  .header-nav a:hover {
-    opacity: 0.8;
+  .nav-item:hover {
+    color: #ffffff;
+  }
+
+  .chevron {
+    width: 11px;
+    height: 11px;
+    opacity: 0.6;
+    transition: transform 0.2s ease;
+  }
+
+  .nav-item:hover .chevron {
+    transform: translateY(1px);
+    opacity: 1;
   }
 
   .header-actions {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 16px;
+  }
+
+  .action-circle-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: all 0.2s ease;
+  }
+
+  .action-circle-btn:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+  }
+
+  .region-pill {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    cursor: pointer;
+  }
+
+  @media (min-width: 640px) {
+    .region-pill {
+      display: flex;
+    }
   }
 
   .login-link {
-    color: inherit;
-    text-decoration: none;
-    font-size: var(--t-ui);
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
     font-weight: 500;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    transition: color 0.2s ease;
   }
 
-  .site-header--trans .login-link {
+  .login-link:hover {
     color: #ffffff;
+  }
+
+  .cta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--mint);
+    color: #04141a;
+    font-family: var(--font-sans);
+    font-size: 0.84rem;
+    font-weight: 700;
+    padding: 10px 22px;
+    border-radius: 9999px;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(45, 212, 191, 0.38);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .cta-pill:hover {
+    background: #5eead4;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 26px rgba(45, 212, 191, 0.55);
   }
 </style>

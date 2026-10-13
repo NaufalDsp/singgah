@@ -2,41 +2,78 @@
 const currentYear = 2026;
 ---
 
-<footer class="site-footer tema-malam" aria-labelledby="footer-brand">
+<footer class="site-footer" aria-labelledby="footer-brand">
   <div class="footer-container">
+    <!-- Top Newsletter / Brand Banner -->
+    <div class="footer-hero-strip">
+      <div>
+        <span class="text-xs uppercase tracking-[0.2em] text-mint font-semibold block mb-2">SINGGAH NUSANTARA</span>
+        <h3 class="font-serif text-2xl md:text-3xl text-white">Menjelajah di saat alam sedang paling ramah</h3>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="/destinasi" class="btn-glass text-xs py-2.5 px-5">Lihat 6 Destinasi</a>
+        <a href="/rencana/baru" class="btn-primary text-xs py-2.5 px-6">Mulai Rencana</a>
+      </div>
+    </div>
+
     <div class="footer-top">
       <div class="footer-brand-col">
-        <span id="footer-brand" class="footer-brand">Singgah</span>
+        <a href="/" class="flex items-center gap-3.5 mb-4 group inline-flex">
+          <div class="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/10 flex items-center justify-center text-mint group-hover:border-mint/50 transition-colors">
+            <svg viewBox="0 0 36 36" fill="none" class="w-6 h-6">
+              <path d="M5 26L14 8L20 19L24 13L31 26H5Z" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 8L18 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <span id="footer-brand" class="font-sans font-extrabold text-xl tracking-widest text-white block leading-none">SINGGAH</span>
+            <span class="font-sans text-[10px] font-semibold tracking-widest text-text-3 block mt-1">JELAJAH • MUSIM • RENCANA</span>
+          </div>
+        </a>
         <p class="footer-tagline">
-          Panduan destinasi Nusantara berbasis kalender iklim 30 tahun dan penyusun rencana
-          perjalanan.
+          Platform kurasi destinasi Nusantara berbasis analisis data iklim historis 30 tahun (1994–2023) dari Open-Meteo. Memberikan rekomendasi jujur, tanpa opini sponsor.
         </p>
+
+        <!-- Trust Badges Mini -->
+        <div class="flex flex-wrap items-center gap-2.5 mt-6 text-xs text-text-3 font-sans">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-white/90">
+            <span class="w-2 h-2 rounded-full bg-mint animate-pulse-subtle"></span>
+            100% Bebas Iklan
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-white/90">
+            Open-Meteo CC BY 4.0
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-white/90">
+            Data BMKG Selaras
+          </span>
+        </div>
       </div>
 
       <nav class="footer-links-grid" aria-label="Tautan Footer">
         <div class="footer-col">
-          <h2 class="footer-heading">Jelajah</h2>
+          <h4 class="footer-heading">Jelajah</h4>
           <ul>
-            <li><a href="/destinasi">Destinasi</a></li>
-            <li><a href="/suasana">Suasana</a></li>
-            <li><a href="/catatan">Catatan lapangan</a></li>
+            <li><a href="/destinasi">Semua Destinasi</a></li>
+            <li><a href="/suasana">Kategori Suasana</a></li>
+            <li><a href="/catatan">Catatan Lapangan</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h2 class="footer-heading">Rencana</h2>
+          <h4 class="footer-heading">Rencana</h4>
           <ul>
-            <li><a href="/rencana/saran">Rencana Cepat</a></li>
-            <li><a href="/rencana">Rencana saya</a></li>
+            <li><a href="/rencana/saran">Rekomendasi Cepat</a></li>
+            <li><a href="/rencana/baru">Penyusun Rencana</a></li>
+            <li><a href="/rencana">Rencana Saya</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h2 class="footer-heading">Tentang</h2>
+          <h4 class="footer-heading">Transparansi</h4>
           <ul>
-            <li><a href="/catatan-data">Catatan data</a></li>
-            <li><a href="/atribusi">Atribusi</a></li>
-            <li><a href="/privasi">Privasi</a></li>
+            <li><a href="/catatan-data">Metodologi & Rumus</a></li>
+            <li><a href="/atribusi">Kredit Fotografer</a></li>
+            <li><a href="/privasi">Kebijakan Privasi</a></li>
           </ul>
         </div>
       </nav>
@@ -44,11 +81,10 @@ const currentYear = 2026;
 
     <div class="footer-bottom">
       <p class="footer-meta">
-        Foto milik para fotografer yang tercantum di halaman Atribusi. Data cuaca dari Open-Meteo
-        (CC BY 4.0). Dibuat tanpa iklan dan pelacak komersial.
+        Foto karya fotografer berlisensi Unsplash yang tercantum lengkap di halaman Atribusi. Data iklim agregasi 30 tahun bersumber dari Open-Meteo (CC BY 4.0).
       </p>
       <p class="footer-copy">
-        &copy; {currentYear} Singgah.
+        &copy; {currentYear} Singgah. Dibuat dengan cinta untuk keindahan alam Nusantara.
       </p>
     </div>
   </div>
@@ -56,62 +92,83 @@ const currentYear = 2026;
 
 <style>
   .site-footer {
-    background-color: var(--bg);
+    background-color: #030C11;
     color: var(--text);
     padding: 80px 0 40px;
     margin-top: auto;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .footer-container {
-    max-width: 1360px;
+    max-width: 1440px;
     margin: 0 auto;
     padding: 0 var(--margin-x);
+  }
+
+  .footer-hero-strip {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 48px;
+    margin-bottom: 48px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  @media (min-width: 768px) {
+    .footer-hero-strip {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .text-mint {
+    color: var(--mint);
   }
 
   .footer-top {
     display: grid;
     grid-template-columns: 1fr;
     gap: 48px;
-    padding-bottom: 64px;
-    border-bottom: 1px solid var(--line);
+    padding-bottom: 56px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 860px) {
     .footer-top {
-      grid-template-columns: 2fr 3fr;
+      grid-template-columns: 1.8fr 3.2fr;
     }
   }
 
-  .footer-brand {
-    font-family: var(--font-serif);
-    font-size: 2.5rem;
-    color: var(--text);
-    display: block;
-    margin-bottom: 12px;
-  }
-
   .footer-tagline {
-    font-size: var(--t-ui);
+    font-size: 0.88rem;
     color: var(--text-2);
-    max-width: 360px;
-    line-height: 1.6;
+    max-width: 420px;
+    line-height: 1.65;
+    margin: 0;
   }
 
   .footer-links-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    gap: 32px;
+  }
+
+  @media (max-width: 600px) {
+    .footer-links-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
   }
 
   .footer-heading {
     font-family: var(--font-sans);
-    font-size: var(--t-small);
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--text-3);
-    margin-bottom: 16px;
+    letter-spacing: 0.14em;
+    color: var(--mint);
+    margin-bottom: 20px;
   }
 
   .footer-col ul {
@@ -120,26 +177,26 @@ const currentYear = 2026;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
   }
 
   .footer-col a {
-    color: var(--text-2);
+    color: rgba(255, 255, 255, 0.65);
     text-decoration: none;
-    font-size: var(--t-ui);
-    transition: color var(--dur-fast) var(--ease);
+    font-size: 0.88rem;
+    transition: color 0.2s ease;
   }
 
   .footer-col a:hover {
-    color: var(--text);
+    color: #ffffff;
   }
 
   .footer-bottom {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    padding-top: 32px;
-    font-size: var(--t-small);
+    padding-top: 36px;
+    font-size: 0.8rem;
     color: var(--text-3);
   }
 
@@ -154,9 +211,11 @@ const currentYear = 2026;
   .footer-meta {
     margin: 0;
     max-width: 680px;
+    line-height: 1.6;
   }
 
   .footer-copy {
     margin: 0;
+    white-space: nowrap;
   }
 </style>

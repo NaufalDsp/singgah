@@ -1,55 +1,73 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 
-const articles = await getCollection('articles');
+type ArticleEntry = CollectionEntry<'articles'>;
+const articles: ArticleEntry[] = await getCollection('articles');
 ---
 
 <BaseLayout title="Catatan Lapangan — Singgah">
-  <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
-    <div class="max-w-3xl mb-12">
-      <h1 class="font-serif text-[clamp(2.5rem,6vw,5.5rem)] text-text leading-tight mb-4">
-        Catatan lapangan
+  <div class="max-w-container mx-auto px-4 md:px-8 py-20 w-full">
+    <div class="max-w-3xl mb-14">
+      <div class="flex items-center gap-2 text-mint text-xs uppercase tracking-widest font-semibold mb-3">
+        <span class="w-2 h-2 rounded-full bg-mint"></span>
+        <span>JURNAL & OBSERVASI</span>
+      </div>
+      <h1 class="font-serif text-[clamp(2.5rem,5.5vw,5rem)] text-white leading-tight mb-4">
+        Catatan lapangan penjelajah
       </h1>
-      <p class="font-sans text-lg text-text-2 leading-relaxed">
-        Uraian naratif tentang dinamika musim, navigasi selat, ritme perjalanan, dan pengalaman
-        nyata dari lapangan tanpa kata klise.
+      <p class="font-sans text-base sm:text-lg text-text-2 leading-relaxed">
+        Uraian naratif tentang dinamika musim, navigasi selat perairan, ritme perjalanan, dan pengalaman nyata dari lapangan tanpa kata klise.
       </p>
     </div>
 
-    <div class="flex flex-col divide-y divide-line">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {
         articles.map((art) => (
-          <article class="py-10 flex flex-col md:flex-row justify-between gap-8 items-start">
-            <div class="max-w-2xl">
-              <span class="text-xs font-sans text-text-3 font-semibold uppercase tracking-wider block mb-2">
-                {art.data.published_at} • {art.data.reading_time_min} menit baca
-              </span>
-              <h2 class="font-serif text-3xl sm:text-4xl text-text mb-3">
-                <a href={`/catatan/${art.slug}`} class="hover:text-link transition-colors">
-                  {art.data.title}
-                </a>
-              </h2>
-              <p class="font-sans text-sm text-text-2 leading-relaxed mb-4">{art.data.summary}</p>
+          <article class="bg-[#081822] rounded-3xl border border-white/10 overflow-hidden flex flex-col justify-between group hover:border-mint/50 transition-all duration-300 shadow-xl hover:-translate-y-1">
+            <div>
+              <a href={`/catatan/${art.slug}`} class="block aspect-[16/10] overflow-hidden relative">
+                <img
+                  src={art.data.photo}
+                  alt={art.data.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#081822] via-[#081822]/30 to-transparent"></div>
+              </a>
+
+              <div class="p-6">
+                <div class="text-[11px] text-text-3 font-semibold mb-2 flex items-center gap-2">
+                  <span class="text-mint font-bold">{art.data.published_at}</span>
+                  <span>•</span>
+                  <span>{art.data.reading_time_min} menit baca</span>
+                </div>
+
+                <h2 class="font-serif text-2xl sm:text-3xl text-white mb-3 group-hover:text-mint transition-colors">
+                  <a href={`/catatan/${art.slug}`}>
+                    {art.data.title}
+                  </a>
+                </h2>
+
+                <p class="font-sans text-xs sm:text-sm text-text-2 leading-relaxed line-clamp-3 mb-4">
+                  {art.data.summary}
+                </p>
+              </div>
+            </div>
+
+            <div class="px-6 pb-6 pt-2 border-t border-white/8 flex items-center justify-between">
+              <a href={`/catatan/${art.slug}`} class="text-xs font-bold text-mint hover:underline inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                <span>Baca catatan</span>
+                <span>→</span>
+              </a>
               {art.data.destination_slug && (
                 <a
                   href={`/destinasi/${art.data.destination_slug}`}
-                  class="text-xs font-sans font-medium text-link underline">
-                  Lihat panduan destinasi terkait →
+                  class="text-[11px] font-sans text-text-3 hover:text-white underline">
+                  Destinasi
                 </a>
               )}
             </div>
-
-            <a
-              href={`/catatan/${art.slug}`}
-              class="w-full md:w-56 aspect-[3/2] flex-shrink-0 rounded-media overflow-hidden border border-line bg-surface-2">
-              <img
-                src={art.data.photo}
-                alt={art.data.title}
-                class="w-full h-full object-cover hover:scale-105 transition-transform duration-base"
-                loading="lazy"
-              />
-            </a>
           </article>
         ))
       }

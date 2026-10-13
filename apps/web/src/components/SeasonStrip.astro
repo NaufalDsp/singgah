@@ -18,40 +18,20 @@ const {
 } = Astro.props;
 
 const monthNamesShort = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'Mei',
-  'Jun',
-  'Jul',
-  'Agu',
-  'Sep',
-  'Okt',
-  'Nov',
-  'Des',
+  'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+  'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des',
 ];
 const monthNamesFull = [
-  'Januari',
-  'Februari',
-  'Maret',
-  'April',
-  'Mei',
-  'Juni',
-  'Juli',
-  'Agustus',
-  'September',
-  'Oktober',
-  'November',
-  'Desember',
+  'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+  'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember',
 ];
 const currentMonthNumber = new Date().getMonth() + 1;
 
 // Level mapping to height percent and numeric level
 const levelMap: Record<string, { lvl: number; pct: string; label: string }> = {
-  kurang: { lvl: 1, pct: '25%', label: 'Kurang' },
-  cukup: { lvl: 2, pct: '50%', label: 'Cukup' },
-  baik: { lvl: 3, pct: '75%', label: 'Baik' },
+  kurang: { lvl: 1, pct: '28%', label: 'Kurang' },
+  cukup: { lvl: 2, pct: '52%', label: 'Cukup' },
+  baik: { lvl: 3, pct: '78%', label: 'Baik' },
   'sangat-baik': { lvl: 4, pct: '100%', label: 'Sangat baik' },
 };
 
@@ -137,7 +117,7 @@ const accessibleSummary = `Kalender musim ${destinationName}. Periode terbaik: $
                 const meta = levelMap[m.level] ?? levelMap['kurang'];
                 return (
                   <tr>
-                    <td>{monthNamesFull[m.month - 1]}</td>
+                    <td class="font-semibold text-white">{monthNamesFull[m.month - 1]}</td>
                     <td>
                       <span class={`level-badge level-badge--${m.level}`}>{meta.label}</span>
                       {m.is_override && <span class="override-tag">* Koreksi lokal</span>}
@@ -168,12 +148,12 @@ const accessibleSummary = `Kalender musim ${destinationName}. Periode terbaik: $
   }
 
   .season-strip--compact .season-strip-grid {
-    height: 28px;
-    gap: 2px;
+    height: 32px;
+    gap: 3px;
   }
 
   .season-strip--full .season-strip-grid {
-    height: 160px;
+    height: 150px;
     gap: 6px;
   }
 
@@ -189,24 +169,22 @@ const accessibleSummary = `Kalender musim ${destinationName}. Periode terbaik: $
   .season-bar {
     width: 100%;
     height: var(--lvl-h);
-    min-height: 6px;
-    border-radius: 2px 2px 0 0;
-    box-shadow: inset 0 0 0 1px rgba(95, 111, 118, 0.4);
+    min-height: 8px;
+    border-radius: 6px 6px 2px 2px;
     cursor: pointer;
     transform-origin: bottom;
-    transition:
-      transform var(--dur-fast) var(--ease),
-      opacity var(--dur-fast) var(--ease);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .season-bar:hover,
   .season-bar:focus-visible {
-    transform: scaleY(1.04);
-    opacity: 0.9;
+    transform: scaleY(1.06);
+    filter: brightness(1.2);
   }
 
   .season-bar[data-lvl='1'] {
     background-color: var(--musim-1);
+    opacity: 0.6;
   }
   .season-bar[data-lvl='2'] {
     background-color: var(--musim-2);
@@ -216,101 +194,127 @@ const accessibleSummary = `Kalender musim ${destinationName}. Periode terbaik: $
   }
   .season-bar[data-lvl='4'] {
     background-color: var(--musim-4);
+    box-shadow: 0 0 12px rgba(94, 234, 212, 0.4);
   }
 
   .season-bar--current {
     box-shadow:
-      inset 0 0 0 1px var(--cta-bg),
-      0 2px 0 var(--cta-bg);
+      0 0 0 2px var(--mint),
+      0 0 16px rgba(45, 212, 191, 0.6) !important;
   }
 
   .season-bar--selected {
-    outline: 2px solid var(--text);
-    outline-offset: 1px;
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
   }
 
   .season-override-dot {
     position: absolute;
     top: 4px;
-    width: 5px;
-    height: 5px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background-color: var(--warn);
   }
 
   .season-month-label {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--text-3);
-    margin-top: 8px;
+    margin-top: 10px;
     font-family: var(--font-sans);
+    font-weight: 500;
   }
 
   .season-month-label--current {
-    color: var(--text);
-    font-weight: 600;
-    border-bottom: 2px solid var(--cta-bg);
+    color: #ffffff;
+    font-weight: 700;
+    position: relative;
+  }
+
+  .season-month-label--current::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 2px;
+    border-radius: 9999px;
+    background-color: var(--mint);
   }
 
   /* Details table */
   .season-details-table {
-    margin-top: 16px;
-    font-size: var(--t-small);
+    margin-top: 20px;
+    font-size: 0.8rem;
   }
 
   .season-details-summary {
     cursor: pointer;
-    color: var(--link);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    font-weight: 500;
+    color: var(--mint);
+    font-weight: 600;
+    transition: opacity 0.2s;
+  }
+
+  .season-details-summary:hover {
+    opacity: 0.8;
   }
 
   .season-table-wrap {
     overflow-x: auto;
-    margin-top: 12px;
+    margin-top: 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .season-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: var(--t-small);
+    font-size: 0.8rem;
     text-align: left;
+    background: rgba(0, 0, 0, 0.25);
   }
 
   .season-table th,
   .season-table td {
-    padding: 8px 12px;
-    border-bottom: 1px solid var(--line);
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   }
 
   .season-table th {
     color: var(--text-3);
     font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
   }
 
   .level-badge {
     display: inline-block;
-    padding: 2px 8px;
-    border-radius: var(--r-ui);
-    font-size: 0.75rem;
-    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    font-size: 0.72rem;
+    font-weight: 600;
   }
 
   .level-badge--sangat-baik {
-    background: var(--ok-bg);
-    color: var(--ok);
+    background: rgba(52, 211, 153, 0.15);
+    color: #34D399;
+    border: 1px solid rgba(52, 211, 153, 0.3);
   }
   .level-badge--baik {
-    background: rgba(79, 154, 171, 0.2);
-    color: var(--link);
+    background: rgba(45, 212, 191, 0.15);
+    color: #2DD4BF;
+    border: 1px solid rgba(45, 212, 191, 0.3);
   }
   .level-badge--cukup {
-    background: var(--surface-2);
+    background: rgba(255, 255, 255, 0.08);
     color: var(--text-2);
   }
   .level-badge--kurang {
-    background: var(--warn-bg);
-    color: var(--warn);
+    background: rgba(245, 158, 11, 0.15);
+    color: #FBBF24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
   }
 
   .override-tag {

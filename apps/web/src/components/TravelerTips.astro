@@ -24,19 +24,18 @@ const monthNames = [
 
 <section
   id="traveler-tips-section"
-  class="traveler-tips-box bg-surface rounded-panel border border-line p-6 md:p-8"
+  class="traveler-tips-box bg-[#081822] rounded-3xl border border-white/10 p-6 md:p-8 shadow-xl"
   data-slug={destinationSlug}
   data-name={destinationName}>
   <div
-    class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-6 pb-4 border-b border-line">
+    class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-6 pb-4 border-b border-white/8">
     <div>
-      <h3 class="font-serif text-2xl md:text-3xl text-text">Tips dari pelancong</h3>
-      <p class="font-sans text-xs text-text-3 mt-0.5">
-        Pengalaman faktual dari mereka yang pernah singgah di {destinationName}. Dimoderasi sebelum
-        tayang.
+      <h3 class="font-serif text-2xl md:text-3xl text-white">Tips dari pelancong</h3>
+      <p class="font-sans text-xs text-text-3 mt-1">
+        Pengalaman faktual dari mereka yang pernah singgah di {destinationName}. Dimoderasi secara objektif.
       </p>
     </div>
-    <span class="tips-count text-xs font-sans text-text-3 font-medium"></span>
+    <span class="tips-count text-xs font-sans text-mint font-semibold"></span>
   </div>
 
   <!-- DAFTAR TIPS PUBLIK -->
@@ -47,21 +46,20 @@ const monthNames = [
   </div>
 
   <!-- FORMULIR TULIS TIP -->
-  <div class="tip-form-container pt-6 border-t border-line">
+  <div class="tip-form-container pt-6 border-t border-white/8">
     <div class="tip-form-auth-gate hidden">
       <div
-        class="p-4 bg-surface-2 rounded-ui border border-line text-xs font-sans flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        class="p-4 bg-black/30 rounded-2xl border border-white/8 text-xs font-sans flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <p class="text-text-2">
-          Punya catatan praktis tentang logistik atau rute di {destinationName}? Masuk akun untuk
-          membagikan tip.
+          Punya catatan praktis tentang logistik atau rute di {destinationName}? Masuk akun untuk membagikan tip.
         </p>
-        <a href="/masuk" class="btn-sekunder text-xs h-8 px-3 whitespace-nowrap"> Masuk akun </a>
+        <a href="/masuk" class="btn-glass text-xs h-8 px-4 whitespace-nowrap"> Masuk akun </a>
       </div>
     </div>
 
     <form class="tip-form hidden space-y-4" method="post">
       <div>
-        <label for="tip-body" class="text-xs font-sans font-medium text-text-3 block mb-1">
+        <label for="tip-body" class="text-xs font-sans font-semibold text-text-3 block mb-1.5">
           Tulis Tip Perjalanan (20–400 karakter, teks polos):
         </label>
         <textarea
@@ -70,34 +68,34 @@ const monthNames = [
           rows="3"
           minlength="20"
           maxlength="400"
-          placeholder="Contoh: Bawa uang tunai secukupnya karena ATM di pelabuhan sering kehabisan saldo saat akhir pekan."
+          placeholder="Contoh: Bawa uang tunai secukupnya karena mesin ATM pelabuhan sering antre atau gangguan sinyal saat akhir pekan."
           required
-          class="w-full bg-surface-2 border border-line rounded-ui p-3 text-xs md:text-sm font-sans text-text outline-none focus:border-link"
+          class="w-full bg-[#041017] border border-white/10 rounded-2xl p-3.5 text-xs md:text-sm font-sans text-white outline-none focus:border-mint"
         ></textarea>
         <div class="flex justify-between items-center text-[11px] text-text-3 mt-1">
-          <span>Hanya teks biasa. Tanpa promosi atau tautan komersial.</span>
-          <span class="char-counter">0 / 400</span>
+          <span>Hanya teks informatif. Tanpa promosi komersial atau spam.</span>
+          <span class="char-counter text-mint font-mono">0 / 400</span>
         </div>
       </div>
 
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div class="flex items-center gap-2 text-xs font-sans">
-          <label for="tip-month" class="text-text-3 whitespace-nowrap">Bulan berkunjung:</label>
+          <label for="tip-month" class="text-text-3 whitespace-nowrap font-medium">Bulan berkunjung:</label>
           <select
             id="tip-month"
             name="visited_month"
-            class="bg-surface-2 border border-line rounded-ui px-2 py-1 text-xs text-text outline-none">
-            <option value="">Tidak ditentukan</option>
-            {monthNames.map((m, idx) => <option value={idx + 1}>{m}</option>)}
+            class="bg-[#041017] border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white outline-none focus:border-mint cursor-pointer">
+            <option value="" class="bg-[#081822]">Tidak ditentukan</option>
+            {monthNames.map((m, idx) => <option value={idx + 1} class="bg-[#081822]">{m}</option>)}
           </select>
         </div>
 
-        <button type="submit" class="btn-utama text-xs h-9 px-4">
-          Kirim tip untuk dimoderasi
+        <button type="submit" class="btn-primary text-xs h-10 px-5">
+          Kirim Tip untuk Dimoderasi
         </button>
       </div>
 
-      <div class="tip-form-msg hidden text-xs font-sans p-3 rounded-ui"></div>
+      <div class="tip-form-msg hidden text-xs font-sans p-3 rounded-xl"></div>
     </form>
   </div>
 </section>
@@ -131,7 +129,6 @@ const monthNames = [
       'Desember',
     ];
 
-    // 1. Cek Sesi Pengguna
     fetch('/api/v1/auth/me')
       .then((res) => {
         if (res.ok) {
@@ -147,14 +144,12 @@ const monthNames = [
         authGate?.classList.remove('hidden');
       });
 
-    // 2. Character Counter
     textarea?.addEventListener('input', () => {
       if (charCounter && textarea) {
         charCounter.textContent = `${textarea.value.length} / 400`;
       }
     });
 
-    // 3. Muat Tips Terbit
     async function loadTips() {
       if (!listEl) return;
       try {
@@ -165,13 +160,13 @@ const monthNames = [
         const tips = data.tips || [];
 
         if (countEl) {
-          countEl.textContent = `${tips.length} tip`;
+          countEl.textContent = `${tips.length} tip komunitas`;
         }
 
         if (tips.length === 0) {
           listEl.innerHTML = `
             <div class="py-6 text-center text-xs font-sans text-text-3">
-              Belum ada tip untuk tempat ini. Pernah ke sini? Bagikan satu melalui formulir di bawah.
+              Belum ada tip tersimpan untuk tempat ini. Pernah singgah ke sini? Bagikan catatanmu melalui formulir di bawah.
             </div>
           `;
           return;
@@ -180,20 +175,20 @@ const monthNames = [
         listEl.innerHTML = tips
           .map((t: any) => {
             const visitedText = t.visited_month
-              ? ` • Dikunjungi pada bulan ${monthNames[t.visited_month - 1]}`
+              ? ` • Dikunjungi bulan ${monthNames[t.visited_month - 1]}`
               : '';
             return `
-              <div class="p-4 bg-bg rounded-ui border border-line flex flex-col justify-between gap-3">
-                <p class="font-sans text-sm text-text leading-relaxed">
+              <div class="p-4 bg-black/30 rounded-2xl border border-white/8 flex flex-col justify-between gap-3">
+                <p class="font-sans text-xs sm:text-sm text-white/90 leading-relaxed">
                   "${t.body}"
                 </p>
-                <div class="flex items-center justify-between text-xs font-sans text-text-3 pt-2 border-t border-line/60">
+                <div class="flex items-center justify-between text-xs font-sans text-text-3 pt-2 border-t border-white/8">
                   <span>
-                    <strong>${t.author?.name || 'Pelancong'}</strong>${visitedText}
+                    <strong class="text-white">${t.author?.name || 'Pelancong'}</strong>${visitedText}
                   </span>
                   <button
                     type="button"
-                    class="btn-report text-xs text-text-3 hover:text-error underline"
+                    class="btn-report text-xs text-text-3 hover:text-red-400 underline"
                     data-tip-id="${t.id}"
                   >
                     Laporkan
@@ -204,12 +199,11 @@ const monthNames = [
           })
           .join('');
 
-        // Listener Lapor
         listEl.querySelectorAll<HTMLButtonElement>('.btn-report').forEach((btn) => {
           btn.addEventListener('click', async () => {
             const tipId = btn.dataset.tipId;
             const reason = prompt(
-              'Masukkan alasan pelaporan (misal: spam, iklan komersial, atau hoaks):',
+              'Masukkan alasan pelaporan (misal: spam, promosi, atau info tidak akurat):',
             );
             if (!reason) return;
 
@@ -245,7 +239,6 @@ const monthNames = [
 
     loadTips();
 
-    // 4. Submit Tip
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (!textarea || !msgEl) return;
@@ -254,7 +247,7 @@ const monthNames = [
       const monthVal = (form.querySelector('#tip-month') as HTMLSelectElement)?.value;
       const visitedMonth = monthVal ? parseInt(monthVal) : null;
 
-      msgEl.classList.remove('hidden', 'bg-ok-bg', 'text-ok', 'bg-error-bg', 'text-error');
+      msgEl.classList.remove('hidden', 'bg-emerald-500/20', 'text-emerald-300', 'bg-rose-500/20', 'text-rose-300');
       msgEl.textContent = 'Mengirim tip...';
 
       try {
@@ -269,17 +262,17 @@ const monthNames = [
 
         const json = await res.json();
         if (res.ok) {
-          msgEl.className = 'tip-form-msg text-xs font-sans p-3 rounded-ui bg-ok-bg text-ok';
+          msgEl.className = 'tip-form-msg text-xs font-sans p-3 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
           msgEl.textContent =
-            'Tip kamu berhasil dikirim! Catatan akan ditinjau oleh tim moderator sebelum dipublikasikan.';
+            'Tip berhasil dikirim! Catatan akan ditinjau moderator sebelum tayang.';
           textarea.value = '';
           if (charCounter) charCounter.textContent = '0 / 400';
         } else {
-          msgEl.className = 'tip-form-msg text-xs font-sans p-3 rounded-ui bg-error-bg text-error';
+          msgEl.className = 'tip-form-msg text-xs font-sans p-3 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/30';
           msgEl.textContent = json.error?.message || 'Gagal mengirim tip.';
         }
       } catch {
-        msgEl.className = 'tip-form-msg text-xs font-sans p-3 rounded-ui bg-error-bg text-error';
+        msgEl.className = 'tip-form-msg text-xs font-sans p-3 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/30';
         msgEl.textContent = 'Terjadi kesalahan sistem saat mengirim tip.';
       }
     });

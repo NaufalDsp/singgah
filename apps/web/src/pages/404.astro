@@ -3,40 +3,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Halaman Tidak Ditemukan — Singgah" transparentHeader={true}>
-  <section class="not-found-hero tema-malam">
-    <div class="not-found-content">
-      <h1 class="not-found-title">Halaman ini tidak ketemu.</h1>
-      <p class="not-found-desc">
-        Tautan yang kamu tuju mungkin sudah dipindahkan atau belum pernah ada.
+  <section class="min-h-[80vh] flex items-center justify-center px-4 py-24 text-center">
+    <div class="max-w-lg bg-[#081822] p-10 md:p-12 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden">
+      <!-- Glow ambient -->
+      <div class="absolute -top-16 -right-16 w-36 h-36 bg-mint/15 rounded-full blur-3xl pointer-events-none"></div>
+
+      <span class="text-xs uppercase tracking-[0.25em] text-mint font-semibold block mb-3">GALAT 404</span>
+      <h1 class="font-serif text-[clamp(2.4rem,4.5vw,3.6rem)] text-white leading-tight mb-4">
+        Halaman tidak ditemukan
+      </h1>
+      <p class="font-sans text-sm sm:text-base text-text-2 mb-8 leading-relaxed">
+        Tautan yang kamu tuju mungkin sudah dipindahkan atau belum pernah ada di peta penjelajahan Singgah.
       </p>
-      <a href="/" class="btn-utama">Kembali ke beranda</a>
+      <div class="flex justify-center gap-4">
+        <a href="/" class="btn-primary text-xs">Kembali ke Beranda →</a>
+        <a href="/destinasi" class="btn-glass text-xs">Jelajahi Destinasi</a>
+      </div>
     </div>
   </section>
 </BaseLayout>
-
-<style>
-  .not-found-hero {
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--margin-x);
-    text-align: center;
-  }
-
-  .not-found-content {
-    max-width: 540px;
-  }
-
-  .not-found-title {
-    font-size: var(--t-display);
-    line-height: 1.05;
-    margin-bottom: 20px;
-  }
-
-  .not-found-desc {
-    font-size: var(--t-lead);
-    color: var(--text-2);
-    margin-bottom: 32px;
-  }
-</style>

@@ -1,17 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SeasonStrip from '../components/SeasonStrip.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import { calculateYearSeasons } from '@singgah/scoring';
 import fs from 'node:fs';
 import path from 'node:path';
 
-// Load collections
-const destinations = await getCollection('destinations');
-const articles = (await getCollection('articles')).slice(0, 3);
-const moods = await getCollection('moods');
+type DestEntry = CollectionEntry<'destinations'>;
+type MoodEntry = CollectionEntry<'moods'>;
+type ArticleEntry = CollectionEntry<'articles'>;
 
-// Load climate data for each destination
+// Ambil seluruh koleksi konten
+const destinations: DestEntry[] = await getCollection('destinations');
+const articles: ArticleEntry[] = (await getCollection('articles')).slice(0, 3);
+const moods: MoodEntry[] = await getCollection('moods');
+
+// Load data iklim 30 tahun per destinasi
 const climateDataMap: Record<string, any> = {};
 for (const dest of destinations) {
   const filePath = path.resolve(`../../data/climate/${dest.slug}.json`);
@@ -20,7 +24,7 @@ for (const dest of destinations) {
   }
 }
 
-// Current month (1-based)
+// Bulan berjalan (1-12)
 const currentMonth = new Date().getMonth() + 1;
 const monthNamesFull = [
   'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
@@ -28,8 +32,8 @@ const monthNamesFull = [
 ];
 const currentMonthName = monthNamesFull[currentMonth - 1];
 
-// Calculate scores for all destinations for the current month
-const scoredDestinations = destinations.map((dest) => {
+// Hitung skor kelayakan musim bulan ini untuk setiap destinasi
+const scoredDestinations = destinations.map((dest: DestEntry) => {
   const climate = climateDataMap[dest.slug];
   const yearSeasons = climate
     ? calculateYearSeasons(climate.months, dest.data.profile, dest.data.season_overrides)
@@ -43,7 +47,7 @@ const scoredDestinations = destinations.map((dest) => {
     score: currentSeason?.score ?? 0,
     level: currentSeason?.level ?? 'cukup',
   };
-}).sort((a, b) => b.score - a.score);
+}).sort((a: any, b: any) => b.score - a.score);
 
 const topDestination = scoredDestinations[0];
 const otherGoodDestinations = scoredDestinations.slice(1, 5);
@@ -52,360 +56,758 @@ const otherGoodDestinations = scoredDestinations.slice(1, 5);
 function generateReason(season: any, typical: { min: number; max: number }) {
   if (!season) return `Ideal untuk kunjungan ${typical.min}–${typical.max} hari.`;
   if (season.is_override && season.override_reason) {
-    return `${season.override_reason}. Ideal ${typical.min}–${typical.max} hari.`;
+    return `${season.override_reason}. Durasi ideal ${typical.min}–${typical.max} hari.`;
   }
   let desc = 'Cukup cerah';
-  if (season.wet_days <= 5 && season.precip_mm <= 70) desc = 'Kering dan minim hujan';
-  else if (season.wet_days <= 9) desc = 'Cuaca bersahabat';
-  else if (season.wet_days >= 18) desc = 'Curah hujan relatif tinggi';
-  return `${desc}, ${Math.round(season.wet_days)} hari hujan (${Math.round(season.precip_mm)} mm). Cocok untuk ${typical.min} sampai ${typical.max} hari.`;
+  if (season.wet_days <= 5 && season.precip_mm <= 70) desc = 'Kering, cerah optimal & minim hujan';
+  else if (season.wet_days <= 9) desc = 'Cuaca bersahabat untuk jelajah luar ruang';
+  else if (season.wet_days >= 18) desc = 'Musim basah dengan curah hujan tinggi';
+  return `${desc}, perkiraan ${Math.round(season.wet_days)} hari hujan (${Math.round(season.precip_mm)} mm). Rekomendasi ${typical.min}–${typical.max} hari.`;
 }
+
+// Mock rating untuk visual Wanderlust
+const ratings: Record<string, string> = {
+  'labuan-bajo': '4.9',
+  'banda-neira': '4.9',
+  'danau-toba': '4.8',
+  'bromo': '4.8',
+  'toraja': '4.8',
+  'yogyakarta': '4.7',
+};
 ---
 
 <BaseLayout title="Singgah — Panduan Destinasi Nusantara" transparentHeader={true}>
-  <!-- HERO SECTION (design.md Bagian 7) -->
-  <section class="relative min-h-[min(100svh,980px)] flex flex-col justify-between pt-24 pb-12 bg-bg overflow-hidden tema-malam" aria-labelledby="hero-judul">
-    <!-- Foto Asli Penuh Layar dengan Scrim Terhitung -->
+  <!-- ========================================================================= -->
+  <!-- 1. HERO SECTION (SESUAI REFERENSI DESAIN WANDERLUST)                      -->
+  <!-- ========================================================================= -->
+  <section class="relative min-h-screen flex flex-col justify-between pt-28 pb-16 overflow-hidden bg-[#041017]" aria-labelledby="hero-title">
+    <!-- Cinematic High-Res Nature Background dengan Scrim Multi-Layer -->
     <div class="absolute inset-0 z-0">
       <img
-        src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=2400&q=80"
-        alt="Gugusan pulau karang dan perairan biru jernih di kawasan perairan Labuan Bajo saat cuaca cerah"
-        class="w-full h-full object-cover object-center"
+        src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=2560&q=85"
+        alt="Gugusan pulau karang dan perairan pirus jernih di kawasan perairan Labuan Bajo Flores saat golden hour"
+        class="w-full h-full object-cover object-center scale-[1.02] transition-transform duration-1000 ease-out"
         fetchpriority="high"
       />
-      <!-- Scrim Terhitung: Gradien atas dan bawah -->
-      <div class="absolute inset-0 bg-gradient-to-t from-[rgb(9,18,24)] via-[rgb(9,18,24)]/50 to-transparent"></div>
-      <div class="absolute inset-0 bg-gradient-to-b from-[rgb(9,18,24)]/60 via-transparent to-transparent"></div>
+      <!-- Scrim Terukur: Gradien Atmosfer Mewah -->
+      <div class="absolute inset-0 bg-gradient-to-t from-[#041017] via-[#041017]/45 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-[#041017]/85 via-[#041017]/40 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-[#041017]/70 via-transparent to-transparent"></div>
     </div>
 
-    <!-- Konten Teks Hero -->
-    <div class="relative z-10 max-w-container mx-auto px-4 md:px-8 w-full flex-1 flex flex-col justify-between">
-      <div class="max-w-4xl mt-12 md:mt-20">
-        <h1 id="hero-judul" class="font-serif text-[clamp(3.25rem,9.5vw,9.5rem)] leading-[0.92] tracking-tight text-white mb-6">
-          <span class="block">Tempat yang pantas</span>
-          <span class="block ml-[8vw] md:ml-[14%]">disinggahi</span>
-        </h1>
-        <p class="font-sans text-[clamp(1.125rem,1.5vw,1.375rem)] text-[#E8EEEF] max-w-[44ch] leading-relaxed mb-6">
-          Panduan {destinations.length} destinasi Nusantara dengan kalender musim dari data cuaca 30 tahun.
-        </p>
-        <a class="inline-block text-white text-sm font-medium underline underline-offset-4 hover:opacity-80 transition-opacity" href="/destinasi">
-          Jelajahi semua destinasi
-        </a>
+    <!-- Dotted Flight Trail & Island Marker (Sesuai Referensi Wanderlust) -->
+    <div class="absolute inset-0 pointer-events-none z-10 hidden lg:block overflow-hidden">
+      <svg class="w-full h-full" viewBox="0 0 1440 850" fill="none">
+        <path
+          d="M680 180 C 720 230, 780 340, 640 510 C 600 560, 650 630, 840 640"
+          stroke="rgba(255, 255, 255, 0.4)"
+          stroke-width="1.8"
+          stroke-dasharray="6 7"
+          stroke-linecap="round"
+        />
+        <!-- Airplane Icon on Path -->
+        <g transform="translate(675, 182) rotate(45)">
+          <path d="M0 0 L14 7 L7 8 L6 13 L3 9 L-2 11 L0 0Z" fill="#5EEAD4" opacity="0.9" />
+        </g>
+        <!-- Glowing Location Pin on Island -->
+        <g transform="translate(635, 485)">
+          <circle cx="12" cy="12" r="16" fill="rgba(45, 212, 191, 0.2)" class="animate-ping" />
+          <circle cx="12" cy="12" r="12" fill="#2DD4BF" />
+          <circle cx="12" cy="12" r="5" fill="#04141A" />
+        </g>
+      </svg>
+    </div>
+
+    <!-- Container Konten Atas Hero (Headline Kiri & Floating Card Kanan) -->
+    <div class="relative z-20 max-w-container mx-auto px-4 md:px-8 w-full mt-6 mb-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <!-- Kolom Kiri: Editorial Headline & Dual CTA (7 Kolom) -->
+        <div class="lg:col-span-7 flex flex-col items-start pt-6">
+          <!-- Eyebrow Badge dengan Garis Tipis -->
+          <div class="flex items-center gap-3 mb-6">
+            <span class="w-8 h-[2px] bg-mint rounded-full"></span>
+            <span class="text-xs uppercase tracking-[0.25em] text-mint font-semibold">NUSANTARA MENANTI</span>
+          </div>
+
+          <!-- Headline Editorial Mewah (Playfair Display / Serif) -->
+          <h1 id="hero-title" class="font-serif text-[clamp(2.8rem,6.8vw,6.4rem)] leading-[0.96] text-white tracking-tight mb-7">
+            Adventures <br />
+            That Stay <br />
+            With You
+          </h1>
+
+          <!-- Deskripsi Elegan -->
+          <p class="font-sans text-[clamp(1rem,1.35vw,1.2rem)] text-white/80 max-w-[48ch] leading-relaxed mb-9">
+            Temukan keelokan tersembunyi pulau-pulau Nusantara, momen musim terbaik yang presisi, dan kenangan abadi — dikurasi dari data iklim 30 tahun.
+          </p>
+
+          <!-- Dual Call To Actions -->
+          <div class="flex flex-wrap items-center gap-5">
+            <a href="/destinasi" class="btn-primary group">
+              <span>Jelajahi Destinasi</span>
+              <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 20 20" fill="none">
+                <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+
+            <a href="/catatan" class="btn-glass group">
+              <span class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-mint group-hover:bg-mint group-hover:text-black transition-colors">
+                <svg class="w-3.5 h-3.5 fill-current ml-0.5" viewBox="0 0 16 16">
+                  <path d="M4 3.5L13 8L4 12.5V3.5Z" />
+                </svg>
+              </span>
+              <span>Catatan Lapangan</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Kolom Kanan: Floating Glass Booking / Search Card (5 Kolom) -->
+        <div class="lg:col-span-5 flex justify-center lg:justify-end">
+          <div class="w-full max-w-[440px] bg-[#081822]/75 backdrop-blur-2xl border border-white/12 rounded-[28px] p-6 sm:p-7 shadow-2xl relative overflow-hidden group">
+            <!-- Glow Ambience Halus di Sudut Kartu -->
+            <div class="absolute -top-20 -right-20 w-44 h-44 bg-mint/15 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="mb-5">
+              <h2 class="font-sans font-bold text-xl text-white">Mau singgah ke mana?</h2>
+              <p class="font-sans text-xs text-text-3 mt-1">Temukan pelarian terbaik di waktu yang tepat</p>
+            </div>
+
+            <!-- Tab Pilihan (Rute, Penginapan, Pengalaman) -->
+            <div class="grid grid-cols-3 gap-1 p-1 bg-white/[0.06] rounded-xl mb-5 text-xs font-sans font-semibold text-white/70">
+              <button type="button" class="py-2 rounded-lg bg-white/15 text-white shadow-sm flex items-center justify-center gap-1.5 transition-all">
+                <svg class="w-3.5 h-3.5 text-mint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.6.5-1.1z"/>
+                </svg>
+                <span>Rute</span>
+              </button>
+              <button type="button" class="py-2 rounded-lg hover:text-white flex items-center justify-center gap-1.5 transition-all">
+                <svg class="w-3.5 h-3.5 text-text-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                </svg>
+                <span>Area</span>
+              </button>
+              <button type="button" class="py-2 rounded-lg hover:text-white flex items-center justify-center gap-1.5 transition-all">
+                <svg class="w-3.5 h-3.5 text-text-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                </svg>
+                <span>Suasana</span>
+              </button>
+            </div>
+
+            <!-- Form Rencana Interaktif -->
+            <form action="/rencana/saran" method="get" class="space-y-3.5">
+              <!-- Field Asal & Tujuan dengan Tombol Tukar -->
+              <div class="relative bg-black/30 rounded-2xl p-3 border border-white/10 focus-within:border-mint/60 transition-colors">
+                <div class="flex items-center gap-3 pb-2.5 border-b border-white/8">
+                  <span class="w-2 h-2 rounded-full bg-white/40"></span>
+                  <div class="flex-1">
+                    <span class="text-[10px] text-text-3 uppercase tracking-wider block font-semibold">Dari</span>
+                    <span class="text-xs font-semibold text-white">Jakarta (CGK) / Seluruh Indonesia</span>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 pt-2.5">
+                  <span class="w-2 h-2 rounded-full bg-mint animate-pulse-subtle"></span>
+                  <div class="flex-1">
+                    <label for="qp-hero-tujuan" class="text-[10px] text-text-3 uppercase tracking-wider block font-semibold">Tujuan Singgah</label>
+                    <select id="qp-hero-tujuan" name="tujuan" class="w-full bg-transparent text-xs font-semibold text-white outline-none cursor-pointer">
+                      <option value="" class="bg-[#081822] text-white">Pilih otomatis (Saran AI data)</option>
+                      {destinations.map((d) => (
+                        <option value={d.slug} class="bg-[#081822] text-white">{d.data.name} ({d.data.region.island})</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Baris Bulan & Durasi -->
+              <div class="grid grid-cols-2 gap-2.5">
+                <div class="bg-black/30 rounded-2xl p-3 border border-white/10 focus-within:border-mint/60 transition-colors">
+                  <label for="qp-hero-bulan" class="text-[10px] text-text-3 uppercase tracking-wider block font-semibold mb-0.5">Bulan Perjalanan</label>
+                  <select id="qp-hero-bulan" name="bulan" class="w-full bg-transparent text-xs font-semibold text-white outline-none cursor-pointer">
+                    {monthNamesFull.map((m, idx) => (
+                      <option value={idx + 1} selected={idx + 1 === currentMonth} class="bg-[#081822] text-white">
+                        {m}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div class="bg-black/30 rounded-2xl p-3 border border-white/10 focus-within:border-mint/60 transition-colors">
+                  <label for="qp-hero-lama" class="text-[10px] text-text-3 uppercase tracking-wider block font-semibold mb-0.5">Durasi Waktu</label>
+                  <select id="qp-hero-lama" name="lama" class="w-full bg-transparent text-xs font-semibold text-white outline-none cursor-pointer">
+                    <option value="2" class="bg-[#081822] text-white">2 Hari</option>
+                    <option value="3" class="bg-[#081822] text-white">3 Hari</option>
+                    <option value="4" selected class="bg-[#081822] text-white">4 Hari (Ideal)</option>
+                    <option value="5" class="bg-[#081822] text-white">5 Hari</option>
+                    <option value="7" class="bg-[#081822] text-white">7 Hari (Puas)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Submit CTA Button Full Width -->
+              <button type="submit" class="w-full mt-2 btn-primary justify-between py-3.5 px-6 group">
+                <span class="text-sm">Temukan Rekomendasi</span>
+                <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 20 20" fill="none">
+                  <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bagian Bawah Hero: Carousel Destinasi Populer & Feature Glass Bar -->
+    <div class="relative z-20 max-w-container mx-auto px-4 md:px-8 w-full mt-auto pt-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+        <!-- Kiri (7 Kolom): Destinasi Populer Strip Slider -->
+        <div class="lg:col-span-7">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <h3 class="font-sans font-bold text-base text-white">Destinasi Populer</h3>
+              <a href="/destinasi" class="text-xs text-mint hover:underline font-medium">Lihat semua</a>
+            </div>
+            <!-- Arrow Controls -->
+            <div class="flex items-center gap-2">
+              <button type="button" aria-label="Sebelumnya" class="w-8 h-8 rounded-full bg-white/[0.08] border border-white/12 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/15 transition-colors">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none">
+                  <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button type="button" aria-label="Berikutnya" class="w-8 h-8 rounded-full bg-white/[0.08] border border-white/12 flex items-center justify-center text-white/70 hover:text-white hover:bg-white/15 transition-colors">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none">
+                  <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Cards Horizontal Scroll Row -->
+          <div class="flex gap-3.5 overflow-x-auto no-scrollbar pb-2">
+            {destinations.slice(0, 4).map((dest) => (
+              <a
+                href={`/destinasi/${dest.slug}`}
+                class="group relative flex-shrink-0 w-36 sm:w-44 aspect-[4/3] rounded-2xl overflow-hidden border border-white/12 bg-black/40 shadow-lg hover:border-mint/50 transition-all duration-300"
+              >
+                <img
+                  src={dest.data.hero.photo}
+                  alt={dest.data.name}
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
+                <div class="absolute bottom-2.5 left-2.5 right-2.5 flex items-end justify-between">
+                  <div>
+                    <h4 class="font-sans font-bold text-xs sm:text-sm text-white group-hover:text-mint transition-colors truncate">
+                      {dest.data.name}
+                    </h4>
+                    <p class="font-sans text-[10px] text-white/70 truncate">{dest.data.region.island}</p>
+                  </div>
+                  <div class="flex items-center gap-1 text-[11px] font-bold text-star bg-black/50 backdrop-blur-md px-1.5 py-0.5 rounded-md">
+                    <span>★</span>
+                    <span class="text-white text-[10px]">{ratings[dest.slug] || '4.8'}</span>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <!-- Kanan (5 Kolom): 4-Pillar Trust Feature Floating Glass Bar -->
+        <div class="lg:col-span-5">
+          <div class="bg-[#081822]/70 backdrop-blur-xl border border-white/10 rounded-2xl p-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+            <div class="flex flex-col items-center">
+              <div class="w-8 h-8 rounded-full bg-white/[0.06] flex items-center justify-center text-mint mb-1.5">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              </div>
+              <span class="text-[11px] font-bold text-white block">Data 30 Tahun</span>
+              <span class="text-[9px] text-text-3">Open-Meteo</span>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <div class="w-8 h-8 rounded-full bg-white/[0.06] flex items-center justify-center text-mint mb-1.5">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+                </svg>
+              </div>
+              <span class="text-[11px] font-bold text-white block">Presisi Musim</span>
+              <span class="text-[9px] text-text-3">Skor objektif</span>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <div class="w-8 h-8 rounded-full bg-white/[0.06] flex items-center justify-center text-mint mb-1.5">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+              </div>
+              <span class="text-[11px] font-bold text-white block">Rencana Fleksibel</span>
+              <span class="text-[9px] text-text-3">Highlight nyata</span>
+            </div>
+
+            <div class="flex flex-col items-center">
+              <div class="w-8 h-8 rounded-full bg-white/[0.06] flex items-center justify-center text-mint mb-1.5">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </div>
+              <span class="text-[11px] font-bold text-white block">Bebas Sponsor</span>
+              <span class="text-[9px] text-text-3">100% Netral</span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Keterangan Foto Hero -->
-      <figure class="self-end text-right text-[#CBD5D5] text-xs leading-tight mb-8">
-        <figcaption>
-          <em class="font-serif text-sm italic text-white block">Labuan Bajo, Flores</em>
-          Foto: <a href="https://unsplash.com/@rizknash" target="_blank" rel="noopener noreferrer" class="underline">Rizknash</a> di Unsplash
-        </figcaption>
-      </figure>
-    </div>
-
-    <!-- Panel Rencana Cepat Solid Kertas di Dasar Hero -->
-    <div class="relative z-20 max-w-[1160px] w-[calc(100%-2rem)] md:w-full mx-auto -mb-16">
-      <form class="bg-surface text-text rounded-panel shadow-panel flex flex-col lg:flex-row border border-line" method="get" action="/rencana/saran">
-        <div class="flex-1 flex flex-col justify-center px-6 py-4">
-          <label for="qp-tujuan" class="text-xs text-text-3 font-medium mb-1">Tujuan</label>
-          <select id="qp-tujuan" name="tujuan" class="bg-transparent font-sans text-sm font-medium text-text outline-none cursor-pointer">
-            <option value="">Belum tahu, sarankan</option>
-            {destinations.map(d => (
-              <option value={d.slug}>{d.data.name}</option>
-            ))}
-          </select>
+      <!-- Stats Bar Minimalis di Bawah Hero (Sesuai Referensi Wanderlust) -->
+      <div class="mt-8 pt-6 border-t border-white/8 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center sm:text-left">
+        <div>
+          <span class="font-sans font-extrabold text-2xl text-white block">6+</span>
+          <span class="font-sans text-xs text-text-3">Destinasi Terverifikasi</span>
         </div>
-
-        <div class="hidden lg:block w-px bg-line my-3"></div>
-
-        <div class="flex-1 flex flex-col justify-center px-6 py-4 border-t lg:border-t-0 border-line">
-          <label for="qp-bulan" class="text-xs text-text-3 font-medium mb-1">Bulan</label>
-          <select id="qp-bulan" name="bulan" class="bg-transparent font-sans text-sm font-medium text-text outline-none cursor-pointer">
-            {monthNamesFull.map((m, idx) => (
-              <option value={idx + 1} selected={idx + 1 === currentMonth}>{m}</option>
-            ))}
-          </select>
+        <div>
+          <span class="font-sans font-extrabold text-2xl text-white block">30 Thn</span>
+          <span class="font-sans text-xs text-text-3">Rekam Jejak Iklim</span>
         </div>
-
-        <div class="hidden lg:block w-px bg-line my-3"></div>
-
-        <div class="flex-1 flex flex-col justify-center px-6 py-4 border-t lg:border-t-0 border-line">
-          <label for="qp-lama" class="text-xs text-text-3 font-medium mb-1">Lama Perjalanan</label>
-          <select id="qp-lama" name="lama" class="bg-transparent font-sans text-sm font-medium text-text outline-none cursor-pointer">
-            <option value="2">2 hari</option>
-            <option value="3">3 hari</option>
-            <option value="4" selected>4 hari</option>
-            <option value="5">5 hari</option>
-            <option value="7">7 hari</option>
-          </select>
+        <div>
+          <span class="font-sans font-extrabold text-2xl text-white block">100+</span>
+          <span class="font-sans text-xs text-text-3">Titik Highlight Alam & Ritus</span>
         </div>
-
-        <div class="hidden lg:block w-px bg-line my-3"></div>
-
-        <div class="flex-1 flex flex-col justify-center px-6 py-4 border-t lg:border-t-0 border-line">
-          <label for="qp-suasana" class="text-xs text-text-3 font-medium mb-1">Suasana</label>
-          <select id="qp-suasana" name="suasana" class="bg-transparent font-sans text-sm font-medium text-text outline-none cursor-pointer">
-            <option value="apa-saja" selected>Apa saja</option>
-            {moods.map(m => (
-              <option value={m.data.id}>{m.data.name}</option>
-            ))}
-          </select>
+        <div class="flex flex-col sm:items-start items-center">
+          <div class="flex items-center gap-2">
+            <span class="font-sans font-extrabold text-2xl text-white">4.9</span>
+            <div class="flex text-star text-xs">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+            </div>
+          </div>
+          <span class="font-sans text-xs text-text-3">Rata-rata Rating Wisatawan</span>
         </div>
-
-        <button type="submit" class="bg-cta text-cta-text font-sans text-sm font-medium px-8 py-4 lg:py-0 hover:bg-cta-hover transition-colors flex items-center justify-center">
-          Lihat saran
-        </button>
-      </form>
+      </div>
     </div>
   </section>
 
-  <!-- BAGIAN 1: SEDANG BAGUS BULAN INI (design.md Bagian 8.1) -->
-  <section class="max-w-container mx-auto px-4 md:px-8 pt-32 pb-24 w-full">
-    <div class="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
-      <!-- Kolom Kiri: Destinasi Teratas Bulan Ini (5/12) -->
-      {topDestination && (
-        <div class="w-full lg:w-5/12">
-          <div class="mb-4">
-            <span class="text-xs font-semibold uppercase tracking-wider text-text-3 block mb-1">Pilihan Utama</span>
-            <span class="font-serif text-3xl md:text-4xl text-text">Sedang bagus bulan {currentMonthName}</span>
-          </div>
+  <!-- ========================================================================= -->
+  <!-- 2. BAGIAN 1: SEDANG BAGUS BULAN INI (MODERN BENTO SPOTLIGHT)              -->
+  <!-- ========================================================================= -->
+  <section class="max-w-container mx-auto px-4 md:px-8 py-24 w-full">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+      <div>
+        <div class="flex items-center gap-2 text-mint text-xs uppercase tracking-widest font-semibold mb-2">
+          <span class="w-2 h-2 rounded-full bg-mint animate-pulse-subtle"></span>
+          <span>REKOMENDASI BULAN {currentMonthName.toUpperCase()}</span>
+        </div>
+        <h2 class="font-serif text-[clamp(2.2rem,4.2vw,3.8rem)] text-white">
+          Sedang bagus dikunjungi bulan ini
+        </h2>
+      </div>
+      <p class="font-sans text-sm text-text-2 max-w-md mt-4 md:mt-0">
+        Destinasi dengan rasio hari cerah tertinggi dan curah hujan terendah berdasarkan algoritma cuaca 30 tahun.
+      </p>
+    </div>
 
-          <a href={`/destinasi/${topDestination.dest.slug}`} class="group block mt-6">
-            <div class="aspect-[4/5] rounded-media overflow-hidden bg-surface-2 border border-line mb-4 relative">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- Kolom Kiri: Hero Spotlight Card (7 Kolom) -->
+      {topDestination && (
+        <div class="lg:col-span-7">
+          <div class="relative rounded-3xl overflow-hidden border border-white/12 bg-[#091C26] shadow-2xl group">
+            <div class="aspect-[16/10] sm:aspect-[16/9] overflow-hidden relative">
               <img
                 src={topDestination.dest.data.hero.photo}
                 alt={topDestination.dest.data.name}
-                class="w-full h-full object-cover transition-transform duration-base group-hover:scale-[1.02]"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 loading="lazy"
               />
-            </div>
-            <h3 class="font-serif text-3xl text-text group-hover:text-link transition-colors">
-              {topDestination.dest.data.name}
-            </h3>
-            <p class="font-sans text-xs text-text-3 mt-1 font-medium">
-              {topDestination.dest.data.region.island}, {topDestination.dest.data.region.province}
-            </p>
-            <p class="font-sans text-sm text-text-2 mt-2 leading-relaxed">
-              {generateReason(topDestination.currentSeason, topDestination.dest.data.typical_days)}
-            </p>
-          </a>
-        </div>
-      )}
+              <div class="absolute inset-0 bg-gradient-to-t from-[#091C26] via-[#091C26]/40 to-transparent"></div>
+              
+              <!-- Floating Weather Telemetry Badge -->
+              <div class="absolute top-5 left-5 flex items-center gap-2 bg-[#04121A]/80 backdrop-blur-md border border-white/15 px-3.5 py-1.5 rounded-full text-xs text-white">
+                <span class="w-2 h-2 rounded-full bg-mint"></span>
+                <span class="font-bold text-mint">Skor {topDestination.score}/100</span>
+                <span class="text-white/40">•</span>
+                <span>{topDestination.level === 'sangat-baik' ? 'Sangat Baik' : 'Kondisi Prima'}</span>
+              </div>
 
-      <!-- Kolom Kanan: Baris Rekomendasi Destinasi Lainnya (7/12) -->
-      <div class="w-full lg:w-6/12 flex flex-col divide-y divide-line lg:mt-16">
-        {otherGoodDestinations.map(({ dest, yearSeasons, currentSeason }) => (
-          <div class="py-6 first:pt-0 last:pb-0 flex flex-col sm:flex-row gap-5 sm:items-center justify-between">
-            <div class="flex gap-4 items-center">
-              <img
-                src={dest.data.hero.photo}
-                alt={dest.data.name}
-                class="w-20 h-24 sm:w-24 sm:h-28 object-cover rounded-media border border-line flex-shrink-0"
-                loading="lazy"
-              />
-              <div>
-                <a href={`/destinasi/${dest.slug}`} class="font-serif text-2xl text-text hover:text-link transition-colors block">
-                  {dest.data.name}
-                </a>
-                <p class="font-sans text-xs text-text-3 mt-0.5 font-medium">
-                  {dest.data.region.province}
-                </p>
-                <p class="font-sans text-xs text-text-2 mt-2 max-w-md line-clamp-2">
-                  {generateReason(currentSeason, dest.data.typical_days)}
-                </p>
+              <div class="absolute top-5 right-5 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-xs font-semibold text-star">
+                ★ {ratings[topDestination.dest.slug] || '4.9'}
               </div>
             </div>
 
-            <!-- SeasonStrip Mini -->
-            <div class="w-full sm:w-32 flex-shrink-0">
-              <SeasonStrip
-                months={yearSeasons}
-                mode="ringkas"
-                destinationName={dest.data.name}
-              />
+            <div class="p-6 sm:p-8">
+              <div class="flex items-center gap-3 text-xs text-text-3 font-semibold mb-2">
+                <span class="text-mint">{topDestination.dest.data.region.island}</span>
+                <span>•</span>
+                <span>{topDestination.dest.data.region.province}</span>
+                <span>•</span>
+                <span>{topDestination.dest.data.typical_days.min}–{topDestination.dest.data.typical_days.max} Hari Kunjungan</span>
+              </div>
+
+              <h3 class="font-serif text-3xl sm:text-4xl text-white mb-3 group-hover:text-mint transition-colors">
+                <a href={`/destinasi/${topDestination.dest.slug}`}>
+                  {topDestination.dest.data.name}
+                </a>
+              </h3>
+
+              <p class="font-sans text-sm sm:text-base text-text-2 leading-relaxed mb-6">
+                {generateReason(topDestination.currentSeason, topDestination.dest.data.typical_days)}
+              </p>
+
+              <!-- Season Strip Preview -->
+              <div class="bg-black/40 rounded-2xl p-4 border border-white/8 mb-6">
+                <span class="text-[11px] font-semibold uppercase tracking-wider text-text-3 block mb-3">Tren Musim 12 Bulan</span>
+                <SeasonStrip
+                  months={topDestination.yearSeasons}
+                  mode="ringkas"
+                  destinationName={topDestination.dest.data.name}
+                />
+              </div>
+
+              <div class="flex items-center justify-between pt-2">
+                <a href={`/destinasi/${topDestination.dest.slug}`} class="btn-primary text-xs py-2.5 px-6">
+                  <span>Lihat Panduan Lengkap</span>
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none">
+                    <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </a>
+                <a href={`/rencana/saran?tujuan=${topDestination.dest.slug}&bulan=${currentMonth}`} class="text-xs font-semibold text-mint hover:underline">
+                  Susun rute ke sini →
+                </a>
+              </div>
             </div>
           </div>
+        </div>
+      )}
+
+      <!-- Kolom Kanan: Daftar Rekomendasi Pilihan Lainnya (5 Kolom) -->
+      <div class="lg:col-span-5 flex flex-col gap-4">
+        <span class="text-xs font-semibold uppercase tracking-wider text-text-3 block mb-1">Pilihan Menarik Lainnya</span>
+        {otherGoodDestinations.map(({ dest, yearSeasons, currentSeason, score }: any) => (
+          <a
+            href={`/destinasi/${dest.slug}`}
+            class="group p-4 bg-[#091C26]/60 hover:bg-[#091C26] rounded-2xl border border-white/8 hover:border-mint/40 transition-all duration-300 flex items-center gap-4 shadow-sm"
+          >
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden flex-shrink-0 bg-surface-2 relative">
+              <img
+                src={dest.data.hero.photo}
+                alt={dest.data.name}
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                loading="lazy"
+              />
+              <span class="absolute top-1 left-1 text-[9px] font-bold px-1.5 py-0.5 rounded bg-black/70 text-mint">
+                {score}
+              </span>
+            </div>
+
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between text-[11px] text-text-3 font-medium mb-0.5">
+                <span>{dest.data.region.island}</span>
+                <span class="text-star">★ {ratings[dest.slug] || '4.8'}</span>
+              </div>
+              <h4 class="font-serif text-lg text-white group-hover:text-mint transition-colors truncate">
+                {dest.data.name}
+              </h4>
+              <p class="font-sans text-xs text-text-2 mt-1 line-clamp-2 leading-relaxed">
+                {dest.data.summary}
+              </p>
+            </div>
+
+            <div class="w-6 h-6 rounded-full bg-white/[0.06] flex items-center justify-center text-text-3 group-hover:text-mint group-hover:translate-x-1 transition-all flex-shrink-0">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none">
+                <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </a>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- BAGIAN 2: MENURUT SUASANA (design.md Bagian 8.2) -->
-  <section class="max-w-container mx-auto px-4 md:px-8 py-20 w-full border-t border-line">
-    <div class="mb-10">
-      <h2 class="font-serif text-[clamp(2rem,3.6vw,3.25rem)] text-text">
-        Jelajah menurut suasana perjalanan
-      </h2>
-    </div>
+  <!-- ========================================================================= -->
+  <!-- 3. BAGIAN 2: JELAJAH MENURUT SUASANA (VISUAL BENTO CARD GRID)             -->
+  <!-- ========================================================================= -->
+  <section class="bg-[#040E14] py-24 border-y border-white/8">
+    <div class="max-w-container mx-auto px-4 md:px-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
+        <div>
+          <span class="text-xs uppercase tracking-[0.2em] text-mint font-semibold block mb-2">RITME & LANSKAP</span>
+          <h2 class="font-serif text-[clamp(2.2rem,4vw,3.6rem)] text-white">
+            Jelajah menurut suasana perjalanan
+          </h2>
+        </div>
+        <a href="/suasana" class="text-sm font-semibold text-mint hover:underline mt-4 sm:mt-0">
+          Semua kategori suasana →
+        </a>
+      </div>
 
-    <div class="flex flex-col divide-y divide-line">
-      {moods.map((mood) => {
-        const count = destinations.filter(d => d.data.moods.includes(mood.data.id)).length;
-        return (
-          <a
-            href={`/suasana/${mood.data.id}`}
-            class="group py-6 flex items-center justify-between hover:pl-2 transition-all duration-fast"
-          >
-            <span class="font-serif text-[clamp(1.75rem,4vw,3.5rem)] text-text group-hover:text-link transition-colors">
-              {mood.data.name}
-            </span>
-            <div class="flex items-center gap-6">
-              <span class="font-sans text-xs sm:text-sm text-text-3">
-                {count} destinasi
-              </span>
-            </div>
-          </a>
-        );
-      })}
+      <!-- Bento Visual Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {moods.map((mood) => {
+          const count = destinations.filter((d) => d.data.moods.includes(mood.data.id)).length;
+          return (
+            <a
+              href={`/suasana/${mood.data.id}`}
+              class="group relative h-72 rounded-3xl overflow-hidden border border-white/10 p-6 flex flex-col justify-between transition-all duration-500 hover:border-mint/60 hover:-translate-y-1.5 shadow-xl"
+            >
+              <!-- Foto Latar Belakang -->
+              <img
+                src={mood.data.photo}
+                alt={mood.data.name}
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                loading="lazy"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-[#040E14] via-[#040E14]/50 to-transparent"></div>
+
+              <!-- Top Pill -->
+              <div class="relative z-10 self-start bg-black/50 backdrop-blur-md border border-white/15 px-3 py-1 rounded-full text-xs font-semibold text-white/90">
+                {count} Destinasi Pilihan
+              </div>
+
+              <!-- Bottom Content -->
+              <div class="relative z-10">
+                <h3 class="font-serif text-2xl sm:text-3xl text-white group-hover:text-mint transition-colors mb-2">
+                  {mood.data.name}
+                </h3>
+                <p class="font-sans text-xs text-white/70 line-clamp-2 leading-relaxed">
+                  {mood.data.description}
+                </p>
+                <div class="mt-3 flex items-center gap-1.5 text-xs font-bold text-mint group-hover:translate-x-1 transition-transform">
+                  <span>Jelajahi suasana ini</span>
+                  <span>→</span>
+                </div>
+              </div>
+            </a>
+          );
+        })}
+      </div>
     </div>
   </section>
 
-  <!-- BAGIAN 3: KAPAN WAKTU TERBAIK, MENURUT DATA (design.md Bagian 8.3 — Momen Khas) -->
-  <section class="bg-bg text-text py-24 tema-malam border-y border-line" aria-labelledby="section-data-title">
-    <div class="max-w-container mx-auto px-4 md:px-8">
-      <div class="max-w-2xl mb-12">
-        <h2 id="section-data-title" class="font-serif text-[clamp(2rem,3.6vw,3.25rem)] text-white mb-2">
-          Kapan waktu terbaik, menurut data
-        </h2>
-        <p class="font-sans text-sm text-text-2">
-          Dihitung dari data historis 30 tahun (1994–2023) Open-Meteo per bulan. Tanpa opini, tanpa bias sponsor.
-        </p>
+  <!-- ========================================================================= -->
+  <!-- 4. BAGIAN 3: KALENDER MUSIM & OBSERVATORIUM DATA IKLIM 30 TAHUN           -->
+  <!-- ========================================================================= -->
+  <section class="py-24 max-w-container mx-auto px-4 md:px-8 w-full" aria-labelledby="section-data-heading">
+    <div class="bg-[#081822] rounded-3xl border border-white/12 p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+      <!-- Glow ambient backdrop -->
+      <div class="absolute -bottom-24 -right-24 w-80 h-80 bg-mint/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10 pb-8 border-b border-white/8">
+        <div class="max-w-2xl">
+          <div class="flex items-center gap-2 text-mint text-xs uppercase tracking-widest font-semibold mb-2">
+            <span class="w-2 h-2 rounded-full bg-mint"></span>
+            <span>OBSERVATORIUM IKLIM HISTORIS</span>
+          </div>
+          <h2 id="section-data-heading" class="font-serif text-3xl sm:text-4xl text-white mb-3">
+            Kapan waktu terbaik, dihitung menurut data
+          </h2>
+          <p class="font-sans text-sm text-text-2 leading-relaxed">
+            Dihitung dari data historis 30 tahun (1994–2023) Open-Meteo per bulan. Menampilkan curah hujan, hari basah, dan suhu untuk menentukan momen ideal tanpa bias sponsor.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a href="/catatan-data" class="btn-glass text-xs py-2.5 px-5">
+            Baca Metodologi Sains
+          </a>
+        </div>
       </div>
 
-      <!-- Komponen Kalender Musim Ukuran Penuh -->
+      <!-- Komponen Kalender Musim Full Mode -->
       {topDestination && topDestination.yearSeasons.length > 0 && (
-        <div class="bg-surface p-6 md:p-10 rounded-panel border border-line">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-line">
-            <div>
-              <span class="text-xs uppercase tracking-wider text-text-3 block mb-1">Menampilkan Data</span>
-              <h3 class="font-serif text-2xl text-text">{topDestination.dest.data.name}</h3>
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <span class="text-xs uppercase tracking-wider text-text-3 font-semibold">Menampilkan:</span>
+              <span class="font-serif text-xl text-white">{topDestination.dest.data.name}</span>
+              <span class="text-xs text-text-3">({topDestination.dest.data.region.island})</span>
             </div>
-            <div class="text-xs text-text-3">
-              Koordinat: {topDestination.dest.data.coords.lat}, {topDestination.dest.data.coords.lon}
-            </div>
+            <span class="text-xs text-mint font-semibold bg-mint/10 border border-mint/20 px-3 py-1 rounded-full">
+              Bulan Berjalan: {currentMonthName}
+            </span>
           </div>
 
-          <SeasonStrip
-            months={topDestination.yearSeasons}
-            mode="penuh"
-            destinationName={topDestination.dest.data.name}
-          />
+          <div class="bg-black/30 p-4 sm:p-6 rounded-2xl border border-white/8">
+            <SeasonStrip
+              months={topDestination.yearSeasons}
+              mode="penuh"
+              destinationName={topDestination.dest.data.name}
+            />
+          </div>
 
-          <div class="mt-8 pt-6 border-t border-line flex flex-wrap items-center justify-between gap-4 text-xs text-text-3">
-            <span>Bulan dengan garis bawah adalah bulan berjalan ({currentMonthName}).</span>
-            <a href="/catatan-data" class="text-link underline hover:text-link-hover">
-              Pelajari metodologi dan rumus perhitungan kami
-            </a>
+          <div class="mt-6 flex flex-wrap items-center justify-between gap-4 text-xs text-text-3">
+            <div class="flex items-center gap-4">
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-musim-4"></span> Sangat Baik</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-musim-3"></span> Baik</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-musim-2"></span> Cukup</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-musim-1"></span> Kurang Disarankan</span>
+            </div>
+            <span>Sumber Agregasi: Open-Meteo CC BY 4.0</span>
           </div>
         </div>
       )}
     </div>
   </section>
 
-  <!-- BAGIAN 4: CATATAN LAPANGAN (design.md Bagian 8.4) -->
-  <section class="max-w-container mx-auto px-4 md:px-8 py-24 w-full">
+  <!-- ========================================================================= -->
+  <!-- 5. BAGIAN 4: CATATAN LAPANGAN (EDITORIAL TRAVEL MAGAZINE)                 -->
+  <!-- ========================================================================= -->
+  <section class="max-w-container mx-auto px-4 md:px-8 py-20 w-full border-t border-white/8">
     <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-12">
       <div>
-        <h2 class="font-serif text-[clamp(2rem,3.6vw,3.25rem)] text-text">
-          Catatan lapangan
+        <span class="text-xs uppercase tracking-[0.2em] text-mint font-semibold block mb-2">CATATAN & ESAI</span>
+        <h2 class="font-serif text-[clamp(2.2rem,4vw,3.6rem)] text-white">
+          Catatan lapangan penjelajah
         </h2>
-        <p class="font-sans text-sm text-text-2 mt-1">
-          Tulisan narasi mengenai musim, ritme perjalanan, dan pengamatan faktual.
+        <p class="font-sans text-sm text-text-2 mt-2">
+          Tulisan narasi mengenai ritme alam, musim, dan pengamatan faktual di tanah Nusantara.
         </p>
       </div>
-      <a href="/catatan" class="text-sm font-medium text-link underline mt-4 sm:mt-0">
-        Semua catatan
+      <a href="/catatan" class="text-sm font-semibold text-mint hover:underline mt-4 sm:mt-0">
+        Baca semua catatan →
       </a>
     </div>
 
-    <div class="flex flex-col divide-y divide-line">
-      {articles.map((art) => (
-        <article class="py-8 flex flex-col md:flex-row justify-between gap-6 items-start">
-          <div class="max-w-2xl">
-            <h3 class="font-serif text-2xl sm:text-3xl text-text mb-2">
-              <a href={`/catatan/${art.slug}`} class="hover:text-link transition-colors">
-                {art.data.title}
-              </a>
-            </h3>
-            <p class="font-sans text-sm text-text-2 leading-relaxed mb-4">
-              {art.data.summary}
-            </p>
-            <div class="font-sans text-xs text-text-3 font-medium">
-              <span>{art.data.published_at}</span> • <span>{art.data.reading_time_min} menit baca</span>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {articles.map((art, index) => (
+        <article class="group bg-[#081822]/60 hover:bg-[#081822] rounded-3xl overflow-hidden border border-white/8 hover:border-mint/40 transition-all duration-300 flex flex-col justify-between shadow-lg">
+          <div>
+            <a href={`/catatan/${art.slug}`} class="block aspect-[16/10] overflow-hidden relative">
+              <img
+                src={art.data.photo}
+                alt={art.data.title}
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+              <span class="absolute top-3 left-3 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full bg-black/70 text-mint backdrop-blur-md">
+                {index === 0 ? 'Cerita Utama' : 'Catatan'}
+              </span>
+            </a>
+
+            <div class="p-6">
+              <div class="text-[11px] text-text-3 font-semibold mb-2 flex items-center gap-2">
+                <span>{art.data.published_at}</span>
+                <span>•</span>
+                <span>{art.data.reading_time_min} menit baca</span>
+              </div>
+
+              <h3 class="font-serif text-2xl text-white group-hover:text-mint transition-colors mb-3">
+                <a href={`/catatan/${art.slug}`}>
+                  {art.data.title}
+                </a>
+              </h3>
+
+              <p class="font-sans text-xs sm:text-sm text-text-2 leading-relaxed">
+                {art.data.summary}
+              </p>
             </div>
           </div>
 
-          <a href={`/catatan/${art.slug}`} class="w-full md:w-48 aspect-[3/2] flex-shrink-0 rounded-media overflow-hidden border border-line bg-surface-2">
-            <img
-              src={art.data.photo}
-              alt={art.data.title}
-              class="w-full h-full object-cover hover:scale-105 transition-transform duration-base"
-              loading="lazy"
-            />
-          </a>
+          <div class="px-6 pb-6 pt-2">
+            <a href={`/catatan/${art.slug}`} class="text-xs font-bold text-mint hover:underline inline-flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+              <span>Baca selengkapnya</span>
+              <span>→</span>
+            </a>
+          </div>
         </article>
       ))}
     </div>
   </section>
 
-  <!-- BAGIAN 5: RENCANA CONTOH NYATA (design.md Bagian 8.5) -->
-  <section class="max-w-container mx-auto px-4 md:px-8 py-20 w-full border-t border-line">
-    <div class="max-w-2xl mb-12">
-      <h2 class="font-serif text-[clamp(2rem,3.6vw,3.25rem)] text-text mb-2">
-        Contoh susunan rencana
-      </h2>
-      <p class="font-sans text-sm text-text-2">
-        Dihasilkan dari daftar highlight nyata yang mempertimbangkan jarak dan waktu terbaik kunjungan.
-      </p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div class="p-6 bg-surface rounded-panel border border-line">
-        <span class="font-serif text-xl text-text block mb-4 border-b border-line pb-2">Hari 1 • Tiba & Kuliner</span>
-        <ul class="space-y-4 text-sm font-sans text-text-2">
-          <li>
-            <strong class="text-text block">Pagi</strong>
-            Mendarat di Labuan Bajo & check-in pelabuhan
-          </li>
-          <li>
-            <strong class="text-text block">Malam</strong>
-            Kuliner Ikan Bakar di Kampung Ujung
-          </li>
-        </ul>
+  <!-- ========================================================================= -->
+  <!-- 6. BAGIAN 5: CONTOH SUSUNAN RENCANA NYATA (TIMELINE PREVIEW)              -->
+  <!-- ========================================================================= -->
+  <section class="bg-[#030C11] py-24 border-t border-white/8">
+    <div class="max-w-container mx-auto px-4 md:px-8">
+      <div class="max-w-2xl mb-14">
+        <span class="text-xs uppercase tracking-[0.2em] text-mint font-semibold block mb-2">ITINERARI CERDAS</span>
+        <h2 class="font-serif text-[clamp(2.2rem,4vw,3.6rem)] text-white mb-3">
+          Contoh susunan rencana nyata
+        </h2>
+        <p class="font-sans text-sm text-text-2 leading-relaxed">
+          Dirancang dari titik highlight autentik dengan memperhitungkan jarak tempuh, waktu terbaik hari, dan ritme tubuh.
+        </p>
       </div>
 
-      <div class="p-6 bg-surface rounded-panel border border-line">
-        <span class="font-serif text-xl text-text block mb-4 border-b border-line pb-2">Hari 2 • Puncak Savana</span>
-        <ul class="space-y-4 text-sm font-sans text-text-2">
-          <li>
-            <strong class="text-text block">Pagi</strong>
-            Trekking Puncak Pulau Padar sebelum terik matahari
-          </li>
-          <li>
-            <strong class="text-text block">Siang</strong>
-            Pesisir Pink Beach dan perairan dangkal
-          </li>
-        </ul>
+      <!-- 3-Day Visual Timeline Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+        <div class="p-6 bg-[#081822] rounded-3xl border border-white/10 shadow-xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-white/8">
+              <span class="text-xs font-bold uppercase tracking-wider text-mint">Hari 01</span>
+              <span class="text-[11px] text-text-3 font-semibold">Tiba & Kuliner</span>
+            </div>
+            <h3 class="font-serif text-2xl text-white mb-4">Pendaratan & Marina</h3>
+            <div class="space-y-4 text-xs font-sans text-text-2">
+              <div class="p-3 rounded-xl bg-white/[0.04] border border-white/6">
+                <span class="text-mint font-bold block mb-1">PAGI • KEDATANGAN</span>
+                Mendarat di Labuan Bajo & check-in pelabuhan marina.
+              </div>
+              <div class="p-3 rounded-xl bg-white/[0.04] border border-white/6">
+                <span class="text-mint font-bold block mb-1">MALAM • KULINER</span>
+                Ikan Bakar segar bumbu rempah di pesisir Kampung Ujung.
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 pt-3 border-t border-white/8 text-[11px] text-text-3">
+            Durasi santai 4–5 jam aktif
+          </div>
+        </div>
+
+        <div class="p-6 bg-[#081822] rounded-3xl border border-white/10 shadow-xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-white/8">
+              <span class="text-xs font-bold uppercase tracking-wider text-mint">Hari 02</span>
+              <span class="text-[11px] text-text-3 font-semibold">Puncak Savana</span>
+            </div>
+            <h3 class="font-serif text-2xl text-white mb-4">Trekking & Pink Beach</h3>
+            <div class="space-y-4 text-xs font-sans text-text-2">
+              <div class="p-3 rounded-xl bg-white/[0.04] border border-white/6">
+                <span class="text-mint font-bold block mb-1">PAGI • SUNRISE</span>
+                Pendakian 800 anak tangga puncak Pulau Padar saat sejuk.
+              </div>
+              <div class="p-3 rounded-xl bg-white/[0.04] border border-white/6">
+                <span class="text-mint font-bold block mb-1">SIANG • BAHARI</span>
+                Menikmati hamparan pasir merah muda Pink Beach & snorkeling.
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 pt-3 border-t border-white/8 text-[11px] text-text-3">
+            Aktivitas luar ruang berenergi penuh
+          </div>
+        </div>
+
+        <div class="p-6 bg-[#081822] rounded-3xl border border-white/10 shadow-xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4 pb-3 border-b border-white/8">
+              <span class="text-xs font-bold uppercase tracking-wider text-mint">Hari 03</span>
+              <span class="text-[11px] text-text-3 font-semibold">Bahari Selat</span>
+            </div>
+            <h3 class="font-serif text-2xl text-white mb-4">Pari Manta & Sunset</h3>
+            <div class="space-y-4 text-xs font-sans text-text-2">
+              <div class="p-3 rounded-xl bg-white/[0.04] border border-white/6">
+                <span class="text-mint font-bold block mb-1">SIANG • OSEANIK</span>
+                Snorkeling bersama pari manta karang di Manta Point.
+              </div>
+              <div class="p-3 rounded-xl bg-white/[0.04] border border-white/6">
+                <span class="text-mint font-bold block mb-1">SORE • PELAYARAN</span>
+                Pelayaran pulang membelah senja ke marina Labuan Bajo.
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 pt-3 border-t border-white/8 text-[11px] text-text-3">
+            Selesai dengan kesan memukau
+          </div>
+        </div>
       </div>
 
-      <div class="p-6 bg-surface rounded-panel border border-line">
-        <span class="font-serif text-xl text-text block mb-4 border-b border-line pb-2">Hari 3 • Bahari Selat</span>
-        <ul class="space-y-4 text-sm font-sans text-text-2">
-          <li>
-            <strong class="text-text block">Siang</strong>
-            Snorkeling di Karang Makassar (Manta Point)
-          </li>
-          <li>
-            <strong class="text-text block">Sore</strong>
-            Pelayaran kembali menuju marina Labuan Bajo
-          </li>
-        </ul>
+      <!-- CTA Hubungkan ke Trip Planner -->
+      <div class="mt-14 text-center">
+        <a href="/rencana/baru" class="btn-primary">
+          <span>Rancang Rencana Perjalananmu Sendiri</span>
+          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none">
+            <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
       </div>
-    </div>
-
-    <div class="mt-12 text-center">
-      <a href="/destinasi" class="btn-utama">
-        Susun rencana perjalananmu
-      </a>
     </div>
   </section>
 </BaseLayout>

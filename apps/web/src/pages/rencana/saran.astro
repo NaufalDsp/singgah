@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SeasonStrip from '../../components/SeasonStrip.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 import { suggestDestinations, calculateYearSeasons } from '@singgah/scoring';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -9,13 +9,18 @@ import path from 'node:path';
 // Parse query params dari URL (Astro.url.searchParams)
 const searchParams = Astro.url.searchParams;
 const queryTujuan = searchParams.get('tujuan') || undefined;
-const queryBulan = searchParams.get('bulan') ? parseInt(searchParams.get('bulan')!) : new Date().getMonth() + 1;
+const queryBulan = searchParams.get('bulan')
+  ? parseInt(searchParams.get('bulan')!)
+  : new Date().getMonth() + 1;
 const queryLama = searchParams.get('lama') ? parseInt(searchParams.get('lama')!) : 4;
 const querySuasana = searchParams.get('suasana') || undefined;
 
+type DestEntry = CollectionEntry<'destinations'>;
+type MoodEntry = CollectionEntry<'moods'>;
+
 // Load collections
-const destinations = await getCollection('destinations');
-const moods = await getCollection('moods');
+const destinations: DestEntry[] = await getCollection('destinations');
+const moods: MoodEntry[] = await getCollection('moods');
 
 // Load climate data
 const climateDataMap: Record<string, any> = {};
@@ -28,7 +33,7 @@ for (const dest of destinations) {
 
 // Compute deterministic suggestions
 const suggestions = suggestDestinations({
-  destinations: destinations.map(d => ({ slug: d.slug, data: d.data })),
+  destinations: destinations.map((d) => ({ slug: d.slug, data: d.data })),
   climates: climateDataMap,
   month: queryBulan,
   days: queryLama,
@@ -56,169 +61,228 @@ const suggestionsWithYearSeasons = suggestions.map((s) => {
 ---
 
 <BaseLayout title={`Saran Rencana Bulan ${selectedMonthName} — Singgah`}>
-  <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
+  <div class="max-w-container mx-auto px-4 md:px-8 py-20 w-full">
     <!-- Header Hasil Saran -->
-    <div class="max-w-3xl mb-10">
-      <a href="/" class="text-xs font-sans font-medium text-text-3 hover:text-text mb-3 inline-block">
+    <div class="max-w-3xl mb-12">
+      <a
+        href="/"
+        class="text-xs font-sans font-medium text-mint hover:underline mb-4 inline-flex items-center gap-1.5">
         ← Kembali ke beranda
       </a>
-      <h1 class="font-serif text-[clamp(2.5rem,5.5vw,4.5rem)] text-text leading-tight mb-3">
+      <div class="flex items-center gap-2 text-mint text-xs uppercase tracking-widest font-semibold mb-2">
+        <span class="w-2 h-2 rounded-full bg-mint"></span>
+        <span>REKOMENDASI PERSONALISASI</span>
+      </div>
+      <h1 class="font-serif text-[clamp(2.5rem,5.5vw,4.5rem)] text-white leading-tight mb-3">
         Rekomendasi perjalanan
       </h1>
       <p class="font-sans text-base md:text-lg text-text-2 leading-relaxed">
-        Pilihan destinasi terbaik untuk bulan <strong class="text-text font-semibold">{selectedMonthName}</strong>, lama perjalanan <strong class="text-text font-semibold">{queryLama} hari</strong>{querySuasana && querySuasana !== 'apa-saja' ? `, dengan suasana ${querySuasana}` : ''}.
+        Pilihan destinasi terbaik untuk bulan <strong class="text-white font-semibold">{selectedMonthName}</strong>, lama perjalanan <strong class="text-white font-semibold">{queryLama} hari</strong>{
+          querySuasana && querySuasana !== 'apa-saja' ? `, dengan suasana ${querySuasana}` : ''
+        }.
       </p>
     </div>
 
-    <!-- Panel Ubah Filter Cepat -->
-    <div class="p-6 bg-surface rounded-panel border border-line shadow-sm mb-12">
-      <form method="get" action="/rencana/saran" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+    <!-- Panel Ubah Filter Cepat Glassmorphic -->
+    <div class="p-6 bg-[#081822] rounded-3xl border border-white/10 shadow-xl mb-14">
+      <form
+        method="get"
+        action="/rencana/saran"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
         <div>
-          <label for="filter-tujuan" class="text-xs text-text-3 font-medium block mb-1">Tujuan</label>
-          <select id="filter-tujuan" name="tujuan" class="w-full bg-surface-2 border border-line rounded-ui px-3 py-2 text-xs font-sans text-text">
+          <label for="filter-tujuan" class="text-[11px] text-text-3 font-semibold uppercase tracking-wider block mb-1.5">
+            Tujuan
+          </label>
+          <select
+            id="filter-tujuan"
+            name="tujuan"
+            class="w-full bg-[#041017] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-sans text-white outline-none focus:border-mint">
             <option value="">Semua Destinasi</option>
-            {destinations.map(d => (
-              <option value={d.slug} selected={d.slug === queryTujuan}>{d.data.name}</option>
-            ))}
+            {
+              destinations.map((d) => (
+                <option value={d.slug} selected={d.slug === queryTujuan}>
+                  {d.data.name}
+                </option>
+              ))
+            }
           </select>
         </div>
 
         <div>
-          <label for="filter-bulan" class="text-xs text-text-3 font-medium block mb-1">Bulan Kunjungan</label>
-          <select id="filter-bulan" name="bulan" class="w-full bg-surface-2 border border-line rounded-ui px-3 py-2 text-xs font-sans text-text">
-            {monthNamesFull.map((m, idx) => (
-              <option value={idx + 1} selected={idx + 1 === queryBulan}>{m}</option>
-            ))}
+          <label for="filter-bulan" class="text-[11px] text-text-3 font-semibold uppercase tracking-wider block mb-1.5">
+            Bulan Kunjungan
+          </label>
+          <select
+            id="filter-bulan"
+            name="bulan"
+            class="w-full bg-[#041017] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-sans text-white outline-none focus:border-mint">
+            {
+              monthNamesFull.map((m, idx) => (
+                <option value={idx + 1} selected={idx + 1 === queryBulan}>
+                  {m}
+                </option>
+              ))
+            }
           </select>
         </div>
 
         <div>
-          <label for="filter-lama" class="text-xs text-text-3 font-medium block mb-1">Lama Perjalanan</label>
-          <select id="filter-lama" name="lama" class="w-full bg-surface-2 border border-line rounded-ui px-3 py-2 text-xs font-sans text-text">
-            {[2, 3, 4, 5, 7, 10, 14].map(day => (
-              <option value={day} selected={day === queryLama}>{day} hari</option>
-            ))}
+          <label for="filter-lama" class="text-[11px] text-text-3 font-semibold uppercase tracking-wider block mb-1.5">
+            Durasi Perjalanan
+          </label>
+          <select
+            id="filter-lama"
+            name="lama"
+            class="w-full bg-[#041017] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-sans text-white outline-none focus:border-mint">
+            {
+              [2, 3, 4, 5, 7, 10, 14].map((day) => (
+                <option value={day} selected={day === queryLama}>
+                  {day} hari
+                </option>
+              ))
+            }
           </select>
         </div>
 
         <div>
-          <label for="filter-suasana" class="text-xs text-text-3 font-medium block mb-1">Suasana</label>
-          <select id="filter-suasana" name="suasana" class="w-full bg-surface-2 border border-line rounded-ui px-3 py-2 text-xs font-sans text-text">
+          <label for="filter-suasana" class="text-[11px] text-text-3 font-semibold uppercase tracking-wider block mb-1.5">
+            Suasana
+          </label>
+          <select
+            id="filter-suasana"
+            name="suasana"
+            class="w-full bg-[#041017] border border-white/10 rounded-xl px-3.5 py-2.5 text-xs font-sans text-white outline-none focus:border-mint">
             <option value="apa-saja">Apa saja</option>
-            {moods.map(m => (
-              <option value={m.data.id} selected={m.data.id === querySuasana}>{m.data.name}</option>
-            ))}
+            {
+              moods.map((m) => (
+                <option value={m.data.id} selected={m.data.id === querySuasana}>
+                  {m.data.name}
+                </option>
+              ))
+            }
           </select>
         </div>
 
         <div>
-          <button type="submit" class="btn-utama w-full text-xs h-10">
-            Perbarui saran
+          <button type="submit" class="btn-primary w-full text-xs h-[42px]">
+            Perbarui Rekomendasi
           </button>
         </div>
       </form>
     </div>
 
     <!-- HASIL REKOMENDASI -->
-    {suggestionsWithYearSeasons.length > 0 ? (
-      <div class="space-y-12">
-        {suggestionsWithYearSeasons.map((s, index) => (
-          <article class="p-6 md:p-8 bg-surface rounded-panel border border-line flex flex-col lg:flex-row gap-8 items-start justify-between">
-            <div class="w-full lg:w-7/12 flex flex-col justify-between">
-              <div>
-                <div class="flex items-center gap-3 mb-2">
-                  <span class="text-xs font-semibold px-2.5 py-1 rounded-ui bg-surface-2 text-text-2">
-                    Peringkat #{index + 1}
-                  </span>
-                  <span class={`text-xs font-medium px-2.5 py-1 rounded-ui ${s.level === 'sangat-baik' ? 'bg-ok-bg text-ok' : s.level === 'baik' ? 'bg-link/10 text-link' : 'bg-surface-2 text-text-2'}`}>
-                    Kesesuaian Cuaca: {s.level.replace('-', ' ')}
-                  </span>
-                </div>
+    {
+      suggestionsWithYearSeasons.length > 0 ? (
+        <div class="space-y-10">
+          {suggestionsWithYearSeasons.map((s, index) => (
+            <article class="p-6 md:p-8 bg-[#081822] rounded-3xl border border-white/10 flex flex-col lg:flex-row gap-8 items-start justify-between shadow-2xl hover:border-mint/40 transition-colors">
+              <div class="w-full lg:w-7/12 flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center gap-3 mb-3">
+                    <span class="text-xs font-bold px-3 py-1 rounded-full bg-white/10 text-white">
+                      Peringkat #{index + 1}
+                    </span>
+                    <span
+                      class={`text-xs font-bold px-3 py-1 rounded-full ${s.level === 'sangat-baik' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : s.level === 'baik' ? 'bg-teal-500/20 text-teal-300 border border-teal-500/30' : 'bg-white/10 text-white/80'}`}>
+                      Kesesuaian Cuaca: {s.level.replace('-', ' ').toUpperCase()}
+                    </span>
+                  </div>
 
-                <h2 class="font-serif text-3xl md:text-4xl text-text mb-1">
-                  <a href={`/destinasi/${s.slug}`} class="hover:text-link transition-colors">
-                    {s.destination.name}
-                  </a>
-                </h2>
-                <p class="font-sans text-xs text-text-3 font-medium mb-4">
-                  {s.destination.region.island}, {s.destination.region.province} • Lama Ideal: {s.destination.typical_days.min}–{s.destination.typical_days.max} hari
-                </p>
+                  <h2 class="font-serif text-3xl md:text-4xl text-white mb-2">
+                    <a href={`/destinasi/${s.slug}`} class="hover:text-mint transition-colors">
+                      {s.destination.name}
+                    </a>
+                  </h2>
+                  <p class="font-sans text-xs text-text-3 font-medium mb-5">
+                    {s.destination.region.island}, {s.destination.region.province} • Lama Ideal:{' '}
+                    <span class="text-mint font-semibold">{s.destination.typical_days.min}–{s.destination.typical_days.max} hari</span>
+                  </p>
 
-                <!-- Alasan Deterministik -->
-                <div class="p-4 bg-surface-2 rounded-ui border border-line mb-6 text-sm font-sans text-text leading-relaxed">
-                  <strong class="text-xs text-text-3 uppercase tracking-wider block mb-1">Alasan Rekomendasi:</strong>
-                  {s.reason}
-                </div>
+                  <!-- Alasan Deterministik -->
+                  <div class="p-4 bg-black/30 rounded-2xl border border-white/8 mb-6 text-xs sm:text-sm font-sans text-white/90 leading-relaxed">
+                    <strong class="text-[10px] text-mint uppercase tracking-wider block mb-1 font-bold">
+                      Analisis Kecocokan Musim:
+                    </strong>
+                    {s.reason}
+                  </div>
 
-                <!-- Pratinjau Kerangka Rencana Harian -->
-                <div class="mb-6">
-                  <strong class="text-xs font-sans text-text-3 uppercase tracking-wider block mb-3">
-                    Kerangka Rencana Harian ({s.recommended_days} Hari):
-                  </strong>
-                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {s.outline_days.slice(0, 4).map(day => (
-                      <div class="p-3 bg-bg rounded-ui border border-line text-xs font-sans">
-                        <span class="font-semibold text-text block mb-1">{day.title}</span>
-                        <ul class="text-text-2 space-y-0.5">
-                          {day.items.map(it => (
-                            <li class="line-clamp-1">• {it.title}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
+                  <!-- Pratinjau Kerangka Rencana Harian -->
+                  <div class="mb-6">
+                    <strong class="text-[11px] font-sans text-text-3 uppercase tracking-wider block mb-3 font-semibold">
+                      Kerangka Rencana Harian ({s.recommended_days} Hari):
+                    </strong>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {s.outline_days.slice(0, 4).map((day) => (
+                        <div class="p-3.5 bg-black/25 rounded-xl border border-white/6 text-xs font-sans">
+                          <span class="font-bold text-mint block mb-1">{day.title}</span>
+                          <ul class="text-text-2 space-y-1">
+                            {day.items.map((it) => (
+                              <li class="line-clamp-1">• {it.title}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
+
+                <div class="flex items-center gap-4 pt-4 border-t border-white/8">
+                  <a href={`/rencana/baru?destinasi=${s.slug}&lama=${s.recommended_days}&bulan=${s.selected_month}`} class="btn-primary text-xs py-2.5 px-6">
+                    Mulai Rencana Lengkap →
+                  </a>
+                  <a
+                    href={`/destinasi/${s.slug}`}
+                    class="text-xs font-semibold text-mint hover:underline">
+                    Lihat Panduan Destinasi
+                  </a>
+                </div>
               </div>
 
-              <div class="flex items-center gap-4 pt-4 border-t border-line">
-                <a href={`/destinasi/${s.slug}`} class="btn-utama text-xs h-10 px-5">
-                  Mulai rencana dari sini
-                </a>
-                <a href={`/destinasi/${s.slug}`} class="text-xs font-medium text-link underline hover:text-link-hover">
-                  Pelajari panduan lengkap
-                </a>
-              </div>
-            </div>
+              <!-- Sisi Kanan: Foto & Kalender Musim -->
+              <div class="w-full lg:w-5/12 flex flex-col gap-4">
+                <div class="aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 bg-surface-2 relative shadow-lg">
+                  <img
+                    src={s.destination.hero.photo}
+                    alt={s.destination.name}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div class="absolute bottom-3 left-3 text-xs font-bold text-white">
+                    {s.destination.name}
+                  </div>
+                </div>
 
-            <!-- Sisi Kanan: Foto & Kalender Musim -->
-            <div class="w-full lg:w-5/12 flex flex-col gap-4">
-              <div class="aspect-[16/10] rounded-media overflow-hidden border border-line bg-surface-2">
-                <img
-                  src={s.destination.hero.photo}
-                  alt={s.destination.name}
-                  class="w-full h-full object-cover"
-                  loading="lazy"
-                />
+                <div class="p-4 bg-black/30 rounded-2xl border border-white/8">
+                  <span class="text-[11px] text-text-3 font-medium block mb-3">
+                    Profil Musim 12 Bulan (Bulan terpilih: <strong class="text-white">{selectedMonthName}</strong>)
+                  </span>
+                  <SeasonStrip
+                    months={s.yearSeasons}
+                    mode="ringkas"
+                    selectedMonth={s.selected_month}
+                    destinationName={s.destination.name}
+                  />
+                </div>
               </div>
-
-              <div class="p-4 bg-bg rounded-ui border border-line">
-                <span class="text-[11px] text-text-3 font-medium block mb-2">
-                  Profil Musim 12 Bulan (Bulan terpilih: {selectedMonthName})
-                </span>
-                <SeasonStrip
-                  months={s.yearSeasons}
-                  mode="ringkas"
-                  selectedMonth={s.selected_month}
-                  destinationName={s.destination.name}
-                />
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
-    ) : (
-      <!-- STATE KOSONG CERDAS (Saran Alternatif) -->
-      <div class="p-12 bg-surface rounded-panel border border-line text-center max-w-2xl mx-auto">
-        <h2 class="font-serif text-3xl text-text mb-3">
-          Tidak ada destinasi yang cocok untuk kriteria ini
-        </h2>
-        <p class="font-sans text-sm text-text-2 mb-6 leading-relaxed">
-          Bulan {selectedMonthName} mungkin memiliki curah hujan tinggi untuk suasana yang kamu pilih. Coba sesuaikan filter suasana menjadi "Apa saja" atau periksa rekomendasi bulan lain.
-        </p>
-        <a href="/destinasi" class="btn-utama text-xs">
-          Lihat semua destinasi
-        </a>
-      </div>
-    )}
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div class="p-12 bg-[#081822] rounded-3xl border border-white/10 text-center max-w-2xl mx-auto shadow-2xl">
+          <h2 class="font-serif text-3xl text-white mb-3">
+            Tidak ada destinasi yang cocok untuk kriteria ini
+          </h2>
+          <p class="font-sans text-sm text-text-2 mb-6 leading-relaxed">
+            Bulan {selectedMonthName} mungkin memiliki curah hujan tinggi untuk suasana yang kamu
+            pilih. Coba sesuaikan filter suasana menjadi "Apa saja" atau periksa rekomendasi bulan lain.
+          </p>
+          <a href="/destinasi" class="btn-primary text-xs">
+            Lihat semua destinasi
+          </a>
+        </div>
+      )
+    }
   </div>
 </BaseLayout>

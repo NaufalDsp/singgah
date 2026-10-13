@@ -3,21 +3,21 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Moderasi Tips Komunitas — Pengelola Singgah">
-  <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
+  <div class="max-w-container mx-auto px-4 md:px-8 py-20 w-full">
     <div class="max-w-4xl mx-auto">
       <div
-        class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-8 border-b border-line">
+        class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-8 border-b border-white/8">
         <div>
-          <span class="text-xs uppercase tracking-wider text-text-3 font-semibold block mb-1">
-            Panel Pengelola (Admin)
+          <span class="text-xs uppercase tracking-widest text-mint font-semibold block mb-1">
+            PANEL MODERASI PENGELOLA
           </span>
-          <h1 class="font-serif text-3xl md:text-4xl text-text">Moderasi tips komunitas</h1>
+          <h1 class="font-serif text-3xl md:text-4xl text-white">Moderasi tips komunitas</h1>
         </div>
 
         <div class="flex items-center gap-2">
           <select
             id="filter-status"
-            class="bg-surface-2 border border-line rounded-ui px-3 py-1.5 text-xs font-sans text-text">
+            class="bg-[#081822] border border-white/10 rounded-xl px-3.5 py-2 text-xs font-sans text-white outline-none focus:border-mint cursor-pointer">
             <option value="pending" selected>Menunggu Persetujuan (Pending)</option>
             <option value="published">Telah Diterbitkan (Published)</option>
             <option value="hidden">Disembunyikan (Hidden)</option>
@@ -28,7 +28,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <!-- DAFTAR ANTREAN MODERASI -->
       <div id="admin-tips-container" class="space-y-6">
         <div
-          class="p-8 bg-surface rounded-panel border border-line text-center text-xs font-sans text-text-3 italic">
+          class="p-8 bg-[#081822] rounded-3xl border border-white/10 text-center text-xs font-sans text-text-3 italic">
           Memeriksa hak akses dan antrean tips...
         </div>
       </div>
@@ -39,8 +39,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 <script>
   async function initAdminModeration() {
     const container = document.getElementById('admin-tips-container');
-    const filterSelect = document.getElementById('filter-status') as HTMLSelectElement;
+    const filterSelect = document.getElementById('filter-status') as HTMLSelectElement | null;
     if (!container || !filterSelect) return;
+    const tipsContainer = container;
+    const statusSelect = filterSelect;
 
     const monthNames = [
       'Januari',
@@ -58,9 +60,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     ];
 
     async function fetchModerationQueue() {
-      const status = filterSelect.value;
-      container.innerHTML = `
-        <div class="p-8 bg-surface rounded-panel border border-line text-center text-xs font-sans text-text-3 italic">
+      const status = statusSelect.value;
+      tipsContainer.innerHTML = `
+        <div class="p-8 bg-[#081822] rounded-3xl border border-white/10 text-center text-xs font-sans text-text-3 italic">
           Memuat tips status '${status}'...
         </div>
       `;
@@ -69,13 +71,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         const res = await fetch(`/api/v1/admin/tips?status=${status}`);
         if (!res.ok) {
           if (res.status === 401 || res.status === 403) {
-            container.innerHTML = `
-              <div class="p-12 bg-surface rounded-panel border border-line text-center">
-                <h2 class="font-serif text-2xl text-text mb-2">Akses Terbatas</h2>
+            tipsContainer.innerHTML = `
+              <div class="p-12 bg-[#081822] rounded-3xl border border-white/10 text-center shadow-xl">
+                <h2 class="font-serif text-2xl text-white mb-2">Akses Terbatas</h2>
                 <p class="font-sans text-sm text-text-2 mb-6">
                   Halaman ini hanya dapat diakses oleh akun pengelola (admin).
                 </p>
-                <a href="/masuk" class="btn-utama text-xs">Masuk dengan akun admin</a>
+                <a href="/masuk" class="btn-primary text-xs">Masuk dengan akun admin</a>
               </div>
             `;
             return;
@@ -87,45 +89,45 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         const queue = data.tips || [];
 
         if (queue.length === 0) {
-          container.innerHTML = `
-            <div class="p-10 bg-surface rounded-panel border border-line text-center text-xs font-sans text-text-3">
+          tipsContainer.innerHTML = `
+            <div class="p-10 bg-[#081822] rounded-3xl border border-white/10 text-center text-xs font-sans text-text-3">
               Tidak ada tips dengan status '${status}' saat ini.
             </div>
           `;
           return;
         }
 
-        container.innerHTML = queue
+        tipsContainer.innerHTML = queue
           .map((item: any) => {
             const visited = item.visited_month
               ? ` • Berkunjung bulan ${monthNames[item.visited_month - 1]}`
               : '';
             return `
-              <div class="p-6 bg-surface rounded-panel border border-line shadow-sm flex flex-col justify-between gap-4" id="tip-card-${item.id}">
+              <div class="p-6 bg-[#081822] rounded-3xl border border-white/10 shadow-xl flex flex-col justify-between gap-4" id="tip-card-${item.id}">
                 <div>
                   <div class="flex items-center justify-between text-xs font-sans text-text-3 mb-2">
-                    <span class="font-semibold text-text uppercase tracking-wider">
+                    <span class="font-semibold text-mint uppercase tracking-wider">
                       Destinasi: ${item.destination}
                     </span>
-                    <span>Penulis: <strong>${item.author?.name || 'Anonim'}</strong>${visited}</span>
+                    <span class="text-white/70">Penulis: <strong class="text-white">${item.author?.name || 'Anonim'}</strong>${visited}</span>
                   </div>
 
-                  <p class="font-sans text-sm text-text p-4 bg-bg rounded-ui border border-line leading-relaxed mb-2">
+                  <p class="font-sans text-sm text-white/90 p-4 bg-black/30 rounded-2xl border border-white/8 leading-relaxed mb-2">
                     "${item.body}"
                   </p>
                 </div>
 
-                <div class="flex items-center justify-end gap-3 pt-3 border-t border-line">
+                <div class="flex items-center justify-end gap-3 pt-3 border-t border-white/8">
                   ${
                     item.status !== 'published'
-                      ? `<button class="btn-publish btn-utama text-xs h-8 px-4" data-id="${item.id}">
+                      ? `<button class="btn-publish btn-primary text-xs h-9 px-5" data-id="${item.id}">
                           ✓ Setujui (Publikasikan)
                         </button>`
                       : ''
                   }
                   ${
                     item.status !== 'hidden'
-                      ? `<button class="btn-hide btn-sekunder text-xs h-8 px-4 text-error" data-id="${item.id}">
+                      ? `<button class="btn-hide btn-glass text-xs h-9 px-4 text-red-400 hover:text-red-300" data-id="${item.id}">
                           ✕ Sembunyikan
                         </button>`
                       : ''
@@ -137,7 +139,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           .join('');
 
         // Action Listeners
-        container.querySelectorAll<HTMLButtonElement>('.btn-publish').forEach((btn) => {
+        tipsContainer.querySelectorAll<HTMLButtonElement>('.btn-publish').forEach((btn) => {
           btn.addEventListener('click', async () => {
             const id = btn.dataset.id;
             const actionRes = await fetch(`/api/v1/admin/tips/${id}/publish`, { method: 'POST' });
@@ -149,7 +151,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           });
         });
 
-        container.querySelectorAll<HTMLButtonElement>('.btn-hide').forEach((btn) => {
+        tipsContainer.querySelectorAll<HTMLButtonElement>('.btn-hide').forEach((btn) => {
           btn.addEventListener('click', async () => {
             const id = btn.dataset.id;
             const actionRes = await fetch(`/api/v1/admin/tips/${id}/hide`, { method: 'POST' });
@@ -161,15 +163,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           });
         });
       } catch {
-        container.innerHTML = `
-          <div class="p-8 bg-surface rounded-panel border border-line text-center text-xs font-sans text-text-3">
+        tipsContainer.innerHTML = `
+          <div class="p-8 bg-[#081822] rounded-3xl border border-white/10 text-center text-xs font-sans text-text-3">
             Terjadi gangguan koneksi saat memuat antrean moderasi.
           </div>
         `;
       }
     }
 
-    filterSelect.addEventListener('change', fetchModerationQueue);
+    statusSelect.addEventListener('change', fetchModerationQueue);
     fetchModerationQueue();
   }
 

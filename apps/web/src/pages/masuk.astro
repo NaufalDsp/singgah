@@ -3,23 +3,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Masuk Akun — Singgah">
-  <div class="max-w-container mx-auto px-4 md:px-8 py-20 w-full flex items-center justify-center">
+  <div class="max-w-container mx-auto px-4 md:px-8 py-24 w-full flex items-center justify-center min-h-[75vh]">
     <div
-      class="max-w-md w-full bg-surface p-8 md:p-10 rounded-panel border border-line shadow-sm text-center">
-      <span class="font-serif text-3xl text-text block mb-2">Singgah</span>
-      <p class="font-sans text-xs text-text-3 uppercase tracking-wider font-semibold mb-6">
+      class="max-w-md w-full bg-[#081822] p-8 md:p-10 rounded-3xl border border-white/10 shadow-2xl text-center relative overflow-hidden">
+      <!-- Glow ambient -->
+      <div class="absolute -top-16 -right-16 w-36 h-36 bg-mint/15 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="w-12 h-12 rounded-2xl bg-white/[0.06] border border-white/10 mx-auto flex items-center justify-center text-mint mb-4">
+        <svg viewBox="0 0 36 36" fill="none" class="w-7 h-7">
+          <path d="M5 26L14 8L20 19L24 13L31 26H5Z" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M14 8L18 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <span class="font-serif text-3xl text-white block mb-2">Singgah</span>
+      <p class="font-sans text-xs text-mint uppercase tracking-widest font-semibold mb-6">
         Masuk untuk menyimpan rencana
       </p>
 
       <p class="font-sans text-sm text-text-2 mb-8 leading-relaxed">
-        Masuk dengan akun Google untuk menyinkronkan rencana perjalanan ke cloud, menyimpan
-        destinasi favorit, dan membagikan tautan.
+        Masuk untuk menyinkronkan rencana perjalanan ke penyimpanan cloud, menyimpan destinasi favorit, dan membagikan tautan.
       </p>
 
       <div class="space-y-4">
         <a
           href="/api/v1/auth/google"
-          class="w-full py-3 px-4 bg-surface-2 border border-line hover:border-text-2 text-text font-sans font-medium text-sm rounded-ui flex items-center justify-center gap-3 transition-colors">
+          class="w-full py-3.5 px-4 bg-white/10 hover:bg-white/15 border border-white/15 text-white font-sans font-semibold text-sm rounded-full flex items-center justify-center gap-3 transition-all hover:scale-[1.02]">
           <svg class="w-4 h-4" viewBox="0 0 24 24">
             <path
               fill="#4285F4"
@@ -44,14 +53,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <!-- Akses Cepat Mode Uji Coba -->
         <a
           href="/api/v1/auth/demo-login"
-          class="block text-xs font-sans text-text-3 hover:text-text underline pt-2">
+          class="block text-xs font-sans text-mint hover:underline pt-2 font-medium">
           Masuk dengan Akun Tamu Demo (Mode Uji Coba)
         </a>
       </div>
 
-      <div class="mt-8 pt-6 border-t border-line text-[11px] text-text-3 leading-relaxed">
-        Kami hanya menyimpan ID profil publik Google tanpa menyimpan alamat email. Baca selengkapnya
-        di <a href="/privasi" class="underline text-text-2">kebijakan privasi</a>.
+      <div class="mt-8 pt-6 border-t border-white/8 text-[11px] text-text-3 leading-relaxed">
+        Kami menghargai privasi dan anonimitas pengunjung. Baca selengkapnya di <a href="/privasi" class="underline text-white hover:text-mint">kebijakan privasi</a>.
       </div>
     </div>
   </div>

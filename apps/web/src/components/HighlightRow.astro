@@ -8,51 +8,64 @@ interface Props {
 
 const { highlight, destinationSlug } = Astro.props;
 
-const kindLabels: Record<string, string> = {
-  alam: 'Alam',
-  budaya: 'Budaya',
-  kuliner: 'Kuliner',
-  aktivitas: 'Aktivitas',
-  transit: 'Transit',
+const kindLabels: Record<string, { label: string; color: string }> = {
+  alam: { label: 'Alam', color: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' },
+  budaya: { label: 'Budaya', color: 'bg-amber-500/15 text-amber-300 border-amber-500/30' },
+  kuliner: { label: 'Kuliner', color: 'bg-rose-500/15 text-rose-300 border-rose-500/30' },
+  aktivitas: { label: 'Aktivitas', color: 'bg-teal-500/15 text-teal-300 border-teal-500/30' },
+  transit: { label: 'Transit', color: 'bg-sky-500/15 text-sky-300 border-sky-500/30' },
 };
 
 const durationLabels: Record<string, string> = {
-  singkat: 'Singkat (1–2 jam)',
-  'setengah-hari': 'Setengah hari',
-  sehari: 'Sehari penuh',
+  singkat: '1–2 Jam',
+  'setengah-hari': 'Setengah Hari',
+  sehari: 'Sehari Penuh',
 };
 
 const bestTimeLabels: Record<string, string> = {
-  pagi: 'Paling pas waktu pagi',
-  siang: 'Paling pas waktu siang',
-  sore: 'Paling pas waktu sore',
-  bebas: 'Waktu fleksibel',
+  pagi: 'Pagi',
+  siang: 'Siang',
+  sore: 'Sore',
+  malam: 'Malam',
+  bebas: 'Fleksibel',
 };
 
-const metaText = `${kindLabels[highlight.kind] || highlight.kind} • ${durationLabels[highlight.duration] || highlight.duration} • ${bestTimeLabels[highlight.best_time] || ''} • Wilayah ${highlight.area}`;
+const kindMeta = kindLabels[highlight.kind] || { label: highlight.kind, color: 'bg-white/10 text-white border-white/20' };
 ---
 
-<div
-  class="py-5 border-b border-line flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="py-5 first:pt-0 last:pb-0 flex flex-col md:flex-row md:items-center justify-between gap-5 group">
   <div class="max-w-2xl">
-    <h3 class="font-serif text-2xl text-text mb-1">
+    <div class="flex flex-wrap items-center gap-2 mb-2">
+      <span class={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${kindMeta.color}`}>
+        {kindMeta.label}
+      </span>
+      <span class="text-xs text-text-3 font-medium">
+        Area {highlight.area}
+      </span>
+      <span class="text-white/30">•</span>
+      <span class="text-xs text-mint font-medium">
+        Durasi: {durationLabels[highlight.duration] || highlight.duration}
+      </span>
+      <span class="text-white/30">•</span>
+      <span class="text-xs text-white/70 font-medium">
+        Waktu Ideal: {bestTimeLabels[highlight.best_time] || highlight.best_time}
+      </span>
+    </div>
+
+    <h3 class="font-serif text-2xl text-white group-hover:text-mint transition-colors mb-2">
       {highlight.name}
     </h3>
-    <p class="font-sans text-xs text-text-3 font-medium mb-2 tracking-wide">
-      {metaText}
-    </p>
-    <p class="font-sans text-sm text-text-2 leading-relaxed">
+
+    <p class="font-sans text-xs sm:text-sm text-text-2 leading-relaxed">
       {highlight.note}
     </p>
   </div>
 
   <div class="flex-shrink-0">
-    <button
-      type="button"
-      class="btn-sekunder text-xs h-10 px-4 whitespace-nowrap"
-      data-highlight-id={highlight.id}
-      data-dest-slug={destinationSlug}>
-      Tambahkan ke rencana
-    </button>
+    <a
+      href={`/rencana/baru?destinasi=${destinationSlug}&highlight=${highlight.id}`}
+      class="btn-glass text-xs py-2 px-4 whitespace-nowrap group-hover:border-mint/50">
+      + Rencanakan
+    </a>
   </div>
 </div>

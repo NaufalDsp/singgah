@@ -6,12 +6,13 @@ import WeatherNow from '../../components/WeatherNow.astro';
 import TravelerTips from '../../components/TravelerTips.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { calculateYearSeasons } from '@singgah/scoring';
+import type { Highlight, SeasonOverride } from '@singgah/schema';
 import fs from 'node:fs';
 import path from 'node:path';
 
 export async function getStaticPaths() {
   const destinations = await getCollection('destinations');
-  return destinations.map((entry) => ({
+  return destinations.map((entry: CollectionEntry<'destinations'>) => ({
     params: { slug: entry.slug },
     props: { destination: entry },
   }));
@@ -61,33 +62,37 @@ const jsonLd = {
   <!-- Schema.org JSON-LD -->
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
-  <!-- HERO DESTINASI (21:9 di desktop) -->
+  <!-- HERO DESTINASI MEWAH (WANDERLUST STYLE) -->
   <section
-    class="relative min-h-[460px] md:h-[60vh] md:max-h-[640px] flex items-end pb-12 pt-28 bg-bg overflow-hidden tema-malam">
+    class="relative min-h-[520px] md:h-[65vh] md:max-h-[700px] flex items-end pb-16 pt-32 bg-[#041017] overflow-hidden">
     <div class="absolute inset-0 z-0">
       <img
         src={destination.data.hero.photo}
         alt={destination.data.name}
-        class="w-full h-full object-cover object-center"
+        class="w-full h-full object-cover object-center scale-[1.01]"
         fetchpriority="high"
       />
-      <div
-        class="absolute inset-0 bg-gradient-to-t from-[rgb(9,18,24)] via-[rgb(9,18,24)]/60 to-transparent">
-      </div>
-      <div
-        class="absolute inset-0 bg-gradient-to-b from-[rgb(9,18,24)]/50 via-transparent to-transparent">
-      </div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#041017] via-[#041017]/60 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-[#041017]/70 via-transparent to-transparent"></div>
     </div>
 
     <div class="relative z-10 max-w-container mx-auto px-4 md:px-8 w-full">
       <div class="max-w-3xl">
-        <span class="text-xs uppercase tracking-wider text-[#CBD5D5] font-semibold block mb-2">
-          {destination.data.region.island} • {destination.data.region.province}
-        </span>
-        <h1 class="font-serif text-[clamp(2.5rem,6vw,5.5rem)] text-white leading-tight mb-3">
+        <div class="flex items-center gap-2.5 mb-3">
+          <span class="px-3 py-1 rounded-full bg-mint/20 border border-mint/40 text-xs uppercase tracking-wider text-mint font-bold">
+            {destination.data.region.island}
+          </span>
+          <span class="text-xs uppercase tracking-wider text-white/70 font-medium">
+            {destination.data.region.province}
+          </span>
+          <span class="text-white/40">•</span>
+          <span class="text-xs text-star font-bold">★ 4.9 Rating</span>
+        </div>
+
+        <h1 class="font-serif text-[clamp(2.8rem,6vw,5.5rem)] text-white leading-[1.02] mb-4">
           {destination.data.name}
         </h1>
-        <p class="font-sans text-base md:text-lg text-[#E8EEEF] leading-relaxed max-w-2xl">
+        <p class="font-sans text-base md:text-lg text-white/85 leading-relaxed max-w-2xl">
           {destination.data.summary}
         </p>
       </div>
@@ -102,16 +107,19 @@ const jsonLd = {
         <!-- Bagian 1: Kalender Musim Ukuran Penuh -->
         <section aria-labelledby="heading-musim">
           <div class="mb-6">
-            <h2 id="heading-musim" class="font-serif text-3xl md:text-4xl text-text mb-2">
+            <div class="flex items-center gap-2 text-mint text-xs uppercase tracking-widest font-semibold mb-1">
+              <span class="w-2 h-2 rounded-full bg-mint"></span>
+              <span>ANALISIS CUACA 30 TAHUN</span>
+            </div>
+            <h2 id="heading-musim" class="font-serif text-3xl md:text-4xl text-white mb-2">
               Kapan waktu terbaik ke sana
             </h2>
             <p class="font-sans text-sm text-text-2">
-              Rata-rata iklim 30 tahun (1994–2023) dari Open-Meteo. Batang menunjukkan tingkat
-              kelayakan cuaca untuk profil {destination.data.profile}.
+              Rata-rata iklim 30 tahun (1994–2023) dari Open-Meteo. Batang menunjukkan tingkat kelayakan cuaca untuk profil {destination.data.profile}.
             </p>
           </div>
 
-          <div class="p-6 md:p-8 bg-surface rounded-panel border border-line">
+          <div class="p-6 md:p-8 bg-[#081822] rounded-3xl border border-white/10 shadow-xl">
             <SeasonStrip
               months={yearSeasons}
               mode="penuh"
@@ -120,12 +128,12 @@ const jsonLd = {
 
             {
               destination.data.season_overrides.length > 0 && (
-                <div class="mt-8 pt-6 border-t border-line text-xs font-sans text-text-2">
-                  <strong class="text-warn block mb-2">Catatan Penimpaan Anomali Lokal:</strong>
-                  <ul class="list-disc list-inside space-y-1">
-                    {destination.data.season_overrides.map((ov) => (
+                <div class="mt-8 pt-6 border-t border-white/8 text-xs font-sans text-text-2">
+                  <strong class="text-warn block mb-2 font-semibold">Catatan Penimpaan Anomali Lokal:</strong>
+                  <ul class="list-disc list-inside space-y-1.5 text-white/80">
+                    {destination.data.season_overrides.map((ov: SeasonOverride) => (
                       <li>
-                        Bulan {ov.month}: {ov.reason} (Status dinilai: {ov.level})
+                        Bulan {ov.month}: {ov.reason} (Status dinilai: <span class="text-mint font-semibold">{ov.level}</span>)
                       </li>
                     ))}
                   </ul>
@@ -138,40 +146,40 @@ const jsonLd = {
         <!-- Bagian: Cuaca Sekarang & Prakiraan 7 Hari -->
         <section aria-labelledby="heading-cuaca">
           <div class="mb-4">
-            <h2 id="heading-cuaca" class="font-serif text-3xl md:text-4xl text-text mb-1">
+            <h2 id="heading-cuaca" class="font-serif text-3xl md:text-4xl text-white mb-1">
               Cuaca sekarang & prakiraan
             </h2>
             <p class="font-sans text-xs text-text-3">
-              Kondisi riil langsung di lapangan dan peluang presipitasi 7 hari ke depan.
+              Kondisi riil langsung di lapangan dan peluang presipitasi 7 hari ke depan via Open-Meteo API.
             </p>
           </div>
           <WeatherNow destinationSlug={destination.slug} destinationName={destination.data.name} />
         </section>
 
         <!-- Bagian 2: Teks Editorial & Uraian Destinasi -->
-        <section class="prose max-w-content font-sans text-text leading-relaxed">
-          <h2 class="font-serif text-3xl md:text-4xl text-text mb-4">Tentang tempat ini</h2>
+        <section class="prose max-w-content font-sans text-white/90 leading-relaxed text-base">
+          <h2 class="font-serif text-3xl md:text-4xl text-white mb-4">Tentang tempat ini</h2>
           <Content />
         </section>
 
         <!-- Bagian 3: Cara ke Sana -->
         <section aria-labelledby="heading-rute">
-          <h2 id="heading-rute" class="font-serif text-3xl md:text-4xl text-text mb-4">
+          <h2 id="heading-rute" class="font-serif text-3xl md:text-4xl text-white mb-4">
             Cara menuju ke sana
           </h2>
           <div
-            class="p-6 bg-surface-2 rounded-panel border border-line font-sans text-sm text-text leading-relaxed">
+            class="p-6 bg-[#081822] rounded-3xl border border-white/10 font-sans text-sm text-white/90 leading-relaxed shadow-lg">
             <p class="mb-4">{destination.data.getting_there.notes}</p>
-            <div class="text-xs text-text-3 font-medium">
-              Sumber rute verifikasi:
+            <div class="text-xs text-text-3 font-medium flex items-center gap-2">
+              <span>Sumber rute verifikasi:</span>
               {
-                destination.data.getting_there.sources.map((s, idx) => (
+                destination.data.getting_there.sources.map((s: string, idx: number) => (
                   <a
                     href={s}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-link ml-2 underline">
-                    [Sumber {idx + 1}]
+                    class="text-mint underline hover:text-white transition-colors">
+                    [Rujukan {idx + 1}]
                   </a>
                 ))
               }
@@ -182,18 +190,17 @@ const jsonLd = {
         <!-- Bagian 4: Yang Layak Disinggahi (Highlights) -->
         <section aria-labelledby="heading-highlights">
           <div class="mb-6">
-            <h2 id="heading-highlights" class="font-serif text-3xl md:text-4xl text-text mb-2">
+            <h2 id="heading-highlights" class="font-serif text-3xl md:text-4xl text-white mb-2">
               Yang layak disinggahi
             </h2>
             <p class="font-sans text-sm text-text-2">
-              Titik-titik terpilih dengan perkiraan durasi dan waktu paling ideal untuk mencegah
-              jadwal perjalanan yang terlalu padat.
+              Titik-titik terpilih dengan estimasi durasi dan waktu paling ideal untuk mencegah jadwal perjalanan yang terlalu padat.
             </p>
           </div>
 
-          <div class="divide-y divide-line">
+          <div class="divide-y divide-white/8 bg-[#081822] rounded-3xl border border-white/10 p-6 shadow-xl">
             {
-              destination.data.highlights.map((item) => (
+              destination.data.highlights.map((item: Highlight) => (
                 <HighlightRow highlight={item} destinationSlug={destination.slug} />
               ))
             }
@@ -207,49 +214,53 @@ const jsonLd = {
       <!-- Kolom Sidebar Sticky (4 Kolom) -->
       <aside class="lg:col-span-4 lg:sticky lg:top-28 flex flex-col gap-6">
         <!-- Panel Tindakan Rencana -->
-        <div class="p-6 bg-surface rounded-panel border border-line shadow-sm">
+        <div class="p-6 bg-[#081822] rounded-3xl border border-white/10 shadow-xl">
           <a
             href={`/rencana/baru?destinasi=${destination.slug}`}
-            class="btn-utama w-full mb-3 text-center">
-            Susun rencana ke sini
+            class="btn-primary w-full mb-3 text-center py-3.5">
+            Susun rencana ke sini →
           </a>
-          <button type="button" class="btn-sekunder w-full text-xs"> ♡ Simpan ke favorit </button>
+          <a
+            href={`/rencana/saran?tujuan=${destination.slug}`}
+            class="btn-glass w-full text-xs text-center py-2.5">
+            Lihat rekomendasi bulan terbaik
+          </a>
         </div>
 
         <!-- Panel Fakta Singkat -->
-        <div class="p-6 bg-surface rounded-panel border border-line text-sm font-sans">
-          <h3 class="font-serif text-xl text-text mb-4 pb-2 border-b border-line">Fakta singkat</h3>
+        <div class="p-6 bg-[#081822] rounded-3xl border border-white/10 text-sm font-sans shadow-xl">
+          <h3 class="font-serif text-xl text-white mb-4 pb-3 border-b border-white/8">Fakta singkat</h3>
 
           <dl class="space-y-4">
             <div class="flex justify-between items-center">
               <dt class="text-text-3 text-xs">Wilayah</dt>
-              <dd class="text-text font-medium text-xs">
+              <dd class="text-white font-medium text-xs">
                 {destination.data.region.island}, {destination.data.region.province}
               </dd>
             </div>
             <div class="flex justify-between items-center">
               <dt class="text-text-3 text-xs">Zona waktu</dt>
-              <dd class="text-text font-medium text-xs">{destination.data.timezone}</dd>
+              <dd class="text-white font-medium text-xs">{destination.data.timezone}</dd>
             </div>
             <div class="flex justify-between items-center">
               <dt class="text-text-3 text-xs">Lama ideal</dt>
-              <dd class="text-text font-medium text-xs">
-                {destination.data.typical_days.min} sampai {destination.data.typical_days.max} hari
+              <dd class="text-mint font-semibold text-xs">
+                {destination.data.typical_days.min}–{destination.data.typical_days.max} hari
               </dd>
             </div>
             <div class="flex justify-between items-center">
               <dt class="text-text-3 text-xs">Profil scoring</dt>
-              <dd class="text-text font-medium text-xs capitalize">{destination.data.profile}</dd>
+              <dd class="text-white font-medium text-xs capitalize">{destination.data.profile}</dd>
             </div>
             <div class="flex justify-between items-center">
               <dt class="text-text-3 text-xs">Koordinat</dt>
-              <dd class="text-text font-medium text-xs">
+              <dd class="text-white font-mono text-xs">
                 {destination.data.coords.lat.toFixed(2)}, {destination.data.coords.lon.toFixed(2)}
               </dd>
             </div>
-            <div class="flex justify-between items-center pt-2 border-t border-line">
+            <div class="flex justify-between items-center pt-3 border-t border-white/8">
               <dt class="text-text-3 text-xs">Diverifikasi</dt>
-              <dd class="text-text font-medium text-xs">{destination.data.verified_at}</dd>
+              <dd class="text-white/80 font-medium text-xs">{destination.data.verified_at}</dd>
             </div>
           </dl>
         </div>

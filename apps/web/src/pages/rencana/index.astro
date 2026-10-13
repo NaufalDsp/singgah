@@ -3,25 +3,28 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Rencana Saya — Singgah">
-  <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
+  <div class="max-w-container mx-auto px-4 md:px-8 py-20 w-full">
     <div class="max-w-3xl mb-12">
-      <h1 class="font-serif text-[clamp(2.5rem,5vw,4.5rem)] text-text leading-tight mb-3">
+      <div class="flex items-center gap-2 text-mint text-xs uppercase tracking-widest font-semibold mb-2">
+        <span class="w-2 h-2 rounded-full bg-mint"></span>
+        <span>MANAJEMEN PERJALANAN</span>
+      </div>
+      <h1 class="font-serif text-[clamp(2.5rem,5vw,4.5rem)] text-white leading-tight mb-3">
         Rencana saya
       </h1>
       <p class="font-sans text-base text-text-2 leading-relaxed">
-        Kelola rencana perjalanan yang telah kamu susun. Rencana tersimpan di perangkat ini dan
-        disinkronkan saat kamu masuk akun.
+        Kelola rencana perjalanan yang telah kamu susun. Rencana tersimpan di perangkat ini secara lokal dan dapat diekspor kapan saja.
       </p>
     </div>
 
     <!-- Container Rencana dari LocalStorage / Server -->
     <div id="user-trips-container" class="space-y-6">
-      <div class="p-8 bg-surface rounded-panel border border-line text-center">
-        <h2 class="font-serif text-2xl text-text mb-2">Memeriksa rencana tersimpan...</h2>
+      <div class="p-8 bg-[#081822] rounded-3xl border border-white/10 text-center shadow-xl">
+        <h2 class="font-serif text-2xl text-white mb-2">Memeriksa rencana tersimpan...</h2>
         <p class="font-sans text-sm text-text-2 mb-6">
           Memuat riwayat rencana perjalanan di perangkat ini.
         </p>
-        <a href="/rencana/baru" class="btn-utama text-xs"> + Susun rencana baru </a>
+        <a href="/rencana/baru" class="btn-primary text-xs"> + Susun rencana baru </a>
       </div>
     </div>
   </div>
@@ -37,31 +40,31 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       if (localData) {
         const trip = JSON.parse(localData);
         container.innerHTML = `
-          <div class="p-6 bg-surface rounded-panel border border-line flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-sm">
+          <div class="p-7 bg-[#081822] rounded-3xl border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-2xl">
             <div>
-              <span class="text-xs uppercase tracking-wider text-text-3 font-semibold block mb-1">
+              <span class="text-xs uppercase tracking-wider text-mint font-semibold block mb-1">
                 Tersimpan di Perangkat Ini
               </span>
-              <h2 class="font-serif text-2xl sm:text-3xl text-text mb-1">
+              <h2 class="font-serif text-2xl sm:text-3xl text-white mb-1.5">
                 ${trip.title || 'Rencana Perjalanan'}
               </h2>
               <p class="font-sans text-xs text-text-2">
-                Destinasi: <strong class="capitalize">${trip.destination}</strong> • Durasi: <strong>${trip.days} hari</strong> • ${trip.items?.length || 0} aktivitas
+                Destinasi: <strong class="capitalize text-white">${trip.destination}</strong> • Durasi: <strong class="text-white">${trip.days} hari</strong> • ${trip.items?.length || 0} agenda aktivitas
               </p>
             </div>
 
             <div class="flex items-center gap-3">
-              <a href="/rencana/baru" class="btn-utama text-xs h-10 px-4">
-                Buka & edit
+              <a href="/rencana/baru" class="btn-primary text-xs h-10 px-5">
+                Buka & Edit Rencana →
               </a>
-              <button id="btn-delete-local" class="btn-sekunder text-xs h-10 px-4 text-error">
+              <button id="btn-delete-local" class="btn-glass text-xs h-10 px-4 text-red-400 hover:text-red-300">
                 Hapus
               </button>
             </div>
           </div>
 
           <div class="text-center pt-8">
-            <a href="/rencana/baru" class="text-xs text-link underline hover:text-link-hover">
+            <a href="/rencana/baru" class="text-xs text-mint hover:underline font-semibold">
               + Buat rencana baru lainnya
             </a>
           </div>
@@ -81,16 +84,16 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     // State Kosong
     container.innerHTML = `
-      <div class="p-12 bg-surface rounded-panel border border-line text-center max-w-xl mx-auto">
-        <h2 class="font-serif text-2xl text-text mb-2">Belum ada rencana perjalanan</h2>
+      <div class="p-12 bg-[#081822] rounded-3xl border border-white/10 text-center max-w-xl mx-auto shadow-2xl">
+        <h2 class="font-serif text-3xl text-white mb-2">Belum ada rencana tersimpan</h2>
         <p class="font-sans text-sm text-text-2 mb-6 leading-relaxed">
-          Mulai susun rencana perjalanan dari rekomendasi Rencana Cepat atau pilih salah satu destinasi Nusantara.
+          Mulai susun rencana perjalanan dari rekomendasi musim cerdas atau pilih langsung salah satu destinasi Nusantara.
         </p>
         <div class="flex justify-center gap-4">
-          <a href="/rencana/baru" class="btn-utama text-xs">
-            Susun rencana sekarang
+          <a href="/rencana/baru" class="btn-primary text-xs">
+            Susun rencana sekarang →
           </a>
-          <a href="/destinasi" class="btn-sekunder text-xs">
+          <a href="/destinasi" class="btn-glass text-xs">
             Jelajahi destinasi
           </a>
         </div>

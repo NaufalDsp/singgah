@@ -12,9 +12,10 @@ html {
   font-family: var(--font-sans);
   background-color: var(--bg);
   color: var(--text);
-  line-height: 1.7;
+  line-height: 1.6;
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -26,14 +27,16 @@ body {
   background-color: var(--bg);
   color: var(--text);
   font-size: var(--t-body);
+  overflow-x: hidden;
 }
 
-/* Headings */
+/* Headings with Editorial Luxury Feel */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
-  font-weight: 400;
+  font-weight: 500;
   margin: 0;
   color: inherit;
+  letter-spacing: -0.018em;
 }
 
 p {
@@ -41,13 +44,9 @@ p {
 }
 
 a {
-  color: var(--link);
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-a:hover {
-  color: var(--link-hover);
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease), opacity var(--dur-fast) var(--ease);
 }
 
 /* Aksesibilitas: Cincin Fokus Tegas */
@@ -69,56 +68,166 @@ a:hover {
   border-radius: var(--r-ui);
   box-shadow: var(--shadow-float);
   text-decoration: none;
+  font-weight: 600;
 }
 .skip-link:focus {
   top: 16px;
 }
 
-/* Tombol Utama (Hanya 1 per layar) */
-.btn-utama {
+/* Tombol Utama (Sleek Modern Mint Pill CTA dengan Efek Glow) */
+.btn-utama, .btn-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   background: var(--cta-bg);
   color: var(--cta-text);
   min-height: 48px;
-  padding: 0 20px;
+  padding: 0 28px;
   border: 0;
-  border-radius: var(--r-ui);
+  border-radius: 9999px;
   font-family: var(--font-sans);
   font-size: var(--t-ui);
-  font-weight: 500;
+  font-weight: 700;
   cursor: pointer;
   text-decoration: none;
-  transition: background-color var(--dur-fast) var(--ease);
+  box-shadow: 0 4px 20px rgba(45, 212, 191, 0.35);
+  transition: all var(--dur-base) var(--ease);
+  letter-spacing: 0.01em;
 }
 
-.btn-utama:hover {
+.btn-utama:hover, .btn-primary:hover {
   background: var(--cta-hover);
   color: var(--cta-text);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(45, 212, 191, 0.55);
 }
 
-/* Tombol Sekunder */
-.btn-sekunder {
+.btn-utama:active, .btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Tombol Sekunder / Glass Button */
+.btn-sekunder, .btn-glass {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--surface);
-  color: var(--text);
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #FFFFFF;
   min-height: 48px;
-  padding: 0 20px;
-  border: 1px solid var(--line);
-  border-radius: var(--r-ui);
+  padding: 0 24px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 9999px;
   font-family: var(--font-sans);
   font-size: var(--t-ui);
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   text-decoration: none;
-  transition: border-color var(--dur-fast) var(--ease);
+  transition: all var(--dur-base) var(--ease);
 }
 
-.btn-sekunder:hover {
-  border-color: var(--text-2);
+.btn-sekunder:hover, .btn-glass:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.32);
+  transform: translateY(-2px);
+  color: #FFFFFF;
+}
+
+/* Glassmorphism Frosted Utilities */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.glass-card {
+  background: rgba(11, 28, 37, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.glass-pill:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.glass-input {
+  background: rgba(6, 19, 26, 0.75);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+}
+
+.glass-input:focus-within {
+  border-color: var(--mint);
+  box-shadow: 0 0 0 1px var(--mint), 0 0 16px rgba(45, 212, 191, 0.2);
+}
+
+/* Subtle Glowing Accents */
+.glow-mint {
+  box-shadow: 0 0 24px rgba(45, 212, 191, 0.3);
+}
+
+.glow-text {
+  text-shadow: 0 0 20px rgba(45, 212, 191, 0.4);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #05131A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #183545;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2DD4BF;
+}
+
+/* Sembunyikan scrollbar untuk slider horizontal */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Animations */
+@keyframes pulseSubtle {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 /* Reduced Motion Override */

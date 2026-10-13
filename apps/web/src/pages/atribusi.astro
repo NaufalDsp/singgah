@@ -1,136 +1,133 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-
-const photos = await getCollection('photos');
 ---
 
 <BaseLayout
   title="Atribusi & Hak Cipta — Singgah"
   description="Daftar lengkap fotografer, penyedia data cuaca, dan lisensi terbuka yang digunakan di Singgah.">
-  <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
+  <div class="max-w-container mx-auto px-4 md:px-8 py-20 w-full">
     <div class="max-w-content mx-auto">
-      <h1 class="font-serif text-[clamp(2.5rem,5vw,4.5rem)] text-text leading-tight mb-6">
+      <div class="flex items-center gap-2 text-mint text-xs uppercase tracking-widest font-semibold mb-3">
+        <span class="w-2 h-2 rounded-full bg-mint"></span>
+        <span>HAK CIPTA & APRESIASI</span>
+      </div>
+      <h1 class="font-serif text-[clamp(2.5rem,5.5vw,4.8rem)] text-white leading-tight mb-4">
         Atribusi & sumber daya
       </h1>
-      <p class="font-sans text-lg text-text-2 leading-relaxed mb-10 pb-8 border-b border-line">
-        Singgah dibangun dengan prinsip kejujuran data dan penghargaan penuh terhadap karya kreatif
-        fotografer serta penyedia data terbuka.
+      <p class="font-sans text-base sm:text-lg text-text-2 leading-relaxed mb-12 pb-8 border-b border-white/10">
+        Singgah dibangun dengan prinsip kejujuran data dan penghargaan penuh terhadap karya kreatif fotografer serta penyedia data terbuka dunia.
       </p>
 
-      <div class="space-y-12 font-sans text-text text-sm md:text-base leading-relaxed">
-        <section>
-          <h2 class="font-serif text-2xl md:text-3xl text-text mb-3">1. Data Cuaca & Iklim</h2>
-          <p class="text-text-2">
+      <div class="space-y-12 font-sans text-white/90 text-sm md:text-base leading-relaxed">
+        <section class="bg-[#081822] p-8 rounded-3xl border border-white/10 shadow-xl">
+          <h2 class="font-serif text-2xl md:text-3xl text-white mb-3">1. Data Cuaca & Iklim</h2>
+          <p class="text-text-2 leading-relaxed">
             Data iklim historis dan prakiraan cuaca disediakan oleh <a
               href="https://open-meteo.com"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-link underline">Open-Meteo</a
+              class="text-mint underline hover:text-white">Open-Meteo</a
             > di bawah lisensi <a
               href="https://creativecommons.org/licenses/by/4.0/"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-link underline"
+              class="text-mint underline hover:text-white"
               >Creative Commons Attribution 4.0 International (CC BY 4.0)</a
             >.
           </p>
         </section>
 
-        <section>
-          <h2 class="font-serif text-2xl md:text-3xl text-text mb-3">2. Foto & Fotografer</h2>
-          <p class="text-text-2 mb-6">
+        <section class="bg-[#081822] p-8 rounded-3xl border border-white/10 shadow-xl">
+          <h2 class="font-serif text-2xl md:text-3xl text-white mb-3">2. Foto & Fotografer</h2>
+          <p class="text-text-2 mb-6 leading-relaxed">
             Seluruh foto yang digunakan merupakan karya fotografer asli yang dipublikasikan melalui <a
               href="https://unsplash.com"
               target="_blank"
               rel="noopener noreferrer"
-              class="text-link underline">Unsplash</a
-            > di bawah Unsplash License:
+              class="text-mint underline hover:text-white">Unsplash</a
+            > di bawah lisensi resmi Unsplash:
           </p>
 
-          <div
-            class="bg-surface rounded-panel border border-line divide-y divide-line text-xs font-sans">
+          <div class="bg-black/40 rounded-2xl border border-white/8 divide-y divide-white/8 text-xs font-sans">
             <div class="p-4 flex justify-between items-center">
               <div>
-                <strong class="text-text block">Rizknash</strong>
+                <strong class="text-white block font-semibold">Rizknash</strong>
                 <span class="text-text-3">Labuan Bajo, Nusa Tenggara Timur</span>
               </div>
               <a
                 href="https://unsplash.com/@rizknash"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-link underline">Profil Unsplash</a
+                class="text-mint underline hover:text-white">Profil Unsplash</a
               >
             </div>
             <div class="p-4 flex justify-between items-center">
               <div>
-                <strong class="text-text block">Fikri Rasyid</strong>
+                <strong class="text-white block font-semibold">Fikri Rasyid</strong>
                 <span class="text-text-3">Bromo, Jawa Timur</span>
               </div>
               <a
                 href="https://unsplash.com/@fikrirasyid"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-link underline">Profil Unsplash</a
+                class="text-mint underline hover:text-white">Profil Unsplash</a
               >
             </div>
             <div class="p-4 flex justify-between items-center">
               <div>
-                <strong class="text-text block">Afif Ramdhasuma</strong>
+                <strong class="text-white block font-semibold">Afif Ramdhasuma</strong>
                 <span class="text-text-3">Banda Neira, Maluku Tengah</span>
               </div>
               <a
                 href="https://unsplash.com/@afiframdhasuma"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-link underline">Profil Unsplash</a
+                class="text-mint underline hover:text-white">Profil Unsplash</a
               >
             </div>
             <div class="p-4 flex justify-between items-center">
               <div>
-                <strong class="text-text block">Mufid Majnun</strong>
+                <strong class="text-white block font-semibold">Mufid Majnun</strong>
                 <span class="text-text-3">Yogyakarta, DI Yogyakarta</span>
               </div>
               <a
                 href="https://unsplash.com/@mufidpwt"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-link underline">Profil Unsplash</a
+                class="text-mint underline hover:text-white">Profil Unsplash</a
               >
             </div>
             <div class="p-4 flex justify-between items-center">
               <div>
-                <strong class="text-text block">Agung Pandji</strong>
+                <strong class="text-white block font-semibold">Agung Pandji</strong>
                 <span class="text-text-3">Danau Toba, Sumatera Utara</span>
               </div>
               <a
                 href="https://unsplash.com/@agungpandji"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-link underline">Profil Unsplash</a
+                class="text-mint underline hover:text-white">Profil Unsplash</a
               >
             </div>
             <div class="p-4 flex justify-between items-center">
               <div>
-                <strong class="text-text block">Ahmad Syahrir</strong>
+                <strong class="text-white block font-semibold">Ahmad Syahrir</strong>
                 <span class="text-text-3">Tana Toraja, Sulawesi Selatan</span>
               </div>
               <a
                 href="https://unsplash.com/@ahmadsyahrir"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-link underline">Profil Unsplash</a
+                class="text-mint underline hover:text-white">Profil Unsplash</a
               >
             </div>
           </div>
         </section>
 
-        <section>
-          <h2 class="font-serif text-2xl md:text-3xl text-text mb-3">3. Tipografi</h2>
-          <p class="text-text-2">
-            Tipografi judul menggunakan <strong>Instrument Serif</strong> (desain oleh Rodrigo Fuenzalida
-            & Instrument) dan tipografi teks menggunakan <strong>Albert Sans</strong> (desain oleh Andreas
-            Rasmussen), keduanya dilisensikan di bawah SIL Open Font License.
+        <section class="bg-[#081822] p-8 rounded-3xl border border-white/10 shadow-xl">
+          <h2 class="font-serif text-2xl md:text-3xl text-white mb-3">3. Tipografi</h2>
+          <p class="text-text-2 leading-relaxed">
+            Tipografi judul menggunakan <strong class="text-white">Playfair Display</strong> & <strong class="text-white">Instrument Serif</strong> dan tipografi teks menggunakan <strong class="text-white">Plus Jakarta Sans</strong>, berlisensi SIL Open Font License.
           </p>
         </section>
       </div>

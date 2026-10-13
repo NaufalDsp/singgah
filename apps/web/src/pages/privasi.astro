@@ -5,60 +5,52 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout
   title="Kebijakan Privasi — Singgah"
   description="Prinsip privasi Singgah: tanpa cookie iklan pihak ketiga, tanpa pelacak komersial, dan transparansi penyimpanan data pengguna.">
-  <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
+  <div class="max-w-container mx-auto px-4 md:px-8 py-20 w-full">
     <div class="max-w-content mx-auto">
-      <h1 class="font-serif text-[clamp(2.5rem,5vw,4.5rem)] text-text leading-tight mb-6">
+      <div class="flex items-center gap-2 text-mint text-xs uppercase tracking-widest font-semibold mb-3">
+        <span class="w-2 h-2 rounded-full bg-mint"></span>
+        <span>PRINSIP PRIVASI & KEAMANAN</span>
+      </div>
+      <h1 class="font-serif text-[clamp(2.5rem,5.5vw,4.8rem)] text-white leading-tight mb-4">
         Kebijakan privasi
       </h1>
-      <p class="font-sans text-lg text-text-2 leading-relaxed mb-10 pb-8 border-b border-line">
-        Singgah dirancang dengan prinsip minimalisasi data. Kami percaya bahwa panduan perjalanan
-        yang baik tidak memerlukan pelacakan perilaku pribadi untuk menghasilkan rekomendasi yang
-        berguna.
+      <p class="font-sans text-base sm:text-lg text-text-2 leading-relaxed mb-12 pb-8 border-b border-white/10">
+        Singgah dirancang dengan prinsip minimalisasi data. Kami percaya bahwa panduan perjalanan yang baik tidak memerlukan pelacakan perilaku pribadi untuk menghasilkan rekomendasi yang berharga.
       </p>
 
-      <div class="space-y-10 font-sans text-text text-sm md:text-base leading-relaxed">
-        <section>
-          <h2 class="font-serif text-2xl md:text-3xl text-text mb-3">
+      <div class="space-y-10 font-sans text-white/90 text-sm md:text-base leading-relaxed">
+        <section class="bg-[#081822] p-8 rounded-3xl border border-white/10 shadow-xl">
+          <h2 class="font-serif text-2xl md:text-3xl text-white mb-3">
             1. Tanpa Cookie Iklan & Pelacak Pihak Ketiga
           </h2>
-          <p class="text-text-2">
-            Singgah tidak menayangkan iklan, tidak menyematkan tautan afiliasi komersial, dan tidak
-            menggunakan skrip analitik pelacak lintas situs (third-party tracking cookies). Karena
-            tidak ada cookie pelacak non-esensial, situs ini tidak menampilkan pop-up persetujuan
-            cookie yang mengganggu kenyamanan membaca.
+          <p class="text-text-2 leading-relaxed">
+            Singgah tidak menayangkan iklan, tidak menyematkan tautan afiliasi komersial berbayar, dan tidak menggunakan skrip analitik pelacak lintas situs (third-party tracking cookies). Karena tidak ada cookie pelacak non-esensial, situs ini bebas pop-up persetujuan cookie yang mengganggu kenyamanan.
           </p>
         </section>
 
-        <section>
-          <h2 class="font-serif text-2xl md:text-3xl text-text mb-3">2. Data Pengguna Terdaftar</h2>
-          <p class="text-text-2 mb-3">
-            Jika kamu memilih untuk masuk menggunakan Google OAuth (tersedia di Fase 3), kami hanya
-            menyimpan informasi seminimal mungkin:
+        <section class="bg-[#081822] p-8 rounded-3xl border border-white/10 shadow-xl">
+          <h2 class="font-serif text-2xl md:text-3xl text-white mb-3">2. Data Pengguna Terdaftar</h2>
+          <p class="text-text-2 mb-3 leading-relaxed">
+            Jika kamu memilih untuk masuk menggunakan Google OAuth, kami hanya menyimpan informasi seminimal mungkin:
           </p>
-          <ul class="list-disc list-inside space-y-1 text-text-2">
+          <ul class="list-disc list-inside space-y-2 text-text-2">
             <li>
-              Pengenal unik Google (<code class="bg-surface-2 px-1 rounded text-xs">google_sub</code
-              >).
+              Pengenal unik Google (<code class="bg-black/50 text-mint px-2 py-0.5 rounded text-xs border border-white/10">google_sub</code>).
             </li>
             <li>Nama tampilan akun.</li>
-            <li>Foto avatar publik profil.</li>
+            <li>Foto avatar profil publik.</li>
           </ul>
-          <p class="text-text-2 mt-3">
-            Alamat email tidak disimpan di basis data kami. Sesi masuk diamankan dengan cookie sesi
-            berorientasi keamanan (<code class="bg-surface-2 px-1 rounded text-xs"
-              >HttpOnly; Secure; SameSite=Lax</code
-            >).
+          <p class="text-text-2 mt-4 leading-relaxed">
+            Alamat email tidak disimpan di basis data kami. Sesi masuk diamankan dengan cookie sesi berorientasi keamanan (<code class="bg-black/50 text-mint px-2 py-0.5 rounded text-xs border border-white/10">HttpOnly; Secure; SameSite=Lax</code>).
           </p>
         </section>
 
-        <section>
-          <h2 class="font-serif text-2xl md:text-3xl text-text mb-3">
-            3. Hak Kontrol & Penghapusan Mandiri
+        <section class="bg-[#081822] p-8 rounded-3xl border border-white/10 shadow-xl">
+          <h2 class="font-serif text-2xl md:text-3xl text-white mb-3">
+            3. Hak Kontrol & Penghapusan Mandiri (UU PDP)
           </h2>
-          <p class="text-text-2">
-            Setiap pengguna memiliki kendali penuh atas rencana perjalanan yang disimpan. Kamu dapat
-            mengekspor seluruh datamu atau menghapus akun beserta seluruh data tersimpan kapan saja
-            melalui pengaturan akun tanpa syarat.
+          <p class="text-text-2 leading-relaxed">
+            Setiap pengguna memiliki kendali penuh atas rencana perjalanan yang disimpan. Kamu dapat mengekspor seluruh datamu atau menghapus akun beserta seluruh data tersimpan kapan saja langsung dari halaman akun.
           </p>
         </section>
       </div>

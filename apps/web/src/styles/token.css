@@ -1,111 +1,111 @@
 :root {
-  /* Semantik, Terang */
-  --bg: #F1F4F3;
-  --surface: #FFFFFF;
-  --surface-2: #E6EBEA;
-  --line: #C5D0CE;
-  --text: #0D1B22;
-  --text-2: #44555C;
-  --text-3: #5F6F76;
-  --link: #124B5B;
-  --link-hover: #0A3441;
-  --cta-bg: #E8A317;
-  --cta-hover: #D9960F;
-  --cta-text: #0D1B22;
-  --warn: #8A5A00;
-  --warn-bg: #F7ECD0;
-  --error: #B8322A;
-  --error-bg: #F6DEDB;
-  --ok: #2F7D5B;
-  --ok-bg: #DCEEE5;
-  --focus: #124B5B;
-  --musim-1: #CBD5D5;
-  --musim-2: #9BC3CC;
-  --musim-3: #4F9AAB;
-  --musim-4: #124B5B;
-  --scrim: 9 18 24;
+  /* Default: Deep Cinematic Dark Luxury Palette (Referens Wanderlust) */
+  --bg: #05131A;
+  --bg-gradient: radial-gradient(circle at 50% 0%, #0d2633 0%, #05131A 70%);
+  --surface: #0A1C24;
+  --surface-2: #112834;
+  --surface-3: #183545;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+  --text: #F1F7F6;
+  --text-2: #A5B8BD;
+  --text-3: #6E858C;
+  --link: #2DD4BF;
+  --link-hover: #5EEAD4;
+  
+  /* Mint / Neon Cyan Accent */
+  --mint: #2DD4BF;
+  --mint-light: #5EEAD4;
+  --mint-glow: rgba(45, 212, 191, 0.35);
+  --mint-glow-lg: 0 8px 32px rgba(45, 212, 191, 0.4);
+  
+  /* Tombol CTA */
+  --cta-bg: #2DD4BF;
+  --cta-hover: #5EEAD4;
+  --cta-text: #04141A;
+  
+  /* Status & Rating */
+  --star: #FBBF24;
+  --warn: #F59E0B;
+  --warn-bg: rgba(245, 158, 11, 0.15);
+  --error: #FB7185;
+  --error-bg: rgba(251, 113, 133, 0.15);
+  --ok: #34D399;
+  --ok-bg: rgba(52, 211, 153, 0.15);
+  --focus: #2DD4BF;
+  
+  /* Musim Index */
+  --musim-1: #1E333D;
+  --musim-2: #14B8A6;
+  --musim-3: #2DD4BF;
+  --musim-4: #5EEAD4;
 
-  /* Tipografi */
-  --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
-  --font-sans: "Albert Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --t-hero: clamp(3.25rem, 9.5vw, 9.5rem);
-  --t-display: clamp(2.5rem, 6vw, 5.5rem);
-  --t-h2: clamp(2rem, 3.6vw, 3.25rem);
-  --t-h3: 1.5rem;
-  --t-temp: clamp(4rem, 8vw, 6rem);
-  --t-lead: clamp(1.125rem, 1.5vw, 1.375rem);
-  --t-body: 1.0625rem;
-  --t-ui: 0.9375rem;
-  --t-small: 0.8125rem;
+  /* Glassmorphism Frosted Glass */
+  --glass-bg: rgba(9, 24, 32, 0.72);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-focus: rgba(45, 212, 191, 0.4);
+  --glass-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+  --glass-blur: blur(24px);
 
-  /* Ruang dan Bentuk */
+  /* Tipografi Elegan & Modern */
+  --font-serif: "Playfair Display", "Instrument Serif", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  
+  --t-hero: clamp(3.2rem, 7.5vw, 7.5rem);
+  --t-display: clamp(2.4rem, 5vw, 4.8rem);
+  --t-h2: clamp(1.85rem, 3.2vw, 3rem);
+  --t-h3: 1.4rem;
+  --t-lead: clamp(1.05rem, 1.4vw, 1.25rem);
+  --t-body: 1rem;
+  --t-ui: 0.9rem;
+  --t-small: 0.8rem;
+
+  /* Geometri & Bentuk */
   --margin-x: clamp(16px, 4vw, 64px);
   --gutter: clamp(16px, 2vw, 24px);
-  --section-y: clamp(72px, 10vw, 160px);
-  --r-media: 2px;
-  --r-ui: 6px;
-  --r-panel: 4px;
-  --shadow-panel: 0 18px 40px rgb(9 18 24 / 0.28);
-  --shadow-float: 0 8px 24px rgb(9 18 24 / 0.18);
+  --section-y: clamp(72px, 8vw, 140px);
+  --r-media: 20px;
+  --r-ui: 9999px;
+  --r-card: 24px;
+  --r-panel: 28px;
+  
+  /* Bayangan Halus */
+  --shadow-panel: 0 20px 50px rgba(0, 0, 0, 0.45);
+  --shadow-float: 0 16px 40px rgba(0, 0, 0, 0.35);
+  --shadow-card: 0 12px 32px rgba(0, 0, 0, 0.3);
 
-  /* Gerak */
-  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --dur-fast: 120ms;
-  --dur-base: 200ms;
-  --dur-bars: 480ms;
-  --dur-hero: 700ms;
+  /* Easing & Durasi */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 160ms;
+  --dur-base: 280ms;
+  --dur-slow: 450ms;
 }
 
-/* Tema gelap: pilihan pengguna, sistem, dan bagian yang selalu gelap */
-:root[data-theme="dark"], .tema-malam {
-  --bg: #091218;
-  --surface: #101D26;
-  --surface-2: #17272F;
-  --line: #263640;
-  --text: #E8EEEF;
-  --text-2: #A9B8BD;
-  --text-3: #7F9097;
-  --link: #7CC3D2;
-  --link-hover: #A8E0EC;
-  --cta-bg: #F0B13A;
-  --cta-hover: #F5C25E;
-  --cta-text: #0D1B22;
-  --warn: #E0B04C;
-  --warn-bg: #2E2612;
-  --error: #EE8279;
-  --error-bg: #3A1D1B;
-  --ok: #6CC09D;
-  --ok-bg: #14302A;
-  --focus: #7CC3D2;
-  --musim-1: #2B3A41;
-  --musim-2: #3F7482;
-  --musim-3: #5FAFC2;
-  --musim-4: #A8E0EC;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #091218;
-    --surface: #101D26;
-    --surface-2: #17272F;
-    --line: #263640;
-    --text: #E8EEEF;
-    --text-2: #A9B8BD;
-    --text-3: #7F9097;
-    --link: #7CC3D2;
-    --link-hover: #A8E0EC;
-    --cta-bg: #F0B13A;
-    --cta-hover: #F5C25E;
-    --warn: #E0B04C;
-    --warn-bg: #2E2612;
-    --error: #EE8279;
-    --error-bg: #3A1D1B;
-    --ok: #6CC09D;
-    --ok-bg: #14302A;
-    --focus: #7CC3D2;
-    --musim-1: #2B3A41;
-    --musim-2: #3F7482;
-    --musim-3: #5FAFC2;
-    --musim-4: #A8E0EC;
-  }
+/* Light theme support jika user eksplisit memilih data-theme="light" */
+:root[data-theme="light"] {
+  --bg: #F5F8F7;
+  --surface: #FFFFFF;
+  --surface-2: #EAF0EE;
+  --surface-3: #DDE6E4;
+  --line: rgba(8, 28, 36, 0.08);
+  --line-strong: rgba(8, 28, 36, 0.16);
+  --text: #06151B;
+  --text-2: #40575F;
+  --text-3: #68828B;
+  --link: #0D9488;
+  --link-hover: #0F766E;
+  
+  --mint: #0D9488;
+  --mint-light: #14B8A6;
+  --mint-glow: rgba(13, 148, 136, 0.25);
+  
+  --cta-bg: #0D9488;
+  --cta-hover: #0F766E;
+  --cta-text: #FFFFFF;
+  
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.6);
+  --glass-border: rgba(8, 28, 36, 0.08);
+  --glass-shadow: 0 20px 48px rgba(8, 28, 36, 0.08);
 }
