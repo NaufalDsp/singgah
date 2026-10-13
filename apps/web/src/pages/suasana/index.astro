@@ -28,10 +28,11 @@ const destinations: DestEntry[] = await getCollection('destinations');
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {
         moods.map((m) => {
-          const count = destinations.filter((d) => d.data.moods.includes(m.data.id)).length;
+          const moodId = m.data.id || m.id;
+          const count = destinations.filter((d) => d.data.moods.includes(moodId)).length;
           return (
             <a
-              href={`/suasana/${m.data.id}`}
+              href={`/suasana/${moodId}`}
               class="group relative h-80 rounded-3xl overflow-hidden border border-white/10 p-7 flex flex-col justify-between transition-all duration-500 hover:border-mint/60 hover:-translate-y-1.5 shadow-2xl block"
             >
               <img

@@ -13,6 +13,7 @@ const photos = defineCollection({
 const moods = defineCollection({
   type: 'data',
   schema: z.object({
+    id: z.string().optional(),
     name: z.string(),
     description: z.string(),
     photo: z.string(),

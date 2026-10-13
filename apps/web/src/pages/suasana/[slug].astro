@@ -12,7 +12,7 @@ type DestEntry = CollectionEntry<'destinations'>;
 export async function getStaticPaths() {
   const moods = await getCollection('moods');
   return moods.map((entry: MoodEntry) => ({
-    params: { slug: entry.data.id },
+    params: { slug: (entry.data.id || entry.id) },
     props: { mood: entry },
   }));
 }
@@ -22,8 +22,9 @@ interface Props {
 }
 
 const { mood } = Astro.props;
+const moodId = mood.data.id || mood.id;
 const allDestinations: DestEntry[] = await getCollection('destinations');
-const matchingDestinations = allDestinations.filter((d) => d.data.moods.includes(mood.data.id));
+const matchingDestinations = allDestinations.filter((d) => d.data.moods.includes(moodId));
 
 interface DestinationCard {
   dest: DestEntry;

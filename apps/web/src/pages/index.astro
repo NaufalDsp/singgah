@@ -83,6 +83,29 @@ const moodBadges: Record<string, string> = {
   'desa-upacara': 'Kultural Sakral',
   'laut-dalam': 'Dunia Bahari',
 };
+
+const moodRhythms: Record<string, string> = {
+  'pantai-sepi': 'Desir Ombak Pesisir',
+  'gunung-kabut': 'Desir Lembah Sejuk',
+  'kota-tua': 'Detak Budaya & Pusaka',
+  'desa-upacara': 'Kidungan Ritus Adat',
+  'laut-dalam': 'Arus Palung Samudra',
+};
+
+const moodList = moods.map((m) => {
+  const mId = m.data.id || m.id;
+  const matchedDests = destinations.filter((d) => d.data.moods.includes(mId));
+  return {
+    id: mId,
+    name: m.data.name,
+    description: m.data.description,
+    photo: m.data.photo,
+    badge: moodBadges[mId] || 'Ritme Alam',
+    rhythm: moodRhythms[mId] || 'Denyut Alam',
+    destinations: matchedDests,
+    count: matchedDests.length,
+  };
+});
 ---
 
 <BaseLayout title="Singgah — Panduan Destinasi Nusantara" transparentHeader={true}>
@@ -687,121 +710,230 @@ const moodBadges: Record<string, string> = {
         </div>
       </div>
 
-      <!-- Quick Mood Preview Chips -->
-      <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-8 pb-4 border-b border-white/8 text-xs">
-        <span class="text-white/40 uppercase tracking-wider text-[11px] font-bold mr-1" data-i18n="mood.filter_label">Filter Cepat:</span>
-        <span class="px-3 py-1 rounded-full bg-white/[0.06] text-white/90 border border-white/12 flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-mint"></span>
+      <!-- Interactive Filter Tabs -->
+      <div class="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-10 pb-5 border-b border-white/10 text-xs">
+        <span class="text-white/45 uppercase tracking-wider text-[11px] font-bold mr-1 flex items-center gap-1.5" data-i18n="mood.filter_label">
+          <svg class="w-3.5 h-3.5 text-mint" viewBox="0 0 20 20" fill="none">
+            <path d="M3 5h14M6 10h8M9 15h2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Filter Cepat:
+        </span>
+        <button
+          type="button"
+          class="mood-filter-btn px-4 py-2 rounded-full bg-mint text-[#04141A] border border-mint font-bold shadow-[0_0_20px_rgba(45,212,191,0.35)] transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95"
+          data-filter="all"
+        >
+          <span class="filter-dot w-1.5 h-1.5 rounded-full bg-[#04141A]"></span>
+          <span data-i18n="mood.filter_all">Semua Suasana</span>
+        </button>
+        <button
+          type="button"
+          class="mood-filter-btn px-4 py-2 rounded-full bg-white/[0.06] text-white/80 border border-white/12 hover:bg-white/[0.12] hover:text-white transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95"
+          data-filter="pantai-sepi"
+        >
+          <span class="filter-dot w-1.5 h-1.5 rounded-full bg-mint"></span>
           <span data-i18n="mood.coast">Pesisir Tenang</span>
-        </span>
-        <span class="px-3 py-1 rounded-full bg-white/[0.06] text-white/90 border border-white/12 flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-mint"></span>
+        </button>
+        <button
+          type="button"
+          class="mood-filter-btn px-4 py-2 rounded-full bg-white/[0.06] text-white/80 border border-white/12 hover:bg-white/[0.12] hover:text-white transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95"
+          data-filter="gunung-kabut"
+        >
+          <span class="filter-dot w-1.5 h-1.5 rounded-full bg-mint"></span>
           <span data-i18n="mood.highlands">Dataran Tinggi</span>
-        </span>
-        <span class="px-3 py-1 rounded-full bg-white/[0.06] text-white/90 border border-white/12 flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-mint"></span>
+        </button>
+        <button
+          type="button"
+          class="mood-filter-btn px-4 py-2 rounded-full bg-white/[0.06] text-white/80 border border-white/12 hover:bg-white/[0.12] hover:text-white transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95"
+          data-filter="kota-tua"
+        >
+          <span class="filter-dot w-1.5 h-1.5 rounded-full bg-mint"></span>
           <span data-i18n="mood.culture">Warisan Budaya</span>
-        </span>
-        <span class="px-3 py-1 rounded-full bg-white/[0.06] text-white/90 border border-white/12 flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-mint"></span>
+        </button>
+        <button
+          type="button"
+          class="mood-filter-btn px-4 py-2 rounded-full bg-white/[0.06] text-white/80 border border-white/12 hover:bg-white/[0.12] hover:text-white transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95"
+          data-filter="desa-upacara"
+        >
+          <span class="filter-dot w-1.5 h-1.5 rounded-full bg-mint"></span>
           <span data-i18n="mood.indigenous">Komunitas Adat</span>
-        </span>
-        <span class="px-3 py-1 rounded-full bg-white/[0.06] text-white/90 border border-white/12 flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-mint"></span>
+        </button>
+        <button
+          type="button"
+          class="mood-filter-btn px-4 py-2 rounded-full bg-white/[0.06] text-white/80 border border-white/12 hover:bg-white/[0.12] hover:text-white transition-all duration-300 flex items-center gap-2 cursor-pointer active:scale-95"
+          data-filter="laut-dalam"
+        >
+          <span class="filter-dot w-1.5 h-1.5 rounded-full bg-mint"></span>
           <span data-i18n="mood.marine">Konservasi Bahari</span>
-        </span>
+        </button>
       </div>
 
       <!-- Bento Visual Grid (5 Mood Cards + 1 Adaptive Discovery Card = Complete 6-Cell Grid) -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {moods.map((mood) => {
-          const count = destinations.filter((d) => d.data.moods.includes(mood.data.id)).length;
-          const badge = moodBadges[mood.data.id] || 'Ritme Alam';
-
+        {moodList.map((m) => {
           return (
-            <a
-              href={`/suasana/${mood.data.id}`}
-              class="group relative h-80 rounded-3xl overflow-hidden border border-white/12 p-6 flex flex-col justify-between transition-all duration-500 hover:border-mint/70 hover:-translate-y-1.5 shadow-2xl bg-[#091D26]"
+            <div
+              class="mood-card group relative min-h-[410px] rounded-3xl overflow-hidden border border-white/12 p-6 sm:p-7 flex flex-col justify-between transition-all duration-500 hover:border-mint/80 hover:-translate-y-2 shadow-2xl hover:shadow-[0_20px_50px_-10px_rgba(45,212,191,0.28)] bg-[#071922]"
+              data-mood-card={m.id}
             >
-              <!-- Foto Latar Belakang (Jernih & Tidak Tenggelam Hitam) -->
+              <!-- Foto Latar Belakang (Jernih, Tajam & Berwarna Indah) -->
               <img
-                src={mood.data.photo}
-                alt={mood.data.name}
-                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-108"
+                src={m.photo}
+                alt={m.name}
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                 loading="lazy"
               />
-              <!-- Cinematic Scrim: Tetap Menampilkan Warna Alami Laut/Gunung/Kota -->
-              <div class="absolute inset-0 bg-gradient-to-t from-[#041117] via-[#041117]/45 to-transparent"></div>
+              <!-- Cinematic Scrim: Multi-Stop Gradient Jernih -->
+              <div class="absolute inset-0 bg-gradient-to-t from-[#041117] via-[#041117]/70 via-55% to-[#041117]/20 transition-opacity duration-500 group-hover:via-[#041117]/60"></div>
 
-              <!-- Top Row: Category Pill & Destination Counter -->
-              <div class="relative z-10 flex items-center justify-between w-full">
-                <span class="inline-flex items-center gap-1.5 bg-black/50 backdrop-blur-md border border-white/15 px-3 py-1 rounded-full text-[11px] font-semibold text-white/95 shadow-sm">
+              <!-- Top Row: Mood Badge + Soundwave Equalizer -->
+              <div class="relative z-10 flex items-center justify-between w-full gap-2">
+                <span class="inline-flex items-center gap-1.5 bg-black/60 backdrop-blur-md border border-white/15 px-3 py-1.5 rounded-full text-[11px] font-semibold text-white/95 shadow-sm">
                   <span class="w-1.5 h-1.5 rounded-full bg-mint"></span>
-                  <span>{badge}</span>
+                  <span data-i18n={`mood.badge_${m.id.replace(/-/g, '_')}`}>{m.badge}</span>
                 </span>
-                <span class="inline-flex items-center gap-1 bg-[#04141A]/70 backdrop-blur-md border border-white/15 px-2.5 py-0.5 rounded-full text-[10px] font-semibold text-mint">
-                  {count} Destinasi
-                </span>
-              </div>
 
-              <!-- Bottom Content -->
-              <div class="relative z-10 pt-8">
-                <h3 class="font-serif text-2xl sm:text-[1.7rem] text-white group-hover:text-mint transition-colors mb-2 leading-tight">
-                  {mood.data.name}
-                </h3>
-                <p class="font-sans text-xs text-white/75 line-clamp-2 leading-relaxed font-normal">
-                  {mood.data.description}
-                </p>
-                <div class="mt-4 flex items-center justify-between pt-3 border-t border-white/10">
-                  <span class="text-[11px] font-bold text-mint group-hover:underline" data-i18n="mood.explore_btn">
-                    Jelajahi suasana ini
-                  </span>
-                  <span class="w-7 h-7 rounded-full bg-white/10 group-hover:bg-mint group-hover:text-[#04141A] flex items-center justify-center text-white transition-all duration-300 group-hover:translate-x-1">
-                    <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none">
-                      <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                <!-- Animated Equalizer Ritme Suara Alam -->
+                <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[10px] text-mint font-semibold shadow-sm">
+                  <div class="flex items-end gap-[2px] h-3.5 w-3.5" aria-hidden="true">
+                    <span class="w-[2px] bg-mint rounded-full animate-rhythm-1"></span>
+                    <span class="w-[2px] bg-mint rounded-full animate-rhythm-2"></span>
+                    <span class="w-[2px] bg-mint rounded-full animate-rhythm-3"></span>
+                    <span class="w-[2px] bg-mint rounded-full animate-rhythm-4"></span>
+                  </div>
+                  <span class="text-white/85 font-normal tracking-wide hidden sm:inline" data-i18n={`mood.rhythm_${m.id.replace(/-/g, '_')}`}>
+                    {m.rhythm}
                   </span>
                 </div>
               </div>
-            </a>
+
+              <!-- Bottom Content Area -->
+              <div class="relative z-10 pt-6">
+                <!-- Title & Destination Counter -->
+                <div class="flex items-baseline justify-between gap-2 mb-2">
+                  <h3 class="font-serif text-2xl sm:text-[1.75rem] text-white group-hover:text-mint transition-colors duration-300 font-bold leading-tight">
+                    <a href={`/suasana/${m.id}`} class="hover:underline focus:outline-none">
+                      {m.name}
+                    </a>
+                  </h3>
+                  <span class="text-[11px] font-mono text-mint/90 shrink-0 font-semibold bg-[#04141A]/80 px-2.5 py-0.5 rounded-full border border-mint/25">
+                    {m.count} Destinasi
+                  </span>
+                </div>
+
+                <p class="font-sans text-xs sm:text-[13px] text-white/80 line-clamp-2 leading-relaxed font-normal mb-3.5">
+                  {m.description}
+                </p>
+
+                <!-- Matched Destination Micro-Pills -->
+                {m.destinations.length > 0 && (
+                  <div class="flex flex-wrap items-center gap-1.5 mb-4">
+                    <span class="text-[10px] text-white/50 uppercase tracking-wider font-semibold mr-0.5" data-i18n="mood.matched_prefix">
+                      Destinasi:
+                    </span>
+                    {m.destinations.map((d) => (
+                      <a
+                        href={`/destinasi/${d.slug}`}
+                        class="inline-block px-2.5 py-0.5 rounded-md bg-white/[0.09] hover:bg-mint hover:text-[#04141A] border border-white/15 text-[11px] text-white/90 transition-all font-medium"
+                      >
+                        {d.data.name}
+                      </a>
+                    ))}
+                  </div>
+                )}
+
+                <!-- Bottom Action Row -->
+                <div class="flex items-center justify-between pt-3.5 border-t border-white/10">
+                  <a
+                    href={`/suasana/${m.id}`}
+                    class="text-xs font-bold text-mint group-hover:underline flex items-center gap-1.5"
+                  >
+                    <span data-i18n="mood.explore_btn">Jelajahi suasana ini</span>
+                  </a>
+                  <a
+                    href={`/suasana/${m.id}`}
+                    class="w-8 h-8 rounded-full bg-white/10 group-hover:bg-mint group-hover:text-[#04141A] flex items-center justify-center text-white transition-all duration-300 group-hover:translate-x-1 shadow-md"
+                    aria-label={`Jelajahi suasana ${m.name}`}
+                  >
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none">
+                      <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
           );
         })}
 
         <!-- Card ke-6: Interactive Custom Recommender (Pelengkap Grid Sempurna) -->
         <div
-          class="relative h-80 rounded-3xl overflow-hidden border border-mint/35 p-6 sm:p-7 flex flex-col justify-between shadow-2xl transition-all duration-500 hover:border-mint hover:-translate-y-1.5 group"
-          style="background: linear-gradient(145deg, #0B242C 0%, #071922 60%, #030F14 100%);"
+          class="mood-card relative min-h-[410px] rounded-3xl overflow-hidden border border-mint/45 p-6 sm:p-7 flex flex-col justify-between shadow-2xl transition-all duration-500 hover:border-mint hover:-translate-y-2 group"
+          data-mood-card="adaptive"
+          style="background: radial-gradient(circle at 85% 15%, rgba(45,212,191,0.22) 0%, rgba(11,36,44,0.95) 50%, #030F14 100%);"
         >
-          <!-- Ambient Glow Orb inside 6th Card -->
-          <div class="absolute -right-8 -bottom-8 w-44 h-44 bg-mint/20 rounded-full blur-2xl group-hover:scale-125 transition-transform duration-700 pointer-events-none"></div>
+          <!-- Animated Compass / Radar SVG Rings in Background -->
+          <div class="absolute -right-12 -bottom-12 w-64 h-64 pointer-events-none opacity-25 group-hover:opacity-40 transition-opacity duration-700">
+            <svg class="w-full h-full animate-[spin_40s_linear_infinite]" viewBox="0 0 200 200" fill="none">
+              <circle cx="100" cy="100" r="90" stroke="#2DD4BF" stroke-width="1.5" stroke-dasharray="4 8" />
+              <circle cx="100" cy="100" r="65" stroke="#2DD4BF" stroke-width="1" stroke-dasharray="8 6" />
+              <circle cx="100" cy="100" r="40" stroke="#2DD4BF" stroke-width="1.5" />
+              <line x1="100" y1="5" x2="100" y2="195" stroke="#2DD4BF" stroke-width="1" stroke-dasharray="2 4" />
+              <line x1="5" y1="100" x2="195" y2="100" stroke="#2DD4BF" stroke-width="1" stroke-dasharray="2 4" />
+            </svg>
+          </div>
 
-          <!-- Top Badge -->
+          <!-- Ambient Glow Orb inside 6th Card -->
+          <div class="absolute -right-6 -bottom-6 w-48 h-48 bg-mint/20 rounded-full blur-3xl group-hover:scale-125 transition-transform duration-700 pointer-events-none"></div>
+
+          <!-- Top Badge & Counter -->
           <div class="relative z-10 flex items-center justify-between">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-mint/15 border border-mint/30 text-[10px] uppercase tracking-wider font-bold text-mint">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-mint/15 border border-mint/35 text-[10px] uppercase tracking-wider font-bold text-mint shadow-[0_0_15px_rgba(45,212,191,0.2)]">
               <span class="w-1.5 h-1.5 rounded-full bg-mint animate-pulse-subtle"></span>
               <span data-i18n="mood.custom_badge">REKOMENDASI ADAPTIF</span>
             </span>
-            <span class="text-xs text-white/40 font-mono">06/06</span>
+            <span class="text-xs text-mint/80 font-mono tracking-wider font-semibold">06/06</span>
           </div>
 
           <!-- Middle Content -->
-          <div class="relative z-10 my-auto py-2">
-            <h3 class="font-serif text-2xl text-white group-hover:text-mint transition-colors mb-2 leading-tight" data-i18n="mood.custom_title">
+          <div class="relative z-10 my-auto py-3">
+            <h3 class="font-serif text-2xl sm:text-[1.75rem] text-white group-hover:text-mint transition-colors mb-2.5 leading-tight font-bold" data-i18n="mood.custom_title">
               Punya Suasana Impian Sendiri?
             </h3>
-            <p class="font-sans text-xs sm:text-[13px] text-white/70 leading-relaxed font-normal" data-i18n="mood.custom_desc">
+            <p class="font-sans text-xs sm:text-[13px] text-white/80 leading-relaxed font-normal mb-4" data-i18n="mood.custom_desc">
               Padukan preferensi keheningan, curah hujan nol, dan durasi cuti Anda. Algoritma Singgah akan mencocokkan pulau yang paling pas.
             </p>
+
+            <!-- Interactive Quick Atmosphere Chips -->
+            <div class="flex flex-wrap gap-1.5">
+              <a
+                href="/rencana/saran?suasana=pantai-sepi"
+                class="px-2.5 py-1 rounded-full bg-white/[0.08] hover:bg-mint hover:text-[#04141A] border border-white/15 hover:border-mint text-[11px] text-white/90 transition-all font-medium"
+              >
+                <span data-i18n="mood.custom_tag1">Pesisir Sunyi</span>
+              </a>
+              <a
+                href="/rencana/saran?suasana=gunung-kabut"
+                class="px-2.5 py-1 rounded-full bg-white/[0.08] hover:bg-mint hover:text-[#04141A] border border-white/15 hover:border-mint text-[11px] text-white/90 transition-all font-medium"
+              >
+                <span data-i18n="mood.custom_tag2">Hawa Sejuk</span>
+              </a>
+              <a
+                href="/rencana/saran?suasana=kota-tua"
+                class="px-2.5 py-1 rounded-full bg-white/[0.08] hover:bg-mint hover:text-[#04141A] border border-white/15 hover:border-mint text-[11px] text-white/90 transition-all font-medium"
+              >
+                <span data-i18n="mood.custom_tag3">Bebas Hujan</span>
+              </a>
+            </div>
           </div>
 
           <!-- Bottom Button -->
-          <div class="relative z-10">
+          <div class="relative z-10 pt-2">
             <a
               href="/rencana/baru"
-              class="w-full py-3 px-5 rounded-2xl bg-mint text-[#04141A] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 hover:bg-[#5eead4] active:scale-[0.99] transition-all duration-200 shadow-[0_6px_20px_rgba(45,212,191,0.35)]"
+              class="w-full py-3.5 px-5 rounded-2xl bg-mint text-[#04141A] font-bold text-xs sm:text-sm flex items-center justify-center gap-2 hover:bg-[#5eead4] active:scale-[0.99] transition-all duration-300 shadow-[0_8px_25px_rgba(45,212,191,0.35)] hover:shadow-[0_12px_30px_rgba(45,212,191,0.5)] group/btn"
             >
               <span data-i18n="mood.custom_cta">Susun Rencana Sekarang</span>
-              <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none">
+              <svg class="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1.5" viewBox="0 0 20 20" fill="none">
                 <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </a>
@@ -1109,6 +1241,41 @@ const moodBadges: Record<string, string> = {
       color: #2DD4BF !important;
       transform: rotate(180deg);
     }
+
+    /* Animasi Soundwave Ritme & Lanskap */
+    @keyframes rhythmBar1 {
+      0%, 100% { height: 4px; }
+      50% { height: 14px; }
+    }
+    @keyframes rhythmBar2 {
+      0%, 100% { height: 12px; }
+      50% { height: 5px; }
+    }
+    @keyframes rhythmBar3 {
+      0%, 100% { height: 6px; }
+      50% { height: 13px; }
+    }
+    @keyframes rhythmBar4 {
+      0%, 100% { height: 10px; }
+      50% { height: 4px; }
+    }
+
+    .animate-rhythm-1 {
+      animation: rhythmBar1 1.2s ease-in-out infinite;
+    }
+    .animate-rhythm-2 {
+      animation: rhythmBar2 1.0s ease-in-out infinite 0.2s;
+    }
+    .animate-rhythm-3 {
+      animation: rhythmBar3 1.4s ease-in-out infinite 0.4s;
+    }
+    .animate-rhythm-4 {
+      animation: rhythmBar4 0.9s ease-in-out infinite 0.1s;
+    }
+
+    .mood-card {
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, filter 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+    }
   </style>
 
   <script>
@@ -1132,7 +1299,68 @@ const moodBadges: Record<string, string> = {
       });
     }
 
+    function setupMoodFilters() {
+      const filterButtons = document.querySelectorAll('.mood-filter-btn');
+      const moodCards = document.querySelectorAll('.mood-card');
+
+      if (!filterButtons.length || !moodCards.length) return;
+
+      filterButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const filter = btn.getAttribute('data-filter') || 'all';
+
+          // Update active button styling
+          filterButtons.forEach((b) => {
+            const isActive = b === btn;
+            const dot = b.querySelector('.filter-dot');
+            if (isActive) {
+              b.classList.remove('bg-white/[0.06]', 'text-white/80', 'border-white/12');
+              b.classList.add('bg-mint', 'text-[#04141A]', 'border-mint', 'font-bold', 'shadow-[0_0_20px_rgba(45,212,191,0.35)]');
+              if (dot) {
+                dot.classList.remove('bg-mint');
+                dot.classList.add('bg-[#04141A]');
+              }
+            } else {
+              b.classList.remove('bg-mint', 'text-[#04141A]', 'border-mint', 'font-bold', 'shadow-[0_0_20px_rgba(45,212,191,0.35)]');
+              b.classList.add('bg-white/[0.06]', 'text-white/80', 'border-white/12');
+              if (dot) {
+                dot.classList.remove('bg-[#04141A]');
+                dot.classList.add('bg-mint');
+              }
+            }
+          });
+
+          // Transition mood cards
+          moodCards.forEach((card) => {
+            const cardMood = card.getAttribute('data-mood-card');
+            const htmlCard = card as HTMLElement;
+            if (filter === 'all' || cardMood === filter || cardMood === 'adaptive') {
+              htmlCard.style.opacity = '1';
+              htmlCard.style.filter = 'none';
+              htmlCard.style.transform = 'scale(1)';
+              htmlCard.style.pointerEvents = 'auto';
+              if (cardMood === filter) {
+                card.classList.add('ring-2', 'ring-mint', 'shadow-[0_0_35px_rgba(45,212,191,0.4)]');
+              } else {
+                card.classList.remove('ring-2', 'ring-mint', 'shadow-[0_0_35px_rgba(45,212,191,0.4)]');
+              }
+            } else {
+              htmlCard.style.opacity = '0.2';
+              htmlCard.style.filter = 'grayscale(0.7) blur(0.5px)';
+              htmlCard.style.transform = 'scale(0.97)';
+              htmlCard.style.pointerEvents = 'none';
+              card.classList.remove('ring-2', 'ring-mint', 'shadow-[0_0_35px_rgba(45,212,191,0.4)]');
+            }
+          });
+        });
+      });
+    }
+
     setupSelectDropdownAnimations();
-    document.addEventListener('astro:page-load', setupSelectDropdownAnimations);
+    setupMoodFilters();
+    document.addEventListener('astro:page-load', () => {
+      setupSelectDropdownAnimations();
+      setupMoodFilters();
+    });
   </script>
 </BaseLayout>
