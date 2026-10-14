@@ -7,7 +7,7 @@
   "assets": {
     "directory": "../web/dist",
     "not_found_handling": "404-page",
-    "run_worker_first": ["/api/*"]
+    "run_worker_first": false
   },
   "d1_databases": [
     {
