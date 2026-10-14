@@ -1,4 +1,0 @@
-# Cloudflare Pages Redirects & SPA Rewrite Rules
-# Fallback rewrite for dynamic shared itineraries
-/r/*    /r/demo/index.html   200
-
