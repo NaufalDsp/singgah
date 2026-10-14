@@ -22,3 +22,7 @@ __pycache__/
 venv/
 .pytest_cache/
 .coverage
+
+# Internal docs
+design.md
+prd.md
