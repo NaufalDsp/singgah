@@ -9,6 +9,7 @@
   "scripts": {
     "build": "pnpm --filter @singgah/web build",
     "build:web": "pnpm --filter @singgah/web build",
+    "deploy": "wrangler deploy",
     "dev": "pnpm --filter @singgah/web dev",
     "dev:web": "pnpm --filter @singgah/web dev",
     "dev:api": "pnpm --filter @singgah/api dev",
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "prettier": "^3.3.3",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "wrangler": "^3.80.4"
   }
 }
