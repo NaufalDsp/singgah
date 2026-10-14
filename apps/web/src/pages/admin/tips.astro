@@ -121,14 +121,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
                   ${
                     item.status !== 'published'
                       ? `<button class="btn-publish btn-primary text-xs h-9 px-5" data-id="${item.id}">
-                          ✓ Setujui (Publikasikan)
+                          Setujui (Publikasikan)
                         </button>`
                       : ''
                   }
                   ${
                     item.status !== 'hidden'
                       ? `<button class="btn-hide btn-glass text-xs h-9 px-4 text-red-400 hover:text-red-300" data-id="${item.id}">
-                          ✕ Sembunyikan
+                          Sembunyikan
                         </button>`
                       : ''
                   }

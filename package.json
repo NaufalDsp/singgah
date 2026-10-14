@@ -7,6 +7,8 @@
     "packages/*"
   ],
   "scripts": {
+    "build": "pnpm --filter @singgah/web build",
+    "build:web": "pnpm --filter @singgah/web build",
     "dev": "pnpm --filter @singgah/web dev",
     "dev:web": "pnpm --filter @singgah/web dev",
     "dev:api": "pnpm --filter @singgah/api dev",

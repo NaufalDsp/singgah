@@ -1,7 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-export const prerender = false;
+export async function getStaticPaths() {
+  return [
+    { params: { slug: 'demo' } },
+    { params: { slug: 'preview' } },
+  ];
+}
+
 const { slug } = Astro.params;
 ---
 
@@ -22,7 +28,8 @@ const { slug } = Astro.params;
     const container = document.getElementById('shared-trip-container');
     if (!container) return;
 
-    const slug = container.dataset.slug;
+    const pathSlug = window.location.pathname.split('/').filter(Boolean).pop();
+    const slug = (pathSlug && pathSlug !== 'r') ? pathSlug : container.dataset.slug;
     if (!slug) return;
 
     try {

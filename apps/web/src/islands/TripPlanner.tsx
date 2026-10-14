@@ -325,7 +325,7 @@ export default function TripPlanner({ initialTrip, destinations }: TripPlannerPr
 
         <div className="space-y-2.5 pt-2">
           <button type="button" onClick={handleShare} className="btn-primary w-full text-xs h-10">
-            {isCopied ? '✓ Tautan Disalin!' : 'Bagikan Rencana →'}
+            {isCopied ? 'Tautan Disalin!' : 'Bagikan Rencana →'}
           </button>
           {shareSlug && (
             <a
@@ -447,10 +447,13 @@ export default function TripPlanner({ initialTrip, destinations }: TripPlannerPr
                         <button
                           type="button"
                           onClick={() => removeItem(item.id)}
-                          className="text-xs text-text-3 hover:text-red-400 px-2 py-1 transition-colors"
+                          className="text-xs text-text-3 hover:text-red-400 p-1.5 rounded transition-colors flex items-center justify-center"
                           title="Hapus aktivitas"
                         >
-                          ✕
+                          <svg className="w-3.5 h-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                            <line x1="4" y1="4" x2="12" y2="12"></line>
+                            <line x1="12" y1="4" x2="4" y2="12"></line>
+                          </svg>
                         </button>
                       </div>
                     </div>

@@ -28,6 +28,15 @@ const {
     <link rel="apple-touch-icon" href="/favicon.svg" />
     <title>{title}</title>
 
+    <!-- Immediate Visit Check (Runs synchronously in HEAD to prevent FOUC & multiple loaders) -->
+    <script is:inline>
+      try {
+        if (sessionStorage.getItem('singgah_intro_seen') === 'true') {
+          document.documentElement.classList.add('singgah-visited');
+        }
+      } catch (e) {}
+    </script>
+
     <!-- Preconnect & Web Fonts (Plus Jakarta Sans & Playfair Display & Instrument Serif) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -37,9 +46,149 @@ const {
     />
   </head>
   <body>
+    <!-- Smooth Atmosphere First-Visit Loading Hook Overlay -->
+    <div id="singgah-loader" class="singgah-loader-overlay" aria-hidden="true">
+      <div class="singgah-loader-backdrop"></div>
+      <div class="singgah-loader-content">
+        <!-- Celestial Orbit & Emblem -->
+        <div class="singgah-loader-emblem">
+          <div class="singgah-loader-ring"></div>
+          <div class="singgah-loader-glow"></div>
+          <div class="singgah-loader-logo">
+            <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-10 h-10">
+              <path
+                d="M7 32L18 10L26 23"
+                stroke="#2DD4BF"
+                stroke-width="2.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M20 17L29 6L38 32H7"
+                stroke="#FFFFFF"
+                stroke-width="2.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path d="M18 10L22 18" stroke="#2DD4BF" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M29 6L28 15" stroke="#5EEAD4" stroke-width="1.8" stroke-linecap="round" />
+              <circle cx="29" cy="6" r="2.2" fill="#5EEAD4" />
+              <path
+                d="M11 28C15 26 19 30 24 28C27 26.8 30 27.5 33 28"
+                stroke="#2DD4BF"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-opacity="0.85"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <!-- Metrics Row: Subtitle & Percentage Counter -->
+        <div class="singgah-loader-metrics">
+          <span class="singgah-loader-sub" data-i18n="loader.sub">Singgah Nusantara</span>
+          <span id="singgah-loader-pct" class="singgah-loader-pct">0%</span>
+        </div>
+
+        <!-- Real 0% to 100% Progress Bar Track -->
+        <div class="singgah-loader-progress">
+          <div id="singgah-loader-fill" class="singgah-loader-fill"></div>
+        </div>
+
+        <!-- Atmospheric Status Typography -->
+        <div class="singgah-loader-caption">
+          <span class="singgah-loader-indicator"></span>
+          <span id="singgah-loader-status" class="singgah-loader-text" data-i18n="loader.text">Menyelaraskan ritme alam...</span>
+        </div>
+      </div>
+    </div>
+
+    <script is:inline>
+      (function () {
+        // Jika sudah pernah melihat intro di sesi ini, lewati sepenuhnya
+        try {
+          if (sessionStorage.getItem('singgah_intro_seen') === 'true') {
+            var loaderEl = document.getElementById('singgah-loader');
+            if (loaderEl) loaderEl.style.display = 'none';
+            var mainContent = document.getElementById('main-content');
+            if (mainContent) mainContent.classList.add('is-ready');
+            return;
+          }
+        } catch (e) {}
+
+        // Sinkronisasi teks sesuai preferensi bahasa yang tersimpan
+        var isEn = false;
+        try {
+          var saved = localStorage.getItem('singgah_lang');
+          if (saved === 'en') {
+            isEn = true;
+            var subEl = document.querySelector('[data-i18n="loader.sub"]');
+            var textEl = document.querySelector('[data-i18n="loader.text"]');
+            if (subEl) subEl.textContent = 'Singgah Archipelago';
+            if (textEl) textEl.textContent = 'Aligning with nature...';
+          }
+        } catch (e) {}
+
+        var loader = document.getElementById('singgah-loader');
+        var fill = document.getElementById('singgah-loader-fill');
+        var pctEl = document.getElementById('singgah-loader-pct');
+        var statusEl = document.getElementById('singgah-loader-status');
+        var main = document.getElementById('main-content');
+
+        if (!loader || !fill || !pctEl) return;
+
+        // Durasi pemuatan halus, elegan, dan riil (~1650ms)
+        var duration = 1650;
+        var start = null;
+
+        function easeOutCubic(x) {
+          return 1 - Math.pow(1 - x, 3);
+        }
+
+        function step(timestamp) {
+          if (!start) start = timestamp;
+          var elapsed = timestamp - start;
+          var progress = Math.min(elapsed / duration, 1);
+          var eased = easeOutCubic(progress);
+          var percent = Math.floor(eased * 100);
+
+          fill.style.width = percent + '%';
+          pctEl.textContent = percent + '%';
+
+          if (progress < 1) {
+            requestAnimationFrame(step);
+          } else {
+            // Tepat mencapai 100% secara tuntas
+            fill.style.width = '100%';
+            pctEl.textContent = '100%';
+            if (statusEl) {
+              statusEl.textContent = isEn ? 'Harmonies aligned' : 'Harmoni terhubung';
+            }
+
+            // Tahan sejenak (250ms) agar pengguna dengan jelas melihat 100% tercapai
+            setTimeout(function () {
+              try {
+                sessionStorage.setItem('singgah_intro_seen', 'true');
+                document.documentElement.classList.add('singgah-visited');
+              } catch (e) {}
+
+              loader.classList.add('is-loaded');
+              if (main) main.classList.add('is-ready');
+
+              setTimeout(function () {
+                loader.style.display = 'none';
+              }, 700);
+            }, 250);
+          }
+        }
+
+        requestAnimationFrame(step);
+      })();
+    </script>
+
     <a href="#main-content" class="skip-link">Lewati ke konten utama</a>
     <Header transparent={transparentHeader} />
-    <main id="main-content">
+    <main id="main-content" class="singgah-main-entrance">
       <slot />
     </main>
     <Footer />
@@ -51,5 +200,238 @@ const {
     flex: 1;
     display: flex;
     flex-direction: column;
+  }
+
+  /* Content Entrance Hook Animation */
+  .singgah-main-entrance {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .singgah-main-entrance.is-ready {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Subsequent navigations / already visited in session: completely bypass */
+  html.singgah-visited #singgah-loader {
+    display: none !important;
+  }
+
+  html.singgah-visited .singgah-main-entrance {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Smooth Loader Overlay */
+  .singgah-loader-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #041017;
+    pointer-events: auto;
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                visibility 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .singgah-loader-overlay.is-loaded {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.02);
+    pointer-events: none;
+  }
+
+  .singgah-loader-backdrop {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 48%, rgba(45, 212, 191, 0.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .singgah-loader-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+    max-width: 380px;
+    width: 90%;
+  }
+
+  /* Emblem & Celestial Ring */
+  .singgah-loader-emblem {
+    position: relative;
+    width: 84px;
+    height: 84px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .singgah-loader-glow {
+    position: absolute;
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(45, 212, 191, 0.28) 0%, transparent 70%);
+    animation: loaderPulse 2.8s ease-in-out infinite alternate;
+  }
+
+  .singgah-loader-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1.5px dashed rgba(45, 212, 191, 0.3);
+    border-top-color: #2dd4bf;
+    border-right-color: rgba(94, 234, 212, 0.7);
+    animation: loaderSpin 7s linear infinite;
+  }
+
+  .singgah-loader-logo {
+    position: relative;
+    z-index: 2;
+    animation: loaderEmblemBreath 2.8s ease-in-out infinite alternate;
+  }
+
+  /* Metrics Row: Subtitle & Percentage Counter */
+  .singgah-loader-metrics {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 220px;
+    margin-bottom: 8px;
+    font-family: var(--font-sans);
+  }
+
+  .singgah-loader-sub {
+    font-weight: 700;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.16em;
+    font-size: 0.68rem;
+  }
+
+  .singgah-loader-pct {
+    font-family: var(--font-sans);
+    font-size: 0.76rem;
+    font-weight: 800;
+    color: var(--mint);
+    letter-spacing: 0.05em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Real 0% to 100% Progress Bar Track */
+  .singgah-loader-progress {
+    width: 100%;
+    max-width: 220px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 9999px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 14px;
+  }
+
+  .singgah-loader-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #0d9488, #2dd4bf, #5eead4);
+    border-radius: 9999px;
+    box-shadow: 0 0 10px rgba(45, 212, 191, 0.6);
+    transition: width 0.04s linear;
+  }
+
+  /* Caption & Status */
+  .singgah-loader-caption {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+  }
+
+  .singgah-loader-indicator {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--mint);
+    animation: loaderDotPulse 1.4s ease-in-out infinite;
+  }
+
+  .singgah-loader-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    transition: color 0.3s ease;
+  }
+
+  @keyframes loaderSpin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes loaderPulse {
+    0% {
+      transform: scale(0.92);
+      opacity: 0.35;
+    }
+    100% {
+      transform: scale(1.15);
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes loaderEmblemBreath {
+    0% {
+      transform: scale(0.97);
+    }
+    100% {
+      transform: scale(1.03);
+    }
+  }
+
+  @keyframes loaderDotPulse {
+    0%, 100% {
+      opacity: 0.4;
+      transform: scale(0.85);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+  }
+
+  /* Accessibility: Prefers reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .singgah-loader-overlay {
+      transition: opacity 0.15s ease;
+    }
+    .singgah-main-entrance {
+      transition: none;
+      opacity: 1;
+      transform: none;
+    }
+    .singgah-loader-ring,
+    .singgah-loader-glow,
+    .singgah-loader-logo,
+    .singgah-loader-indicator {
+      animation: none !important;
+    }
   }
 </style>

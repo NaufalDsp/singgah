@@ -3,8 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SeasonStrip from '../../components/SeasonStrip.astro';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { suggestDestinations, calculateYearSeasons } from '@singgah/scoring';
-import fs from 'node:fs';
-import path from 'node:path';
+import { getClimateData } from '../../utils/climate';
 
 // Parse query params dari URL (Astro.url.searchParams)
 const searchParams = Astro.url.searchParams;
@@ -25,9 +24,9 @@ const moods: MoodEntry[] = await getCollection('moods');
 // Load climate data
 const climateDataMap: Record<string, any> = {};
 for (const dest of destinations) {
-  const filePath = path.resolve(`../../data/climate/${dest.slug}.json`);
-  if (fs.existsSync(filePath)) {
-    climateDataMap[dest.slug] = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  const data = getClimateData(dest.slug);
+  if (data) {
+    climateDataMap[dest.slug] = data;
   }
 }
 
