@@ -16,6 +16,11 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
     'nav.masuk': 'Masuk',
     'nav.susun': 'Susun Rencana',
 
+    // Loader Hook
+    'loader.text': 'Menyelaraskan ritme alam...',
+    'loader.sub': 'Singgah Nusantara',
+    'loader.ready': 'Harmoni terhubung',
+
     // Hero Section
     'hero.eyebrow': 'NUSANTARA MENANTI',
     'hero.title': 'Petualangan <br /> Yang Selalu <br /> Bersamamu',
@@ -205,6 +210,11 @@ export const translations: Record<SupportedLang, Record<string, string>> = {
     'nav.data': 'Climate Data',
     'nav.masuk': 'Sign In',
     'nav.susun': 'Plan Trip',
+
+    // Loader Hook
+    'loader.text': 'Aligning with nature...',
+    'loader.sub': 'Singgah Archipelago',
+    'loader.ready': 'Harmonies aligned',
 
     // Hero Section
     'hero.eyebrow': 'THE ARCHIPELAGO AWAITS',
