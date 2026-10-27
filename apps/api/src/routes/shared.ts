@@ -10,7 +10,7 @@ export const sharedRoute = new Hono<{ Bindings: Env }>();
 // GET /api/v1/shared/:shareSlug
 sharedRoute.get('/:shareSlug', async (c) => {
   const shareSlug = c.req.param('shareSlug');
-  if (!shareSlug) return apiError(c, 400, 'SLUG_KOSONG', 'Tautan tidak valid.');
+  if (!shareSlug || !c.env.DB) return apiError(c, 404, 'TIDAK_DITEMUKAN', 'Rencana tidak ditemukan.');
 
   const db = drizzle(c.env.DB);
   const trip = await db

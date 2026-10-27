@@ -12,7 +12,7 @@ import { adminRoute } from './routes/admin.js';
 import { apiError, ERROR_D1_LIMIT } from './lib/errors.js';
 
 export interface Env {
-  DB: D1Database;
+  DB?: D1Database;
   TIPS_ENABLED?: string;
   PUBLIC_SITE_URL?: string;
   GOOGLE_CLIENT_ID?: string;

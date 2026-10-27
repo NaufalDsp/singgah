@@ -28,7 +28,7 @@ export function generateRandomToken(bytes: number = 32): string {
 // Mengambil user yang sedang terautentikasi dari cookie
 export async function getCurrentUser(c: Context<{ Bindings: Env }>) {
   const rawToken = getCookie(c, SESSION_COOKIE_NAME);
-  if (!rawToken) return null;
+  if (!rawToken || !c.env.DB) return null;
 
   const sessionHash = await sha256(rawToken);
   const db = drizzle(c.env.DB);
@@ -50,6 +50,7 @@ export async function getCurrentUser(c: Context<{ Bindings: Env }>) {
 
 // Membuat sesi baru dan setel HttpOnly secure cookie
 export async function createSession(c: Context<{ Bindings: Env }>, userId: string) {
+  if (!c.env.DB) return '';
   const rawToken = generateRandomToken(32);
   const sessionHash = await sha256(rawToken);
   const now = Math.floor(Date.now() / 1000);
@@ -77,7 +78,7 @@ export async function createSession(c: Context<{ Bindings: Env }>, userId: strin
 // Menghapus sesi di server dan clear cookie
 export async function destroySession(c: Context<{ Bindings: Env }>) {
   const rawToken = getCookie(c, SESSION_COOKIE_NAME);
-  if (rawToken) {
+  if (rawToken && c.env.DB) {
     const sessionHash = await sha256(rawToken);
     const db = drizzle(c.env.DB);
     await db.delete(sessions).where(eq(sessions.id, sessionHash));

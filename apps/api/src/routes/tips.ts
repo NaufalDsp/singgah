@@ -57,6 +57,7 @@ tipsRoute.use('*', async (c, next) => {
 // GET /api/v1/destinations/:slug/tips (Baca tips terpublikasi)
 tipsRoute.get('/destinations/:slug/tips', async (c) => {
   const slug = c.req.param('slug')?.toLowerCase();
+  if (!c.env.DB) return c.json({ tips: [] });
   const db = drizzle(c.env.DB);
 
   const publishedTips = await db

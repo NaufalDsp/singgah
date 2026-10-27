@@ -15,7 +15,7 @@ const { transparent = true } = Astro.props;
       <Logo size="md" showTagline={true} />
     </a>
 
-    <!-- Navigasi Tengah Modern -->
+    <!-- Navigasi Tengah Desktop (>= 960px) -->
     <nav class="header-nav" aria-label="Navigasi Utama">
       <a href="/destinasi" class="nav-item">
         <span data-i18n="nav.destinasi">Destinasi</span>
@@ -36,7 +36,7 @@ const { transparent = true } = Astro.props;
 
     <!-- Header Actions (Zona Waktu/Bahasa & Pill CTA) -->
     <div class="header-actions">
-      <!-- Language Switcher Dropdown (ID / EN) -->
+      <!-- Language Switcher Dropdown Desktop (ID / EN) -->
       <div class="lang-switcher-wrapper">
         <button
           type="button"
@@ -101,8 +101,10 @@ const { transparent = true } = Astro.props;
         </div>
       </div>
 
-      <!-- Tombol Masuk & CTA Pill -->
+      <!-- Tombol Masuk Desktop -->
       <a href="/masuk" class="login-link" data-i18n="nav.masuk">Masuk</a>
+
+      <!-- CTA Pill -->
       <a href="/rencana/baru" class="cta-pill">
         <span data-i18n="nav.susun">Susun Rencana</span>
         <svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none">
@@ -114,6 +116,112 @@ const { transparent = true } = Astro.props;
             stroke-linejoin="round"></path>
         </svg>
       </a>
+
+      <!-- Mobile Hamburger Button (< 960px) -->
+      <button
+        type="button"
+        id="mobile-nav-toggle"
+        class="mobile-menu-btn"
+        aria-label="Buka menu navigasi"
+        aria-expanded="false"
+        aria-controls="mobile-drawer"
+      >
+        <span class="hamburger-box">
+          <span class="hamburger-inner"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation Drawer Overlay -->
+  <div id="mobile-drawer" class="mobile-drawer" aria-hidden="true">
+    <div class="mobile-drawer-backdrop" id="mobile-drawer-backdrop"></div>
+    <div class="mobile-drawer-panel">
+      <!-- Drawer Header: Brand & Close Button -->
+      <div class="mobile-drawer-header">
+        <a href="/" class="header-brand">
+          <Logo size="sm" showTagline={false} />
+        </a>
+        <button
+          type="button"
+          id="mobile-drawer-close"
+          class="mobile-drawer-close-btn"
+          aria-label="Tutup menu"
+        >
+          <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile Navigation Links -->
+      <nav class="mobile-nav-links" aria-label="Navigasi Menu Mobile">
+        <a href="/destinasi" class="mobile-nav-item">
+          <span class="mobile-nav-text" data-i18n="nav.destinasi">Destinasi</span>
+          <svg class="w-4 h-4 text-mint/60" viewBox="0 0 20 20" fill="none">
+            <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="/suasana" class="mobile-nav-item">
+          <span class="mobile-nav-text" data-i18n="nav.suasana">Suasana</span>
+          <svg class="w-4 h-4 text-mint/60" viewBox="0 0 20 20" fill="none">
+            <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="/rencana" class="mobile-nav-item">
+          <span class="mobile-nav-text" data-i18n="nav.rencana">Rencana Saya</span>
+          <svg class="w-4 h-4 text-mint/60" viewBox="0 0 20 20" fill="none">
+            <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="/catatan" class="mobile-nav-item">
+          <span class="mobile-nav-text" data-i18n="nav.catatan">Catatan</span>
+          <svg class="w-4 h-4 text-mint/60" viewBox="0 0 20 20" fill="none">
+            <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="/catatan-data" class="mobile-nav-item">
+          <span class="mobile-nav-text" data-i18n="nav.data">Tentang Data</span>
+          <svg class="w-4 h-4 text-mint/60" viewBox="0 0 20 20" fill="none">
+            <path d="M7 4L13 10L7 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </nav>
+
+      <!-- Mobile Language Switcher Section -->
+      <div class="mobile-drawer-lang-section">
+        <span class="mobile-lang-label">Pilihan Bahasa / Language</span>
+        <div class="mobile-lang-selector-grid">
+          <button type="button" class="lang-select-item mobile-lang-btn" data-lang="id">
+            <span class="flag-indicator flag-id" aria-hidden="true">
+              <span class="flag-top"></span>
+              <span class="flag-bottom"></span>
+            </span>
+            <span class="lang-name font-medium">Bahasa Indonesia</span>
+            <span class="lang-badge">ID</span>
+          </button>
+          <button type="button" class="lang-select-item mobile-lang-btn" data-lang="en">
+            <span class="flag-indicator flag-en" aria-hidden="true">
+              <span class="flag-top"></span>
+              <span class="flag-bottom"></span>
+            </span>
+            <span class="lang-name font-medium">English</span>
+            <span class="lang-badge">EN</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Drawer Actions -->
+      <div class="mobile-drawer-actions">
+        <a href="/rencana/baru" class="mobile-cta-pill">
+          <span data-i18n="nav.susun">Susun Rencana</span>
+          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="none">
+            <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="/masuk" class="mobile-login-link" data-i18n="nav.masuk">Masuk ke Akun</a>
+      </div>
     </div>
   </div>
 </header>
@@ -131,8 +239,8 @@ const { transparent = true } = Astro.props;
   .site-header--trans {
     background: linear-gradient(
       to bottom,
-      rgba(4, 16, 23, 0.8) 0%,
-      rgba(4, 16, 23, 0.4) 60%,
+      rgba(4, 16, 23, 0.88) 0%,
+      rgba(4, 16, 23, 0.5) 60%,
       transparent 100%
     );
     backdrop-filter: blur(16px);
@@ -142,7 +250,7 @@ const { transparent = true } = Astro.props;
   }
 
   .site-header--solid {
-    background: rgba(5, 19, 26, 0.94);
+    background: rgba(5, 19, 26, 0.95);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -153,7 +261,7 @@ const { transparent = true } = Astro.props;
     max-width: 1440px;
     margin: 0 auto;
     padding: 0 var(--margin-x);
-    height: 76px;
+    height: 72px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -165,39 +273,7 @@ const { transparent = true } = Astro.props;
     gap: 12px;
     text-decoration: none;
     color: #ffffff;
-  }
-
-  .brand-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .text-mint {
-    color: var(--mint);
-  }
-
-  .brand-text {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .brand-title {
-    font-family: var(--font-sans);
-    font-weight: 800;
-    font-size: 1.25rem;
-    letter-spacing: 0.14em;
-    line-height: 1.1;
-    color: #ffffff;
-  }
-
-  .brand-tagline {
-    font-family: var(--font-sans);
-    font-size: 0.58rem;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    color: rgba(255, 255, 255, 0.55);
-    margin-top: 1px;
+    flex-shrink: 0;
   }
 
   .header-nav {
@@ -228,22 +304,10 @@ const { transparent = true } = Astro.props;
     color: #ffffff;
   }
 
-  .chevron {
-    width: 11px;
-    height: 11px;
-    opacity: 0.6;
-    transition: transform 0.2s ease;
-  }
-
-  .nav-item:hover .chevron {
-    transform: translateY(1px);
-    opacity: 1;
-  }
-
   .header-actions {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
 
   .region-pill {
@@ -286,9 +350,9 @@ const { transparent = true } = Astro.props;
     }
   }
 
-  /* Boxed Login Button (Frosted Glass Pill) */
+  /* Boxed Login Button */
   .login-link {
-    display: inline-flex;
+    display: none;
     align-items: center;
     justify-content: center;
     height: 42px;
@@ -307,6 +371,12 @@ const { transparent = true } = Astro.props;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
+  @media (min-width: 640px) {
+    .login-link {
+      display: inline-flex;
+    }
+  }
+
   .login-link:hover {
     background: rgba(255, 255, 255, 0.16);
     border-color: rgba(255, 255, 255, 0.35);
@@ -315,10 +385,7 @@ const { transparent = true } = Astro.props;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
   }
 
-  .login-link:active {
-    transform: translateY(0);
-  }
-
+  /* CTA Pill */
   .cta-pill {
     display: inline-flex;
     align-items: center;
@@ -328,12 +395,20 @@ const { transparent = true } = Astro.props;
     font-family: var(--font-sans);
     font-size: 0.84rem;
     font-weight: 700;
-    padding: 0 22px;
-    height: 42px;
+    padding: 0 18px;
+    height: 40px;
     border-radius: 9999px;
     text-decoration: none;
-    box-shadow: 0 4px 20px rgba(45, 212, 191, 0.38);
+    box-shadow: 0 4px 18px rgba(45, 212, 191, 0.35);
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+  }
+
+  @media (min-width: 640px) {
+    .cta-pill {
+      height: 42px;
+      padding: 0 22px;
+    }
   }
 
   .cta-pill:hover {
@@ -342,7 +417,106 @@ const { transparent = true } = Astro.props;
     box-shadow: 0 6px 26px rgba(45, 212, 191, 0.55);
   }
 
-  /* Language Switcher Dropdown Styles */
+  @media (max-width: 480px) {
+    .cta-pill {
+      padding: 0 12px;
+      font-size: 0.78rem;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .cta-pill span {
+      display: none;
+    }
+    .cta-pill {
+      padding: 0 10px;
+      width: 40px;
+      justify-content: center;
+    }
+  }
+
+  /* Hamburger Menu Button */
+  .mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #ffffff;
+    padding: 0;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 960px) {
+    .mobile-menu-btn {
+      display: none;
+    }
+  }
+
+  .mobile-menu-btn:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .hamburger-box {
+    width: 18px;
+    height: 14px;
+    position: relative;
+    display: inline-block;
+  }
+
+  .hamburger-inner,
+  .hamburger-inner::before,
+  .hamburger-inner::after {
+    width: 18px;
+    height: 2px;
+    background-color: #ffffff;
+    border-radius: 2px;
+    position: absolute;
+    transition: transform 0.25s ease, background-color 0.25s ease;
+  }
+
+  .hamburger-inner {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .hamburger-inner::before,
+  .hamburger-inner::after {
+    content: '';
+    display: block;
+  }
+
+  .hamburger-inner::before {
+    top: -5px;
+  }
+
+  .hamburger-inner::after {
+    bottom: -5px;
+  }
+
+  .mobile-menu-btn[aria-expanded="true"] .hamburger-inner {
+    background-color: transparent;
+  }
+
+  .mobile-menu-btn[aria-expanded="true"] .hamburger-inner::before {
+    transform: translateY(5px) rotate(45deg);
+    background-color: var(--mint);
+  }
+
+  .mobile-menu-btn[aria-expanded="true"] .hamburger-inner::after {
+    transform: translateY(-5px) rotate(-45deg);
+    background-color: var(--mint);
+  }
+
+  /* Desktop Language Dropdown Styles */
   .lang-switcher-wrapper {
     position: relative;
     display: none;
@@ -487,20 +661,242 @@ const { transparent = true } = Astro.props;
     box-shadow: 0 0 0 1px #FFFFFF;
   }
 
-  /* Icon rotasi ketika menu aktif - Berbalik arah secara mulus (180deg) */
   button[aria-expanded="true"] .region-chevron,
   .region-pill.is-open .region-chevron {
     transform: rotate(180deg);
     color: var(--mint);
+  }
+
+  /* ========================================================================= */
+  /* MOBILE DRAWER OVERLAY & PANEL                                             */
+  /* ========================================================================= */
+  .mobile-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: visibility 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mobile-drawer.is-open {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-drawer-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(4, 16, 23, 0.85);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .mobile-drawer-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 88%;
+    max-width: 340px;
+    background: #06151D;
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: -12px 0 40px rgba(0, 0, 0, 0.85);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 20px;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mobile-drawer.is-open .mobile-drawer-panel {
+    transform: translateX(0);
+  }
+
+  .mobile-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 20px;
+  }
+
+  .mobile-drawer-close-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #ffffff;
+    transition: background 0.2s ease;
+  }
+
+  .mobile-drawer-close-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-nav-item:hover,
+  .mobile-nav-item:active {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--mint);
+    padding-left: 18px;
+  }
+
+  .mobile-drawer-lang-section {
+    padding: 16px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 24px;
+  }
+
+  .mobile-lang-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--mint);
+    margin-bottom: 10px;
+  }
+
+  .mobile-lang-selector-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .mobile-lang-btn {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .mobile-drawer-actions {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 12px;
+  }
+
+  .mobile-cta-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--mint);
+    color: #04141a;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 12px 20px;
+    border-radius: 14px;
+    text-decoration: none;
+    box-shadow: 0 4px 18px rgba(45, 212, 191, 0.35);
+  }
+
+  .mobile-login-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
   }
 </style>
 
 <script>
   import { initLanguageSwitcher } from '../scripts/i18n';
 
-  // Inisialisasi language switcher saat DOM siap
-  initLanguageSwitcher();
-  document.addEventListener('astro:page-load', () => {
+  function initHeaderControls() {
+    // 1. Inisialisasi language switcher
     initLanguageSwitcher();
+
+    // 2. Inisialisasi mobile drawer toggle
+    const toggleBtn = document.getElementById('mobile-nav-toggle');
+    const drawer = document.getElementById('mobile-drawer');
+    const closeBtn = document.getElementById('mobile-drawer-close');
+    const backdrop = document.getElementById('mobile-drawer-backdrop');
+    const drawerLinks = drawer?.querySelectorAll('a');
+
+    if (!toggleBtn || !drawer) return;
+
+    function openDrawer() {
+      drawer.classList.add('is-open');
+      drawer.setAttribute('aria-hidden', 'false');
+      toggleBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      drawer.classList.remove('is-open');
+      drawer.setAttribute('aria-hidden', 'true');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      const isOpen = drawer.classList.contains('is-open');
+      if (isOpen) {
+        closeDrawer();
+      } else {
+        openDrawer();
+      }
+    });
+
+    closeBtn?.addEventListener('click', closeDrawer);
+    backdrop?.addEventListener('click', closeDrawer);
+
+    // Tutup drawer jika link navigasi diklik
+    drawerLinks?.forEach((link) => {
+      link.addEventListener('click', closeDrawer);
+    });
+
+    // Keyboard support: Escape untuk menutup drawer
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer.classList.contains('is-open')) {
+        closeDrawer();
+      }
+    });
+  }
+
+  initHeaderControls();
+  document.addEventListener('astro:page-load', () => {
+    initHeaderControls();
   });
 </script>

@@ -7,6 +7,11 @@ type DestEntry = CollectionEntry<'destinations'>;
 
 const moods: MoodEntry[] = await getCollection('moods');
 const destinations: DestEntry[] = await getCollection('destinations');
+
+const optImg = (url: string, w = 640, q = 75) => {
+  if (!url) return '';
+  return url.includes('unsplash.com') ? `${url.split('?')[0]}?auto=format&fit=crop&w=${w}&q=${q}` : url;
+};
 ---
 
 <BaseLayout title="Jelajah Menurut Suasana — Singgah">
@@ -36,10 +41,11 @@ const destinations: DestEntry[] = await getCollection('destinations');
               class="group relative h-80 rounded-3xl overflow-hidden border border-white/10 p-7 flex flex-col justify-between transition-all duration-500 hover:border-mint/60 hover:-translate-y-1.5 shadow-2xl block"
             >
               <img
-                src={m.data.photo}
+                src={optImg(m.data.photo, 640)}
                 alt={m.data.name}
                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 loading="lazy"
+                decoding="async"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-[#040E14] via-[#040E14]/40 to-transparent"></div>
 

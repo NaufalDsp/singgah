@@ -4,6 +4,11 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 
 type ArticleEntry = CollectionEntry<'articles'>;
 const articles: ArticleEntry[] = await getCollection('articles');
+
+const optImg = (url: string, w = 640, q = 75) => {
+  if (!url) return '';
+  return url.includes('unsplash.com') ? `${url.split('?')[0]}?auto=format&fit=crop&w=${w}&q=${q}` : url;
+};
 ---
 
 <BaseLayout title="Catatan Lapangan — Singgah">
@@ -28,10 +33,11 @@ const articles: ArticleEntry[] = await getCollection('articles');
             <div>
               <a href={`/catatan/${art.slug}`} class="block aspect-[16/10] overflow-hidden relative">
                 <img
-                  src={art.data.photo}
+                  src={optImg(art.data.photo, 640)}
                   alt={art.data.title}
                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
+                  decoding="async"
                 />
                 <div class="absolute inset-0 bg-gradient-to-t from-[#081822] via-[#081822]/30 to-transparent"></div>
               </a>

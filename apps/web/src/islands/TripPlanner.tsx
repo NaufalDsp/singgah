@@ -348,7 +348,7 @@ export default function TripPlanner({ initialTrip, destinations }: TripPlannerPr
       </aside>
 
       {/* PANEL 2 (TENGAH, 6 KOLOM): Daftar Hari & Timeline */}
-      <main className="lg:col-span-6 space-y-6">
+      <div className="lg:col-span-6 space-y-6">
         {Array.from({ length: daysCount }).map((_, idx) => {
           const dayNum = idx + 1;
           const dayItems = items
@@ -463,7 +463,7 @@ export default function TripPlanner({ initialTrip, destinations }: TripPlannerPr
             </section>
           );
         })}
-      </main>
+      </div>
 
       {/* PANEL 3 (KANAN, 3 KOLOM): Highlight Rekomendasi */}
       <aside className="lg:col-span-3 bg-[#081822] p-6 rounded-3xl border border-white/10 shadow-xl space-y-4">

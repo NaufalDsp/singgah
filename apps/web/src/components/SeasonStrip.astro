@@ -157,6 +157,18 @@ const accessibleSummary = `Kalender musim ${destinationName}. Periode terbaik: $
     gap: 6px;
   }
 
+  @media (max-width: 640px) {
+    .season-strip--full .season-strip-grid {
+      height: 120px;
+      gap: 3px;
+    }
+    .season-month-label {
+      font-size: 0.62rem !important;
+      letter-spacing: -0.02em;
+      margin-top: 6px !important;
+    }
+  }
+
   .season-bar-col {
     display: flex;
     flex-direction: column;

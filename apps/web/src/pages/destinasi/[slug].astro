@@ -103,7 +103,7 @@ const jsonLd = {
   <div class="max-w-container mx-auto px-4 md:px-8 py-16 w-full">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
       <!-- Kolom Konten Utama (8 Kolom) -->
-      <main class="lg:col-span-8 flex flex-col gap-16">
+      <div class="lg:col-span-8 flex flex-col gap-16">
         <!-- Bagian 1: Kalender Musim Ukuran Penuh -->
         <section aria-labelledby="heading-musim">
           <div class="mb-6">
@@ -209,7 +209,7 @@ const jsonLd = {
 
         <!-- Bagian 5: Tips Komunitas Pelancong -->
         <TravelerTips destinationSlug={destination.slug} destinationName={destination.data.name} />
-      </main>
+      </div>
 
       <!-- Kolom Sidebar Sticky (4 Kolom) -->
       <aside class="lg:col-span-4 lg:sticky lg:top-28 flex flex-col gap-6">

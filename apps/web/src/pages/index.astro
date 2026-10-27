@@ -105,6 +105,12 @@ const moodList = moods.map((m) => {
     count: matchedDests.length,
   };
 });
+
+// Helper optimasi gambar responsif
+const optImg = (url: string, w = 640, q = 75) => {
+  if (!url) return '';
+  return url.includes('unsplash.com') ? `${url.split('?')[0]}?auto=format&fit=crop&w=${w}&q=${q}` : url;
+};
 ---
 
 <BaseLayout title="Singgah — Panduan Destinasi Nusantara" transparentHeader={true}>
@@ -115,10 +121,17 @@ const moodList = moods.map((m) => {
     <!-- Cinematic High-Res Nature Background dengan Scrim Terukur (Jelas & Terlihat Indah) -->
     <div class="absolute inset-0 z-0">
       <img
-        src="https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?auto=format&fit=crop&w=2560&q=85"
+        src="https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?auto=format&fit=crop&w=1280&q=80"
+        srcset="https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?auto=format&fit=crop&w=640&q=75 640w,
+                https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?auto=format&fit=crop&w=1080&q=80 1080w,
+                https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?auto=format&fit=crop&w=1920&q=80 1920w,
+                https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?auto=format&fit=crop&w=2560&q=85 2560w"
+        sizes="100vw"
         alt="Gugusan kepulauan karst Raja Ampat di atas perairan pirus jernih Nusantara"
         class="w-full h-full object-cover object-center scale-[1.02] transition-transform duration-1000 ease-out"
         fetchpriority="high"
+        loading="eager"
+        decoding="async"
       />
       <!-- Scrim Terukur: Jelas & Kontras Alami, Lanskap Pulau dan Air Terlihat Nyata -->
       <!-- Gradien Kiri (untuk keterbacaan teks headline) -->
@@ -198,12 +211,12 @@ const moodList = moods.map((m) => {
         <!-- Kolom Kanan: Floating Booking Planner Card (5 Kolom) - Sesuai Referensi Gambar -->
         <div class="lg:col-span-5 flex justify-center lg:justify-end">
           <div
-            class="w-full max-w-[420px] rounded-[28px] p-6 sm:p-7 shadow-2xl relative overflow-hidden"
+            class="w-full max-w-[420px] rounded-[24px] sm:rounded-[28px] p-5 sm:p-7 shadow-2xl relative overflow-hidden"
             style="background-color: #121B1E; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.65);"
           >
             <!-- Card Header: Where to next? -->
             <div class="mb-5">
-              <h2 class="font-sans font-bold text-2xl text-white tracking-tight leading-tight" data-i18n="planner.title">
+              <h2 class="font-sans font-bold text-xl sm:text-2xl text-white tracking-tight leading-tight" data-i18n="planner.title">
                 Mau ke mana berikutnya?
               </h2>
               <p class="font-sans text-xs text-white/50 mt-1 font-normal" data-i18n="planner.subtitle">
@@ -212,7 +225,7 @@ const moodList = moods.map((m) => {
             </div>
 
             <!-- Tab Pilihan Persis Sesuai Referensi (Flights, Hotels, Experiences) - Tanpa Blok Abu-abu -->
-            <div class="grid grid-cols-3 gap-2 mb-5 text-center">
+            <div class="grid grid-cols-3 gap-1.5 sm:gap-2 mb-5 text-center">
               <button
                 type="button"
                 class="hero-tab-btn flex flex-col items-center group cursor-pointer transition-colors"
@@ -221,7 +234,7 @@ const moodList = moods.map((m) => {
                 <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.6.5-1.1z"/>
                 </svg>
-                <span class="text-xs font-semibold text-white mt-1.5" data-i18n="planner.flights">Penerbangan</span>
+                <span class="text-[11px] sm:text-xs font-semibold text-white mt-1.5" data-i18n="planner.flights">Penerbangan</span>
                 <span class="w-6 h-[2.5px] bg-[#2DD4BF] rounded-full mt-1.5 shadow-[0_0_8px_rgba(45,212,191,0.6)]"></span>
               </button>
 
@@ -234,7 +247,7 @@ const moodList = moods.map((m) => {
                   <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                   <polyline points="9 22 9 12 15 12 15 22"/>
                 </svg>
-                <span class="text-xs font-medium mt-1.5" data-i18n="planner.hotels">Hotel</span>
+                <span class="text-[11px] sm:text-xs font-medium mt-1.5" data-i18n="planner.hotels">Hotel</span>
               </button>
 
               <button
@@ -245,7 +258,7 @@ const moodList = moods.map((m) => {
                 <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                 </svg>
-                <span class="text-xs font-medium mt-1.5" data-i18n="planner.experiences">Aktivitas</span>
+                <span class="text-[11px] sm:text-xs font-medium mt-1.5" data-i18n="planner.experiences">Aktivitas</span>
               </button>
             </div>
 
@@ -253,7 +266,7 @@ const moodList = moods.map((m) => {
             <form action="/rencana/saran" method="get" class="space-y-3">
               <!-- Route Container (From / To dengan Swap Button Sesuai Referensi) -->
               <div
-                class="rounded-2xl p-4 transition-all duration-300"
+                class="rounded-2xl p-3.5 sm:p-4 transition-all duration-300"
                 style="background-color: #162227; border: 1px solid rgba(255, 255, 255, 0.08);"
               >
                 <!-- Baris Asal (From) -->
@@ -279,10 +292,10 @@ const moodList = moods.map((m) => {
                 </div>
 
                 <!-- Baris Tujuan (To) - Lebih Luas, Rapi, & Animasi Dropdown Icon -->
-                <div class="pt-3.5 pb-1 dropdown-field-group group">
+                <div class="pt-3 pb-1 dropdown-field-group group">
                   <label for="qp-hero-tujuan" class="text-[10px] text-white/50 uppercase tracking-wider block font-bold mb-1" data-i18n="planner.to_label">KE</label>
-                  <div class="flex items-center gap-2.5 mt-0.5 relative">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)] flex-shrink-0 animate-pulse-subtle"></span>
+                  <div class="flex items-center gap-2 mt-0.5 relative">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.9)] flex-shrink-0 animate-pulse-subtle"></span>
                     <div class="relative flex-1 min-w-0">
                       <select
                         id="qp-hero-tujuan"
@@ -308,26 +321,26 @@ const moodList = moods.map((m) => {
               </div>
 
               <!-- Baris Dates & Travelers Bersebelahan Sesuai Referensi -->
-              <div class="grid grid-cols-2 gap-3">
+              <div class="grid grid-cols-2 gap-2.5 sm:gap-3">
                 <!-- Box Dates -->
                 <div
-                  class="rounded-2xl p-4 hover:border-white/20 transition-all duration-300 dropdown-field-group group"
+                  class="rounded-2xl p-3 sm:p-4 hover:border-white/20 transition-all duration-300 dropdown-field-group group"
                   style="background-color: #162227; border: 1px solid rgba(255, 255, 255, 0.08);"
                 >
-                  <div class="flex items-center gap-1.5 mb-1.5">
-                    <svg class="w-3.5 h-3.5 text-white/45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <div class="flex items-center gap-1.5 mb-1">
+                    <svg class="w-3.5 h-3.5 text-white/45 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                       <line x1="16" y1="2" x2="16" y2="6"></line>
                       <line x1="8" y1="2" x2="8" y2="6"></line>
                       <line x1="3" y1="10" x2="21" y2="10"></line>
                     </svg>
-                    <label for="qp-hero-bulan" class="text-[10px] text-white/50 uppercase tracking-wider font-bold" data-i18n="planner.dates_label">TANGGAL</label>
+                    <label for="qp-hero-bulan" class="text-[10px] text-white/50 uppercase tracking-wider font-bold truncate" data-i18n="planner.dates_label">TANGGAL</label>
                   </div>
                   <div class="relative mt-1">
                     <select
                       id="qp-hero-bulan"
                       name="bulan"
-                      class="hero-select-clean w-full text-xs sm:text-sm font-semibold text-white cursor-pointer pr-6"
+                      class="hero-select-clean w-full text-xs sm:text-sm font-semibold text-white cursor-pointer pr-5 truncate"
                       style="background: transparent !important; border: none !important; outline: none !important; box-shadow: none !important; -webkit-appearance: none !important; -moz-appearance: none !important; appearance: none !important; color-scheme: dark !important;"
                     >
                       {monthNamesFull.map((m, idx) => (
@@ -346,23 +359,23 @@ const moodList = moods.map((m) => {
 
                 <!-- Box Travelers / Durasi -->
                 <div
-                  class="rounded-2xl p-4 hover:border-white/20 transition-all duration-300 dropdown-field-group group"
+                  class="rounded-2xl p-3 sm:p-4 hover:border-white/20 transition-all duration-300 dropdown-field-group group"
                   style="background-color: #162227; border: 1px solid rgba(255, 255, 255, 0.08);"
                 >
-                  <div class="flex items-center gap-1.5 mb-1.5">
-                    <svg class="w-3.5 h-3.5 text-white/45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <div class="flex items-center gap-1.5 mb-1">
+                    <svg class="w-3.5 h-3.5 text-white/45 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                       <circle cx="9" cy="7" r="4"></circle>
                       <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                       <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                     </svg>
-                    <label for="qp-hero-lama" class="text-[10px] text-white/50 uppercase tracking-wider font-bold" data-i18n="planner.travelers_label">WISATAWAN</label>
+                    <label for="qp-hero-lama" class="text-[10px] text-white/50 uppercase tracking-wider font-bold truncate" data-i18n="planner.travelers_label">WISATAWAN</label>
                   </div>
                   <div class="relative mt-1">
                     <select
                       id="qp-hero-lama"
                       name="lama"
-                      class="hero-select-clean w-full text-xs sm:text-sm font-semibold text-white cursor-pointer pr-6"
+                      class="hero-select-clean w-full text-xs sm:text-sm font-semibold text-white cursor-pointer pr-5 truncate"
                       style="background: transparent !important; border: none !important; outline: none !important; box-shadow: none !important; -webkit-appearance: none !important; -moz-appearance: none !important; appearance: none !important; color-scheme: dark !important;"
                     >
                       <option value="2" style="background-color: #121B1E; color: #FFFFFF;">2 Dewasa • Akhir Pekan</option>
@@ -417,10 +430,11 @@ const moodList = moods.map((m) => {
                 class="group relative flex-shrink-0 w-36 sm:w-44 aspect-[4/3] rounded-2xl overflow-hidden border border-white/12 bg-black/40 shadow-lg hover:border-mint/50 transition-all duration-300"
               >
                 <img
-                  src={dest.data.hero.photo}
+                  src={optImg(dest.data.hero.photo, 360)}
                   alt={dest.data.name}
                   class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
+                  decoding="async"
                 />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
                 <div class="absolute bottom-2.5 left-2.5 right-2.5 flex items-end justify-between">
@@ -490,40 +504,40 @@ const moodList = moods.map((m) => {
 
       <!-- Stats Bar di Bawah Hero Sesuai Referensi (Diberi Background & Teks Berwarna) -->
       <div
-        class="mt-10 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-2xl relative overflow-hidden backdrop-blur-2xl border border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-white/10 text-left"
+        class="mt-10 rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl relative overflow-hidden backdrop-blur-2xl border border-white/10 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 text-left"
         style="background-color: rgba(14, 25, 31, 0.85);"
       >
-        <div class="sm:px-4 flex flex-col justify-center">
+        <div class="p-3 sm:p-4 rounded-xl bg-white/[0.03] border border-white/6 flex flex-col justify-center">
           <span class="font-sans font-black text-2xl sm:text-3xl text-mint block tracking-tight">6+</span>
           <span class="font-sans text-xs font-semibold text-mint/90 uppercase tracking-wider block mt-1" data-i18n="stats.dest">Destinasi</span>
-          <span class="font-sans text-[11px] text-white/55 mt-0.5" data-i18n="stats.dest_sub">Riset lapangan & satelit</span>
+          <span class="font-sans text-[10px] sm:text-[11px] text-white/55 mt-0.5" data-i18n="stats.dest_sub">Riset lapangan & satelit</span>
         </div>
 
-        <div class="pt-4 sm:pt-0 sm:px-4 flex flex-col justify-center">
+        <div class="p-3 sm:p-4 rounded-xl bg-white/[0.03] border border-white/6 flex flex-col justify-center">
           <span class="font-sans font-black text-2xl sm:text-3xl text-mint block tracking-tight" data-i18n="stats.climate_val">30 Tahun</span>
           <span class="font-sans text-xs font-semibold text-mint/90 uppercase tracking-wider block mt-1" data-i18n="stats.climate">Rekam Jejak Iklim</span>
-          <span class="font-sans text-[11px] text-white/55 mt-0.5" data-i18n="stats.climate_sub">Data historis ECMWF presisi</span>
+          <span class="font-sans text-[10px] sm:text-[11px] text-white/55 mt-0.5" data-i18n="stats.climate_sub">Data historis ECMWF presisi</span>
         </div>
 
-        <div class="pt-4 sm:pt-0 sm:px-4 flex flex-col justify-center">
+        <div class="p-3 sm:p-4 rounded-xl bg-white/[0.03] border border-white/6 flex flex-col justify-center">
           <span class="font-sans font-black text-2xl sm:text-3xl text-mint block tracking-tight">100+</span>
           <span class="font-sans text-xs font-semibold text-mint/90 uppercase tracking-wider block mt-1" data-i18n="stats.highlights">Titik Highlight Alam</span>
-          <span class="font-sans text-[11px] text-white/55 mt-0.5" data-i18n="stats.highlights_sub">Musim & momen terbaik</span>
+          <span class="font-sans text-[10px] sm:text-[11px] text-white/55 mt-0.5" data-i18n="stats.highlights_sub">Musim & momen terbaik</span>
         </div>
 
-        <div class="pt-4 sm:pt-0 sm:px-4 flex flex-col justify-center">
-          <div class="flex items-center gap-2">
+        <div class="p-3 sm:p-4 rounded-xl bg-white/[0.03] border border-white/6 flex flex-col justify-center">
+          <div class="flex items-center gap-1.5 sm:gap-2">
             <span class="font-sans font-black text-2xl sm:text-3xl text-amber-400 tracking-tight">4.9</span>
             <div class="flex items-center gap-0.5 text-amber-400">
-              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-              <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+              <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
             </div>
           </div>
           <span class="font-sans text-xs font-semibold text-amber-300/90 uppercase tracking-wider block mt-1" data-i18n="stats.rating">Rating Wisatawan</span>
-          <span class="font-sans text-[11px] text-white/55 mt-0.5" data-i18n="stats.rating_sub">100% netral & tanpa sponsor</span>
+          <span class="font-sans text-[10px] sm:text-[11px] text-white/55 mt-0.5" data-i18n="stats.rating_sub">100% netral & tanpa sponsor</span>
         </div>
       </div>
     </div>
@@ -555,10 +569,11 @@ const moodList = moods.map((m) => {
           <div class="relative rounded-3xl overflow-hidden border border-white/12 bg-[#091C26] shadow-2xl group">
             <div class="aspect-[16/10] sm:aspect-[16/9] overflow-hidden relative">
               <img
-                src={topDestination.dest.data.hero.photo}
+                src={optImg(topDestination.dest.data.hero.photo, 960)}
                 alt={topDestination.dest.data.name}
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 loading="lazy"
+                decoding="async"
               />
               <div class="absolute inset-0 bg-gradient-to-t from-[#091C26] via-[#091C26]/40 to-transparent"></div>
               
@@ -633,10 +648,11 @@ const moodList = moods.map((m) => {
           >
             <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden flex-shrink-0 bg-surface-2 relative">
               <img
-                src={dest.data.hero.photo}
+                src={optImg(dest.data.hero.photo, 240)}
                 alt={dest.data.name}
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 loading="lazy"
+                decoding="async"
               />
               <span class="absolute top-1 left-1 text-[9px] font-bold px-1.5 py-0.5 rounded bg-black/70 text-mint">
                 {score}
@@ -791,10 +807,11 @@ const moodList = moods.map((m) => {
             >
               <!-- Foto Latar Belakang (Jernih, Tajam & Berwarna Indah) -->
               <img
-                src={m.photo}
+                src={optImg(m.photo, 640)}
                 alt={m.name}
                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                 loading="lazy"
+                decoding="async"
               />
               <!-- Cinematic Scrim: Multi-Stop Gradient Jernih -->
               <div class="absolute inset-0 bg-gradient-to-t from-[#041117] via-[#041117]/70 via-55% to-[#041117]/20 transition-opacity duration-500 group-hover:via-[#041117]/60"></div>
@@ -1057,10 +1074,11 @@ const moodList = moods.map((m) => {
           <div>
             <a href={`/catatan/${art.slug}`} class="block aspect-[16/10] overflow-hidden relative">
               <img
-                src={art.data.photo}
+                src={optImg(art.data.photo, 640)}
                 alt={art.data.title}
                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 loading="lazy"
+                decoding="async"
               />
               <span class="absolute top-3 left-3 text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full bg-black/70 text-mint backdrop-blur-md">
                 {index === 0 ? 'Cerita Utama' : 'Catatan'}
